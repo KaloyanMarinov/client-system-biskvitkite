@@ -14,7 +14,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-class IGS_CS_Public_Hooks_Hooks extends IGS_CS_Loader {
+class IGS_CS_Public_Hooks extends IGS_CS_Loader {
 
 	/**
 	 * The single instance of the class.

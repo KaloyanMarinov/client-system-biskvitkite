@@ -9,7 +9,7 @@
  * @link       https://igamingsolutions.net
  * @since      1.0.0
  *
- * @package    IGS_CS
+ * @package    IGS_Client_System
  * @subpackage IGS_CS/Public
  * @author     igamingsolutions.com <support@igamingsolutions.com>
  * 

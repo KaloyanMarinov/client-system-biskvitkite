@@ -13,7 +13,7 @@
  * @since      1.0.0
  *
  * @since      1.0.0
- * @package    IGS_CS
+ * @package    IGS_Client_System
  * @author     igamingsolutions.com <support@igamingsolutions.com>
  * 
  */
@@ -46,6 +46,7 @@ class IGS_Client_System {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
+		$this->define_constants();
 		$this->includes();
 	}
 
@@ -84,6 +85,27 @@ class IGS_Client_System {
 	}
 
 	/**
+	 * Define WC Constants.
+	 */
+	private function define_constants() {
+		$this->define( 'IGS_CS_ABSPATH', dirname( IGS_CS_PLUGIN_FILE ) );
+		$this->define( 'IGS_CS_PLUGIN_BASENAME', plugin_basename( IGS_CS_PLUGIN_FILE ) );
+		$this->define( 'IGS_CS_VERSION', $this->version );
+	}
+
+	/**
+	 * Define constant if not already set.
+	 *
+	 * @param string      $name  Constant name.
+	 * @param string|bool $value Constant value.
+	 */
+	private function define( $name, $value ) {
+		if ( ! defined( $name ) ) {
+			define( $name, $value );
+		}
+	}
+
+	/**
 	 * Load the dependencies for this plugin.
 	 * 
    * @since 1.0.0
@@ -94,7 +116,9 @@ class IGS_Client_System {
 	 */
 	private function includes() {
 
+		require_once IGS_CS_ABSPATH . '/includes/funcitons/igs-template-functions.php';
 		require_once IGS_CS_ABSPATH . '/includes/funcitons/igs-core-functions.php';
+		require_once IGS_CS_ABSPATH . '/includes/core/igs-constants.php';
 		require_once IGS_CS_ABSPATH . '/includes/abstracts/igs-loader.php';
 		require_once IGS_CS_ABSPATH . '/includes/igs-i18n.php';
 		require_once IGS_CS_ABSPATH . '/admin/igs-admin.php';
@@ -120,6 +144,37 @@ class IGS_Client_System {
       case 'cron':
         return wp_doing_cron();
     }
+
+	}
+
+	/**
+	 * Get the plugin url.
+	 *
+	 * @return string
+	 */
+	public function plugin_url() {
+		return untrailingslashit( plugins_url( '/', WC_PLUGIN_FILE ) );
+	}
+
+	/**
+	 * Get the plugin path.
+	 *
+	 * @return string
+	 */
+	public function plugin_path() {
+		return untrailingslashit( plugin_dir_path( WC_PLUGIN_FILE ) );
+	}
+
+	/**
+	 * Get the template path.
+	 *
+	 * @return string
+	 */
+	public function template_path() {
+		/**
+		 * Filter to adjust the base templates path.
+		 */
+		return apply_filters( 'igs_cs_template_path', 'templates/' );
 	}
 
 }
