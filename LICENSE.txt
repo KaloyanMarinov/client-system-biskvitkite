@@ -1,0 +1,64 @@
+PROPRIETARY SOFTWARE LICENSE AGREEMENT
+Version 1.0, January 2026
+
+ Copyright (C) 2026 iGaming Solutions LTD.
+ ALL RIGHTS RESERVED.
+
+ WARNING: This software is protected by copyright law and international 
+ treaties. Unauthorized reproduction or distribution of this program, 
+ or any portion of it, may result in severe civil and criminal penalties, 
+ and will be prosecuted to the maximum extent possible under the law.
+
+                            PREAMBLE
+
+  This License is a strictly proprietary agreement. Unlike free software 
+ licenses, this agreement is designed to ensure that the software remains 
+ the exclusive property of the Author. The Program is licensed, not sold, 
+ to you for use only under the terms of this license.
+
+  By installing, copying, or otherwise using the Program, you agree to 
+ be bound by the terms of this agreement. If you do not agree to these 
+ terms, do not install or use the Program.
+
+          TERMS AND CONDITIONS FOR USE AND RESTRICTION
+
+  1. DEFINITIONS: The "Program" refers to the source code, object code, 
+ documentation, and any related files provided by the Author for the 
+ "Client System for Biskvitkite".
+
+  2. NO COPYING: You are NOT permitted to copy the Program, except for 
+ a single copy for archival or backup purposes. Any other copying of the 
+ Program is a violation of this license.
+
+  3. NO DISTRIBUTION: You SHALL NOT distribute, publish, sublicense, 
+ rent, lease, lend, or sell the Program or any portion thereof to any 
+ third party, whether for profit or without charge. This includes 
+ sharing the code on public repositories (like GitHub) or forums.
+
+  4. NO MODIFICATION OR REVERSE ENGINEERING: You SHALL NOT modify, 
+ adapt, translate, reverse engineer, decompile, or disassemble the 
+ Program. The source code is a trade secret and remains the 
+ confidential property of the Author.
+
+  5. SINGLE SITE LIMITATION: This license grants you the right to 
+ use the Program on exactly one (1) WordPress installation (domain) 
+ unless otherwise specified in a separate purchase agreement.
+
+  6. TERMINATION: Any attempt to breach the conditions of this License 
+ will automatically terminate your rights. Upon termination, you must 
+ destroy all copies of the Program in your possession.
+
+                         NO WARRANTY
+
+  7. THE PROGRAM IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. 
+ THE AUTHOR DOES NOT WARRANT THAT THE FUNCTIONS CONTAINED IN THE 
+ PROGRAM WILL MEET YOUR REQUIREMENTS OR THAT THE OPERATION OF THE 
+ PROGRAM WILL BE UNINTERRUPTED OR ERROR-FREE.
+
+  8. LIMITATION OF LIABILITY: IN NO EVENT SHALL THE AUTHOR BE LIABLE 
+ FOR ANY DAMAGES WHATSOEVER (INCLUDING, WITHOUT LIMITATION, DAMAGES 
+ FOR LOSS OF BUSINESS PROFITS, BUSINESS INTERRUPTION, OR LOSS OF 
+ BUSINESS INFORMATION) ARISING OUT OF THE USE OF OR INABILITY TO 
+ USE THIS PROGRAM.
+
+                     END OF TERMS AND CONDITIONS

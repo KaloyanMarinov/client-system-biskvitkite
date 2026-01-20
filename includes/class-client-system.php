@@ -1,0 +1,98 @@
+<?php
+
+/**
+ * The file that defines the core plugin class
+ *
+ * This is used to define internationalization, admin-specific hooks, and
+ * public-facing site hooks.
+ *
+ * Also maintains the unique identifier of this plugin as well as the current
+ * version of the plugin.
+ *
+ * @since      1.0.0
+ * @package    IGS_Client_System
+ * @subpackage IGS_Client_System/includes
+ * @author     igamingsolutions.com <support@igamingsolutions.com>
+ */
+class IGS_Client_System {
+
+	/**
+	 * The current version of the plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   protected
+	 * @var      string    $version    The current version of the plugin.
+	 */
+	protected $version = '1.0.0';
+
+	/**
+	 * The single instance of the class.
+	 *
+	 * @var IGS_Client_System
+	 * @since 1.0.0
+	 */
+	private static $_instance = null;
+
+	/**
+	 * Define the core functionality of the plugin.
+	 *
+	 * Set the plugin name and the plugin version that can be used throughout the plugin.
+	 * Load the dependencies, define the locale, and set the hooks for the admin area and
+	 * the public-facing side of the site.
+	 *
+	 * @since    1.0.0
+	 */
+	public function __construct() {
+		$this->includes();
+	}
+
+	/**
+	 * IGS_Client_System Instance.
+	 *
+	 * Ensures only one instance of KF is loaded or can be loaded.
+	 *
+	 * @since 1.0.0
+	 * @static
+	 * @return IGS_Client_System - instance.
+	 */
+  public static function instance() {
+		if ( is_null( self::$_instance ) ) {
+			self::$_instance = new self();
+		}
+    return self::$_instance;
+	}
+
+	/**
+	 * Cloning is forbidden.
+	 *
+	 * @since 1.0.0
+	 */
+	public function __clone() {
+		_doing_it_wrong( __FUNCTION__, __( 'Cloning is forbidden', 'igs-client-system' ), '1.0.0' );
+	}
+
+	/**
+	 * Unserializing instances of this class is forbidden.
+	 *
+	 * @since 1.0.0
+	 */
+	public function __wakeup() {
+		_doing_it_wrong( __FUNCTION__, __( 'Deserialization of instances of this class is forbidden!', 'igs-client-system' ), '1.0.0' );
+	}
+
+	/**
+	 * Load the required dependencies for this plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	private function includes() {
+
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/abstracts-class-loader.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-i18n.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-admin.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-public.php';
+
+	}
+
+}
