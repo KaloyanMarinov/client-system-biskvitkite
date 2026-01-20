@@ -3,7 +3,7 @@
 /*
  * IGS IS ADMIN
  */
-function igs_is_user_admin() {
+function igs_cs_is_user_admin() {
 
   if ( ! is_user_logged_in() )
     return;
@@ -18,12 +18,12 @@ function igs_is_user_admin() {
 /*
 * Print R
 */
-function igs_print($array) {
+function igs_cs_print($array) {
   
   if ( ! igs_is_user_admin() ) 
     return;
 
-  if ( ! IGS()->is_request('admin') ) {
+  if ( ! IGS_CS()->is_request('admin') ) {
     echo '<pre class="ta-l">';
     print_r($array);
     echo '</pre>';
@@ -34,12 +34,12 @@ function igs_print($array) {
 /*
 * Var Dump
 */
-function igs_var_dump($vars) {
+function igs_cs_var_dump($vars) {
   
   if ( ! igs_is_user_admin() ) 
     return;
 
-  if ( ! IGS()->is_request('admin') ) {
+  if ( ! IGS_CS()->is_request('admin') ) {
     var_dump($vars);
   }
 
@@ -53,8 +53,8 @@ function igs_var_dump($vars) {
  * @param string $template_path Template path. (default: '').
  * @param string $default_path  Default path. (default: '').
  */
-function igs_get_template( $template_name, $args = array(), $template_path = '', $default_path = '' ) {
-	$cache_key = sanitize_key( implode( '-', array( 'template', $template_name, $template_path, $default_path, IGS()->version ) ) );
+function igs_cs_get_template( $template_name, $args = array(), $template_path = '', $default_path = '' ) {
+	$cache_key = sanitize_key( implode( '-', array( 'template', $template_name, $template_path, $default_path, IGS_CS()->version ) ) );
 	$template  = (string) wp_cache_get( $cache_key, 'igs' );
 
   $template_name .= '.php';
@@ -104,8 +104,8 @@ function igs_get_template( $template_name, $args = array(), $template_path = '',
  * @param mixed  $slug Template slug.
  * @param string $name Template name (default: '').
  */
-function igs_get_template_part( $slug, $name = '', $args = array() ) {
-	$cache_key = sanitize_key( implode( '-', array( 'template-part', $slug, $name, IGS()->version ) ) );
+function igs_cs_get_template_part( $slug, $name = '', $args = array() ) {
+	$cache_key = sanitize_key( implode( '-', array( 'template-part', $slug, $name, IGS_CS()->version ) ) );
 	$template  = (string) wp_cache_get( $cache_key, 'igs' );
 
 	if ( ! $template ) {
@@ -114,12 +114,12 @@ function igs_get_template_part( $slug, $name = '', $args = array() ) {
 			$template = locate_template(
 				array(
 					"{$slug}-{$name}.php",
-					IGS()->template_path() . "public/{$slug}-{$name}.php",
+					IGS_CS()->template_path() . "public/{$slug}-{$name}.php",
 				)
 			);
 
 			if ( ! $template ) {
-				$fallback = IGS()->theme_path() . "public/{$slug}-{$name}.php";
+				$fallback = IGS_CS()->theme_path() . "public/{$slug}-{$name}.php";
         $template = file_exists( $fallback ) ? $fallback : '';
 			}
 		}
@@ -128,7 +128,7 @@ function igs_get_template_part( $slug, $name = '', $args = array() ) {
 			$template = locate_template(
 				array(
 					"{$slug}.php",
-					IGS()->template_path() . "public/{$slug}.php",
+					IGS_CS()->template_path() . "public/{$slug}.php",
 				)
 			);
       $template_name = $slug;
@@ -149,7 +149,7 @@ function igs_get_template_part( $slug, $name = '', $args = array() ) {
  * @param mixed  $slug Template slug.
  * @param string $name Template name (default: '').
  */
-function igs_get_template_part_html( $slug, $name = '', $args = array() ) {
+function igs_cs_get_template_part_html( $slug, $name = '', $args = array() ) {
 	ob_start();
 	igs_get_template_part( $slug, $name, $args );
 	return ob_get_clean();
@@ -167,7 +167,7 @@ function igs_get_template_part_html( $slug, $name = '', $args = array() ) {
  *
  * @return string
  */
-function igs_get_template_html( $template_name, $args = array(), $template_path = '', $default_path = '' ) {
+function igs_cs_get_template_html( $template_name, $args = array(), $template_path = '', $default_path = '' ) {
 	ob_start();
 	igs_get_template( $template_name, $args, $template_path, $default_path );
 	return ob_get_clean();
@@ -186,13 +186,13 @@ function igs_get_template_html( $template_name, $args = array(), $template_path 
  * @param string $default_path  Default path. (default: '').
  * @return string
  */
-function igs_locate_template( $template_name, $template_path = '', $default_path = '' ) {
+function igs_cs_locate_template( $template_name, $template_path = '', $default_path = '' ) {
 	if ( ! $template_path ) {
-		$template_path = IGS()->template_path() . 'public/';
+		$template_path = IGS_CS()->template_path() . 'public/';
 	}
 
 	if ( ! $default_path ) {
-		$default_path = IGS()->theme_path() . '/';
+		$default_path = IGS_CS()->theme_path() . '/';
 	}
 
   $template = locate_template([
@@ -218,7 +218,7 @@ function igs_locate_template( $template_name, $template_path = '', $default_path
  * @param array $raw_attrs Attribute name value pairs.
  * @return string
  */
-function igs_html_attributes( $raw_attrs = array() ) {
+function igs_cs_html_attributes( $raw_attrs = array() ) {
 
   if ( empty( $raw_attrs ) )
     return;
@@ -246,7 +246,7 @@ function igs_html_attributes( $raw_attrs = array() ) {
 /*
 * Get Pagination
 */
-function igs_get_pagination( $igs_query, $attrs = array() ) {
+function igs_cs_get_pagination( $igs_query, $attrs = array() ) {
 
   if ( $igs_query->max_num_pages < 2 )
     return;
@@ -291,7 +291,7 @@ function igs_get_pagination( $igs_query, $attrs = array() ) {
 /*
 * Get Link
 */
-function igs_the_pagination( $igs_query ) {
+function igs_cs_the_pagination( $igs_query ) {
 
   echo igs_get_pagination( $igs_query );
 
