@@ -31,7 +31,7 @@ if ( ! defined( 'IGS_CS_ABSPATH' ) ) {
  * This action is documented in includes/class-activator.php
  */
 function igs_wi_activate_plugin() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-activator.php';
+	require_once plugin_dir_path( __FILE__ ) . 'includes/igs-activator.php';
 	IGS_CS_Activator::activate();
 }
 
@@ -40,7 +40,7 @@ function igs_wi_activate_plugin() {
  * This action is documented in includes/class-deactivator.php
  */
 function igs_wi_deactivate_plugin() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-deactivator.php';
+	require_once plugin_dir_path( __FILE__ ) . 'includes/igs-deactivator.php';
 	IGS_CS_Deactivator::deactivate();
 }
 
@@ -52,11 +52,10 @@ register_deactivation_hook( __FILE__, 'igs_wi_deactivate_plugin' );
  * admin-specific hooks, and public-facing site hooks.
  */
 if ( ! class_exists( 'IGS_Client_System', false ) ) {
-  require_once IGS_CS_ABSPATH . '/includes/class-client-system.php';
+  require_once IGS_CS_ABSPATH . '/includes/igs-client-system.php';
 }
 
 /**
- * Function for delaying initialization of the extension until after WooCommerce is loaded.
  * @return IGS_Client_System
  */
 function IGS_CS() {

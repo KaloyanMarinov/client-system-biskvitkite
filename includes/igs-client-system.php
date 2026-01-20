@@ -8,11 +8,14 @@
  *
  * Also maintains the unique identifier of this plugin as well as the current
  * version of the plugin.
+ * 
+ * @link       https://igamingsolutions.net
+ * @since      1.0.0
  *
  * @since      1.0.0
- * @package    IGS_Client_System
- * @subpackage IGS_Client_System/includes
+ * @package    IGS_CS
  * @author     igamingsolutions.com <support@igamingsolutions.com>
+ * 
  */
 class IGS_Client_System {
 
@@ -21,7 +24,7 @@ class IGS_Client_System {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      string    $version    The current version of the plugin.
+	 * @var      string $version  The current version of the plugin.
 	 */
 	protected $version = '1.0.0';
 
@@ -81,17 +84,20 @@ class IGS_Client_System {
 	}
 
 	/**
-	 * Load the required dependencies for this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
+	 * Load the dependencies for this plugin.
+	 * 
+   * @since 1.0.0
+	 * @access private
+	 * 
+	 * @return void
+	 * 
 	 */
 	private function includes() {
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/abstracts-class-loader.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-i18n.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-admin.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-public.php';
+		require_once IGS_CS_ABSPATH . '/includes/abstracts/igs-loader.php';
+		require_once IGS_CS_ABSPATH . '/includes/igs-i18n.php';
+		require_once IGS_CS_ABSPATH . '/admin/igs-admin.php';
+		require_once IGS_CS_ABSPATH . '/public/igs-public.php';
 
 	}
 

@@ -5,19 +5,16 @@
  *
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
+ * 
+ * @link       https://igamingsolutions.net
+ * @since      1.0.0
  *
- * @package    IGS_Client_System
- * @subpackage IGS_Client_System/includes
+ * @package    IGS_CS
+ * @subpackage IGS_CS/Admin
  * @author     igamingsolutions.com <support@igamingsolutions.com>
+ * 
  */
 class IGS_CS_Admin extends IGS_CS_Loader {
-
-  /**
-	 * Dependencies service.
-	 *
-	 * @var IGS_CS_Dependencies
-	 */
-	private $dependencies;
 
   /**
 	 * The single instance of the class.
@@ -35,9 +32,9 @@ class IGS_CS_Admin extends IGS_CS_Loader {
   }
 
   public function __construct( ) {
+
     $this->includes();
-    $this->hooks();
-    $this->run();
+  
   }
 
   /**
@@ -46,25 +43,9 @@ class IGS_CS_Admin extends IGS_CS_Loader {
    * @since 1.0.0
    */
   private function includes() {
+    require_once IGS_CS_ABSPATH . '/admin/igs-admin-hooks.php';
   }
 
-  /**
-   * Register all of the hooks related to the admin area functionality
-   * of the plugin.
-   *
-   * @since    1.0.0
-   * @access   private
-   */
-  private function hooks() {
-    $this->add_action( 'admin_enqueue_scripts', $this, 'enqueue_admin_scripts' );
-  }
-
-  /**
-   * Enqueue admin-specific JavaScript.
-   *
-   * @since 1.0.0
-   */
-  public function enqueue_admin_scripts() { }
 }
 
 IGS_CS_Admin::instance();
