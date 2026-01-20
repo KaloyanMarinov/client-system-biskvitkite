@@ -39,6 +39,14 @@ if ( ! defined( 'IGS_CS_PLUGIN_FILE' ) ) {
 	define( 'IGS_CS_PLUGIN_FILE', __FILE__ );
 }
 
+require_once dirname( IGS_CS_PLUGIN_FILE ) . '/includes/core/igs-dependencies.php';
+$dependency_manager = new IGS_CS_Dependency_Manager();
+
+if ( ! $dependency_manager->has_valid_dependencies() ) {
+  add_action( 'admin_notices', [ $dependency_manager, 'display_dependency_admin_notice' ] );
+  return;
+}
+
 /**
  * The code that runs during plugin activation.
  *

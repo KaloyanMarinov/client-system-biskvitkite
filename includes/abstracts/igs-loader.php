@@ -122,9 +122,9 @@ abstract class IGS_CS_Loader {
     if ( $this->filters ) {
       foreach ( $this->filters as $hook ) {
         if ( ! empty( $hook['component'] ) && is_object( $hook['component'] ) ) {
+					add_filter( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
+					} else {
 					add_filter( $hook['hook'], $hook['callback'], $hook['priority'], $hook['accepted_args'] );
-				} else {
-          add_filter( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
 				}
       }
     }
@@ -132,9 +132,9 @@ abstract class IGS_CS_Loader {
     if ( $this->actions ) {
       foreach ( $this->actions as $hook ) {
         if ( ! empty( $hook['component'] ) && is_object( $hook['component'] ) ) {
-					add_action( $hook['hook'], $hook['callback'], $hook['priority'], $hook['accepted_args'] );
-				} else {
 					add_action( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
+					} else {
+					add_action( $hook['hook'], $hook['callback'], $hook['priority'], $hook['accepted_args'] );
 				}
       }
     }

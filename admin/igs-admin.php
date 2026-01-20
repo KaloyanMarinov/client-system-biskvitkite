@@ -26,15 +26,6 @@ class IGS_CS_Admin extends IGS_CS_Loader {
    */
   private static $_instance = null;
 
-  /**
-   * Reference to the Admin Hooks instance.
-   *
-   * @since 1.0.0
-   * @access private
-   * @var IGS_CS_Admin_Hooks|null $hooks Admin hooks handler.
-   */
-  private $hooks;
-
   public static function instance() {
     if ( is_null( self::$_instance ) ) {
       self::$_instance = new self();

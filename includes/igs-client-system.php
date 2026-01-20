@@ -122,9 +122,7 @@ class IGS_Client_System {
 		require_once IGS_CS_ABSPATH . '/includes/abstracts/igs-loader.php';
 		require_once IGS_CS_ABSPATH . '/includes/igs-i18n.php';
 
-		if ( $this->is_request( 'admin' ) ) {
-			require_once IGS_CS_ABSPATH . '/admin/igs-admin.php';
-		}
+		require_once IGS_CS_ABSPATH . '/admin/igs-admin.php';
 
 		if ( $this->is_request( 'frontend' ) ) {
 			require_once IGS_CS_ABSPATH . '/public/igs-public.php';
