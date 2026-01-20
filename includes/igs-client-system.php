@@ -121,8 +121,14 @@ class IGS_Client_System {
 		require_once IGS_CS_ABSPATH . '/includes/core/igs-constants.php';
 		require_once IGS_CS_ABSPATH . '/includes/abstracts/igs-loader.php';
 		require_once IGS_CS_ABSPATH . '/includes/igs-i18n.php';
-		require_once IGS_CS_ABSPATH . '/admin/igs-admin.php';
-		require_once IGS_CS_ABSPATH . '/public/igs-public.php';
+
+		if ( $this->is_request( 'admin' ) ) {
+			require_once IGS_CS_ABSPATH . '/admin/igs-admin.php';
+		}
+
+		if ( $this->is_request( 'frontend' ) ) {
+			require_once IGS_CS_ABSPATH . '/public/igs-public.php';
+		}
 
 	}
 
@@ -140,7 +146,7 @@ class IGS_Client_System {
       case 'ajax':
         return wp_doing_ajax();
       case 'frontend':
-        return ! is_admin() || ! wp_doing_ajax() || ! wp_doing_cron();
+        return ( ! is_admin() || wp_doing_ajax() ) && ! wp_doing_cron();
       case 'cron':
         return wp_doing_cron();
     }
@@ -153,7 +159,7 @@ class IGS_Client_System {
 	 * @return string
 	 */
 	public function plugin_url() {
-		return untrailingslashit( plugins_url( '/', WC_PLUGIN_FILE ) );
+		return untrailingslashit( plugins_url( '/', IGS_CS_PLUGIN_FILE ) );
 	}
 
 	/**
@@ -162,7 +168,7 @@ class IGS_Client_System {
 	 * @return string
 	 */
 	public function plugin_path() {
-		return untrailingslashit( plugin_dir_path( WC_PLUGIN_FILE ) );
+		return untrailingslashit( plugin_dir_path( IGS_CS_PLUGIN_FILE ) );
 	}
 
 	/**

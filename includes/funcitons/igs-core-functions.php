@@ -35,7 +35,7 @@ function igs_cs_is_user_admin() {
  */
 function igs_cs_print($array) {
   
-  if ( ! igs_is_user_admin() ) 
+  if ( ! igs_cs_is_user_admin() ) 
     return;
 
   if ( ! IGS_CS()->is_request('admin') ) {
@@ -59,7 +59,7 @@ function igs_cs_print($array) {
  */
 function igs_cs_var_dump($vars) {
   
-  if ( ! igs_is_user_admin() ) 
+  if ( ! igs_cs_is_user_admin() ) 
     return;
 
   if ( ! IGS_CS()->is_request('admin') ) {
@@ -150,6 +150,6 @@ function igs_cs_get_pagination( $igs_query, $attrs = array() ) {
 */
 function igs_cs_the_pagination( $igs_query ) {
 
-  echo igs_get_pagination( $igs_query );
+  echo igs_cs_get_pagination( $igs_query );
 
 }

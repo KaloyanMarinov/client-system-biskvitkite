@@ -47,9 +47,7 @@ class IGS_CS_Admin_Hooks extends IGS_CS_Loader {
    * 
 	 */
 	public function __construct( ) {
-
-		$this->actions = array();
-		$this->filters = array();
+		parent::__construct();
 
     $this->hooks();
 		$this->run();

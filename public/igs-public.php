@@ -17,12 +17,23 @@
 class IGS_CS_Public extends IGS_CS_Loader {
 
   /**
-	 * The single instance of the class.
-	 *
-	 * @var Admin
-	 * @since 1.0.0
-	 */
+   * The single instance of the Public class.
+   *
+   * @since 1.0.0
+   * @access private
+   * @static
+   * @var IGS_CS_Public|null $_instance Singleton instance.
+   */
   private static $_instance = null;
+
+  /**
+   * Reference to the Public Hooks instance.
+   *
+   * @since 1.0.0
+   * @access private
+   * @var IGS_CS_Public_Hooks $hooks Public hooks handler.
+   */
+  private $hooks;
 
   public static function instance() {
     if ( is_null( self::$_instance ) ) {
@@ -32,7 +43,9 @@ class IGS_CS_Public extends IGS_CS_Loader {
   }
 
   public function __construct( ) {
+
     $this->includes();
+
   }
 
   /**

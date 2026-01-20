@@ -12,37 +12,15 @@
  * @author     igamingsolutions.com <support@igamingsolutions.com>
  */
 class IGS_CS_I18N extends IGS_CS_Loader {
-	
-	/**
-	 * The single instance of the class.
-	 *
-	 * @var IGS_CS_I18N
-	 * @since 1.0.0
-	 */
-	private static $_instance = null;
-
-	/**
-	 * IGS_CS_I18N Instance.
-	 *
-	 * Ensures only one instance of kf_Admin is loaded or can be loaded.
-	 *
-	 * @since 1.0.0
-	 * @static
-	 * @return IGS_CS_I18N - IGS_CS_I18N instance.
-	 */
-  public static function instance() {
-		if ( is_null( self::$_instance ) ) {
-			self::$_instance = new self();
-		}
-    return self::$_instance;
-	}
 
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since    1.0.0
+	 * @since  1.0.0
+	 * @access public
 	 */
 	public function __construct( ) {
+		parent::__construct();
 
     $this->hooks();
 		$this->run();
@@ -54,8 +32,11 @@ class IGS_CS_I18N extends IGS_CS_Loader {
 	 * Register all of the hooks related to the admin area functionality
 	 * of the plugin.
 	 *
-	 * @since    1.0.0
-	 * @access   private
+	 * @since 1.0.0
+	 * @access private
+	 * 
+	 * @return void
+	 * 
 	 */
 	private function hooks() {
 		$this->add_action( 'init', $this, 'load_plugin_textdomain' );
@@ -65,6 +46,10 @@ class IGS_CS_I18N extends IGS_CS_Loader {
 	 * Load the plugin text domain for translation.
 	 *
 	 * @since 1.0.0
+	 * @access private
+	 * 
+	 * @return void
+	 * 
 	 */
 	public function load_plugin_textdomain() {
 
@@ -73,5 +58,3 @@ class IGS_CS_I18N extends IGS_CS_Loader {
 	}
 
 }
-
-IGS_CS_I18N::instance();

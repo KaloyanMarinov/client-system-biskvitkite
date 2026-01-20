@@ -17,12 +17,23 @@
 class IGS_CS_Admin extends IGS_CS_Loader {
 
   /**
-	 * The single instance of the class.
-	 *
-	 * @var IGS_CS_Admin
-	 * @since 1.0.0
-	 */
+   * The single instance of the Admin class.
+   *
+   * @since 1.0.0
+   * @access private
+   * @static
+   * @var IGS_CS_Admin|null $_instance Singleton instance.
+   */
   private static $_instance = null;
+
+  /**
+   * Reference to the Admin Hooks instance.
+   *
+   * @since 1.0.0
+   * @access private
+   * @var IGS_CS_Admin_Hooks|null $hooks Admin hooks handler.
+   */
+  private $hooks;
 
   public static function instance() {
     if ( is_null( self::$_instance ) ) {

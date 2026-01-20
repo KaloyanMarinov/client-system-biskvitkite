@@ -106,12 +106,12 @@ function igs_cs_set_template_cache( $cache_key, $template ) {
  * @param string $name Template name (default: '').
  */
 function igs_cs_get_template_part( $slug, $name = '', $args = array() ) {
-	$cache_key = sanitize_key( implode( '-', array( 'template-part', $slug, $name, IGS_CS_Constants::get_constant( 'IGS_CS_VERSION' ) ) ) );
-	$template  = (string) wp_cache_get( $cache_key, 'igs_cs' );
+	$cache_key     = sanitize_key( implode( '-', array( 'template-part', $slug, $name, IGS_CS_Constants::get_constant( 'IGS_CS_VERSION' ) ) ) );
+	$template      = (string) wp_cache_get( $cache_key, 'igs_cs' );
+	$template_name = $name ? "{$slug}-{$name}" : $slug;
 
 	if ( ! $template ) {
 		if ( $name ) {
-      $template_name = "{$slug}-{$name}";
 			$template = locate_template(
 				array(
 					"{$slug}-{$name}.php",

@@ -25,22 +25,24 @@
 abstract class IGS_CS_Loader {
 
 	/**
-	 * The array of actions registered with WordPress.
-	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      array    $actions    The actions registered with WordPress to fire when the plugin loads.
-	 */
-	protected $actions;
+   * Array of actions registered with WordPress.
+   *
+   * @since 1.0.0
+   * @access protected
+   * @var array $actions The actions registered with WordPress.
+   * @format array[] Multidimensional array with hook data.
+   */
+  protected $actions;
 
-	/**
-	 * The array of filters registered with WordPress.
-	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      array    $filters    The filters registered with WordPress to fire when the plugin loads.
-	 */
-	protected $filters;
+  /**
+   * Array of filters registered with WordPress.
+   *
+   * @since 1.0.0
+   * @access protected
+   * @var array $filters The filters registered with WordPress.
+   * @format array[] Multidimensional array with hook data.
+   */
+  protected $filters;
 
 	/**
 	 * Initialize the collections used to maintain the actions and filters.
@@ -119,19 +121,21 @@ abstract class IGS_CS_Loader {
 
     if ( $this->filters ) {
       foreach ( $this->filters as $hook ) {
-        if ( $hook['component'] )
+        if ( ! empty( $hook['component'] ) && is_object( $hook['component'] ) ) {
+					add_filter( $hook['hook'], $hook['callback'], $hook['priority'], $hook['accepted_args'] );
+				} else {
           add_filter( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
-        else
-          add_filter( $hook['hook'], $hook['callback'], $hook['priority'], $hook['accepted_args'] );
+				}
       }
     }
 
     if ( $this->actions ) {
       foreach ( $this->actions as $hook ) {
-        if ( $hook['component'] )
-          add_action( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
-        else
-          add_action( $hook['hook'], $hook['callback'], $hook['priority'], $hook['accepted_args'] );
+        if ( ! empty( $hook['component'] ) && is_object( $hook['component'] ) ) {
+					add_action( $hook['hook'], $hook['callback'], $hook['priority'], $hook['accepted_args'] );
+				} else {
+					add_action( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
+				}
       }
     }
 	}
