@@ -102,4 +102,24 @@ class IGS_Client_System {
 
 	}
 
+	/**
+	 * What type of request is this?
+	 *
+	 * @param  string $type admin, ajax or frontend.
+	 * @return bool
+	 */
+	public function is_request( $type ) {
+
+    switch ( $type ) {
+      case 'admin':
+        return is_admin();
+      case 'ajax':
+        return wp_doing_ajax();
+      case 'frontend':
+        return ! is_admin() || ! wp_doing_ajax() || ! wp_doing_cron();
+      case 'cron':
+        return wp_doing_cron();
+    }
+	}
+
 }
