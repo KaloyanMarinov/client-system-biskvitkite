@@ -94,6 +94,7 @@ class IGS_Client_System {
 	 */
 	private function includes() {
 
+		require_once IGS_CS_ABSPATH . '/includes/funcitons/igs-core-functions.php';
 		require_once IGS_CS_ABSPATH . '/includes/abstracts/igs-loader.php';
 		require_once IGS_CS_ABSPATH . '/includes/igs-i18n.php';
 		require_once IGS_CS_ABSPATH . '/admin/igs-admin.php';
