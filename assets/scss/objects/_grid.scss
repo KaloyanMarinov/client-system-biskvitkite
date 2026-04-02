@@ -1,0 +1,10 @@
+//
+// Grid
+//
+.header,
+#wpbody-content {
+  @include make-container;
+  @include make-container-max-widths();
+}
+
+@include make-grid-system();

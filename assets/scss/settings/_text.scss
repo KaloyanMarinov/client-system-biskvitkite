@@ -1,0 +1,99 @@
+//
+// Text
+//
+
+// Text Colors
+$text-color-prefix: 'tc';
+$text-colors: map-merge((),
+$theme-colors);
+
+// Text Align
+$text-align-prefix: 'ta';
+$text-aligns: (
+  'l': left,
+  'c': center,
+  'r': right,
+  'j': justify
+);
+
+// Text Transform
+$text-transform-prefix: 'tt';
+$text-transforms: (
+  'n': none,
+  'l': lowercase,
+  'u': uppercase,
+  'c': capitalize,
+  'j': justify
+);
+
+// Text Decaration
+$text-decoration-prefix: 'td';
+$text-decorations: (
+  'n': none,
+  'u': underline,
+);
+
+// Font Sizes
+$font-size-prefix: 'fs';
+$font-sizes: (
+  '0' : 0,
+  '10': 10px,
+  '11': 11px,
+  '12': 12px,
+  '13': 13px,
+  '14': 14px,
+  '15': 15px,
+  '16': 16px,
+  '18': 18px,
+  '20': 20px,
+  '22': 22px,
+  '24': 24px,
+  '25': 25px,
+  '30': 30px,
+  '40': 40px,
+  '50': 50px,
+  '60': 60px,
+);
+
+// Font Sizes
+$line-height-prefix: 'lh';
+$line-heights: (
+  '0'  : 0,
+  '1'  : 1,
+  '1-2': 1.2,
+  '1-4': 1.4,
+  '1-5': 1.5,
+);
+
+// Font Families
+$font-family-prefix: 'ff';
+$font-families: (
+  'b' : $font-family-base,
+  'h' : $headings-font-family,
+  'br': 'Brusnika'
+);
+
+// Font Weights
+$font-weight-prefix: 'fw';
+$font-weights: (
+  'l' : $font-weight-light,
+  'n' : $font-weight-normal,
+  'm' : $font-weight-medium,
+  'sb': $font-weight-semibold,
+  'b' : $font-weight-bold,
+  'bl': $font-weight-black
+);
+
+// Font Styles
+$font-style-prefix: 'fst';
+$font-styles: (
+  'i': italic
+);
+
+// Letter Spacing
+$letter-spacin-prefix: 'ls';
+$letter-spaings: (
+  '0': 0,
+  '1': 1px,
+  '2': 2px
+);

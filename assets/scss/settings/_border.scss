@@ -1,0 +1,29 @@
+//
+// Border Radius
+//
+$border-radius-prefix: 'br';
+$border-radius: (
+  '5': 5px,
+  '10': 10px,
+  'c' : 50%,
+  'p' : 50rem
+);
+
+//
+// Border Width
+//
+$border-width-prefix: 'b';
+$border-widths: (
+  '1': 1px,
+  '2': 2px,
+  '3': 3px,
+  '4': 4px,
+  '5': 5px,
+);
+
+//
+// Border Color
+//
+$border-color-prefix: 'bc';
+$border-colors: map-merge((
+), $theme-colors);

@@ -1,0 +1,70 @@
+//
+// Forms
+//
+button {
+  border-radius: 0;
+
+    &:focus {
+      @extend %reset-outline;
+    }
+}
+
+input,
+button,
+select,
+textarea {
+  @extend %reset-margin;
+  @extend %reset-padding;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  border: none;
+  background: transparent;
+
+    &:focus {
+      outline: none;
+    }
+}
+
+button,
+input {
+  overflow: visible; // Show the overflow in Edge
+}
+
+button,
+select {
+  text-transform: none; // Remove the inheritance of text transform in Firefox
+}
+
+// Remove the inheritance of word-wrap in Safari.
+//
+// Details at https://github.com/twbs/bootstrap/issues/24990
+select {
+  word-wrap: normal;
+}
+
+button,
+[type="button"], // 1
+[type="reset"],
+[type="submit"] {
+  cursor: pointer;
+  -webkit-appearance: button; // 2
+}
+
+textarea {
+  overflow: auto;
+  resize: vertical;
+}
+
+fieldset {
+  display: block;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+legend {
+  display: none;
+}

@@ -240,6 +240,7 @@ function igs_cs_get_template_html( $template_name, $args = array(), $template_pa
  * @return string
  */
 function igs_cs_locate_template( $template_name, $template_path = '', $default_path = '' ) {
+
 	if ( ! $template_path ) {
 		$template_path = IGS_CS()->template_path();
 	}
@@ -248,19 +249,15 @@ function igs_cs_locate_template( $template_name, $template_path = '', $default_p
 		$default_path = IGS_CS()->plugin_path() . '/templates/';
 	}
 
-  $template = locate_template([
-    trailingslashit( $template_path ) . $template_name,
-    $template_name
-  ]);
+	$template = locate_template(
+		array(
+			trailingslashit( $template_path ) . $template_name,
+			$template_name,
+		)
+	);
 
-
-	if ( empty( $template ) ) {
-	  $template = locate_template(
-			array(
-				trailingslashit( $template_path ) . $template_name,
-				$template_name,
-			)
-		);
+	if ( ! $template ) {
+		$template = $default_path . $template_name;
 	}
 
 	/**

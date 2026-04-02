@@ -1,0 +1,29 @@
+//
+// Typography
+//
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @extend %reset-margin;
+}
+
+p {
+  @extend %reset-margin;
+}
+
+ol,
+ul {
+  @extend %reset-margin;
+  padding-left: 0;
+}
+
+blockquote {
+  @extend %reset-margin;
+}
+
+ins {
+  text-decoration: none;
+}

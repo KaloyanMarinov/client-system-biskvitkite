@@ -1,0 +1,48 @@
+//
+// Forms
+//
+$input-prefix: 'field';
+$input-height: 46px;
+$input-padding-y: 0;
+$input-padding-x: 15px;
+$input-font-family: inherit;
+$input-font-size: 16px;
+$input-font-weight: $font-weight-normal;
+$input-line-height: 1.25;
+$input-border-raidus: 5px;
+
+// Normal State
+$input-color: $black;
+$input-border-width: 1px;
+$input-border-style: solid;
+$input-border-color: $color-3;
+$input-bg: $white;
+$input-box-shadow: null;
+
+// Focus State
+$input-focus-color: null;
+$input-focus-border-width: $input-border-width;
+$input-focus-border-style: $input-border-style;
+$input-focus-border-color: $color-1;
+$input-focus-bg: null;
+$input-focus-box-shadow: null;
+
+// Error State
+$input-error-color: $input-color;
+$input-error-border-color: red;
+$iputt-error-msg-color: red;
+
+// Checked state
+$input-checked-bg: null;
+$input-checked-icon: escape-svg('<svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.8856 0.0139476C10.5798 0.0650935 10.7489 -0.0920511 7.4074 3.24583L4.31636 6.33354L2.90281 4.92409C1.59324 3.61828 1.47849 3.50993 1.34251 3.45079C0.912086 3.26354 0.407783 3.41025 0.150833 3.79741C0.0448113 3.9572 0 4.11486 0 4.32815C0 4.5344 0.0429813 4.69295 0.139384 4.84233C0.177556 4.90148 1.00896 5.74912 1.98692 6.72595C3.93007 8.66689 3.84303 8.59067 4.17627 8.64348C4.37276 8.67461 4.5559 8.64552 4.7595 8.55085C4.90597 8.48272 5.10851 8.28485 8.38002 5.01334C11.7098 1.68351 11.8484 1.54154 11.9227 1.38374C11.9955 1.22909 12 1.20445 12 0.961437C12 0.721802 11.9948 0.692452 11.9277 0.550792C11.7416 0.158071 11.3206 -0.0588297 10.8856 0.0139476Z" fill="#03A155"/></svg>') no-repeat center / 12px 9px;
+
+$input-disabled-bg: theme-color('c9');
+$input-transition: $default-transition;
+
+$input-placeholder-color: #999;
+$input-placeholder-text-transform: null;
+
+$select-arrow: escape-svg('<svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M0.739751 0.0271541C0.683138 0.0404781 0.578273 0.0813823 0.506718 0.118037C0.435163 0.154692 0.324788 0.238145 0.261485 0.303504C0.198155 0.368862 0.11207 0.496345 0.0701518 0.586817C0.00545092 0.726527 -0.00592657 0.786402 -0.00535084 0.984343C-0.00482994 1.16712 0.00923427 1.24989 0.0598983 1.36816C0.117636 1.50296 0.457425 1.85238 3.26426 4.66319C5.39418 6.7961 6.44439 7.82928 6.52944 7.8754C6.59836 7.91276 6.7319 7.95918 6.82613 7.97853C6.96556 8.00716 7.02939 8.00716 7.16882 7.97853C7.26308 7.95918 7.39659 7.91276 7.46551 7.8754C7.55056 7.82928 8.60077 6.7961 10.7307 4.66319C13.5375 1.85238 13.8773 1.50296 13.9351 1.36816C13.9858 1.24964 13.9997 1.16751 14.0001 0.984343C14.0004 0.785881 13.9889 0.725951 13.9224 0.580401C13.8735 0.473426 13.794 0.362447 13.7099 0.283764C13.6359 0.214622 13.5111 0.12914 13.4324 0.0938289C13.3537 0.058545 13.2254 0.021342 13.1472 0.0111982C13.0655 0.000560938 12.9374 0.00670205 12.8457 0.0256462C12.758 0.0437406 12.6369 0.0830271 12.5766 0.112938C12.5051 0.148331 11.5131 1.12005 9.73218 2.89897L6.99748 5.63066L4.26277 2.89897C2.47491 1.11309 1.49009 0.148551 1.4184 0.11313C1.35808 0.0833562 1.24335 0.0451114 1.16346 0.0281686C1.08354 0.0112257 0.978678 -0.00138555 0.930426 0.000122308C0.882148 0.00165758 0.796364 0.0138027 0.739751 0.0271541Z" fill="black"/></svg>');
+$select-arrow-space: 13px;
+
+$textarea-height: 175px

@@ -1,0 +1,44 @@
+//
+// z-index
+//
+@use 'sass:list';
+
+@mixin maka-z-index($index: $z-index, $breakpoints: $grid-breakpoints) {
+  @each $i in $index {
+    .#{$z-index-prefix}-#{$i} { z-index: $i; }
+    // Negative z-index (e.g., where `.z-index-n1` is negative version of `.zi-1`)
+    .#{$z-index-prefix}-n#{$i} { z-index: -$i; }
+  }
+
+  @each $breakpoint in map-keys($breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $breakpoints);
+
+    @if(map-get($breakpoints, $breakpoint) > 0) {
+      @include media-breakpoint-up($breakpoint, $breakpoints) {
+        $media: map-get($media-prefix, up);
+        @each $i in $index {
+          .#{$z-index-prefix}-#{$media}#{$infix}-#{$i} { z-index: $i; }
+          .#{$z-index-prefix}-#{$media}#{$infix}-n#{$i} { z-index: -$i; }
+        }
+      }
+
+      @if(map-get($breakpoints, $breakpoint) != list.nth(list.nth($grid-breakpoints, -1), 2)) {
+        $media: map-get($media-prefix, down);
+        @include media-breakpoint-down($breakpoint, $breakpoints) {
+          @each $i in $index {
+            .#{$z-index-prefix}-#{$media}#{$infix}-#{$i} { z-index: $i; }
+            .#{$z-index-prefix}-#{$media}#{$infix}-n#{$i} { z-index: -$i; }
+          }
+        }
+      }
+    }
+
+    @include media-breakpoint-only($breakpoint, $breakpoints) {
+      $media: map-get($media-prefix, only);
+      @each $i in $index {
+        .#{$z-index-prefix}-#{$media}#{$infix}-#{$i} { z-index: $i; }
+        .#{$z-index-prefix}-#{$media}#{$infix}-n#{$i} { z-index: -$i; }
+      }
+    }
+  }
+}

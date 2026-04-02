@@ -1,0 +1,18 @@
+//
+// Breakpoints
+//
+$grid-breakpoints: (
+  xs: 0,
+  sm: 768px,
+  md: 992px,
+  lg: 1230px
+);
+
+$media-prefix: (
+  up  : 'u',
+  down: 'd',
+  only: 'o'
+);
+
+@include _assert-ascending($grid-breakpoints, '$grid-breakpoints');
+@include _assert-starts-at-zero($grid-breakpoints);

@@ -1,0 +1,52 @@
+// WP THEMES
+$font-family      : -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+$font-size-desktop: var(--igs-font-size-desktop);
+$font-size-mobile : var(--igs-font-size-mobile);
+$font-weight      : var(--igs-font-weight);
+
+// Base
+$font-family-base: $font-family;
+$font-size-base  : $font-size-desktop;
+$font-weight-base: $font-weight;
+$line-height-base: 1;
+
+// Font Families
+
+// Font Weights
+$font-weight-exlight : 100;
+$font-weight-light   : 300;
+$font-weight-normal  : 400;
+$font-weight-medium  : 500;
+$font-weight-semibold: 600;
+$font-weight-bold    : 700;
+$font-weight-eb      : 800;
+$font-weight-black   : 900;
+
+// Headings
+$headings-font-family  : var(--igs-headings-font-family), Arial, sans-serif;
+$headings-font-weight  : var(--igs-headings-font-weight);
+$headings-line-height  : 1.2;
+$headings-text-tranform: uppercase;
+
+$heading-desktop: (
+  'h1': var(--igs-h1-desktop),
+  'h2': var(--igs-h2-desktop),
+  'h3': var(--igs-h3-desktop),
+  'h4': var(--igs-h4-desktop),
+  'h5': var(--igs-h5-desktop),
+  'h6': var(--igs-h6-desktop)
+);
+
+$heading-mobile: (
+  'h1': var(--igs-h1-mobile),
+  'h2': var(--igs-h2-mobile),
+  'h3': var(--igs-h3-mobile),
+  'h4': var(--igs-h4-mobile),
+  'h5': var(--igs-h5-mobile),
+  'h6': var(--igs-h6-mobile)
+);
+
+$list-position: inside;
+
+$ul-list-style-type: none;
+$ol-list-style-type: decimal;

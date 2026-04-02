@@ -1,0 +1,120 @@
+//
+// Position
+//
+@use 'sass:list';
+
+@mixin make-positions($positions: $positions, $breakpoints: $grid-breakpoints) {
+  @each $key, $value in $positions {
+    .#{$position-prexix}-#{$key} { position: $value; }
+  }
+
+  @each $breakpoint in map-keys($breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $breakpoints);
+
+    @if(map-get($breakpoints, $breakpoint) > 0) {
+      @include media-breakpoint-up($breakpoint, $breakpoints) {
+        $media: map-get($media-prefix, up);
+        @each $key, $value in $positions {
+          .#{$position-prexix}-#{$media}#{$infix}-#{$key} { position: $value; }
+        }
+      }
+
+      @if(map-get($breakpoints, $breakpoint) != list.nth(list.nth($grid-breakpoints, -1), 2)) {
+        @include media-breakpoint-down($breakpoint, $breakpoints) {
+          $media: map-get($media-prefix, down);
+          @each $key, $value in $positions {
+            .#{$position-prexix}-#{$media}#{$infix}-#{$key} { position: $value; }
+          }
+        }
+      }
+    }
+
+    @include media-breakpoint-only($breakpoint, $breakpoints) {
+      $media: map-get($media-prefix, only);
+      @each $key, $value in $positions {
+        .#{$position-prexix}-#{$media}#{$infix}-#{$key} { position: $value; }
+      }
+    }
+  }
+}
+
+@mixin make-positions-sizes($positions-sizes: $positions-sizes, $breakpoints: $grid-breakpoints) {
+  @each $key, $value in $positions-sizes {
+    .#{$position-prexix}-#{$key} {
+      top: $value;
+      right: $value;
+      bottom: $value;
+      left: $value;
+    }
+  }
+
+  @each $prop, $abbrev in (top: t, right: r, bottom: b, left: l) {
+    @each $key, $value in $positions-sizes {
+      .#{$position-prexix}-#{$abbrev}-#{$key} { #{$prop}: $value; }
+    }
+  }
+
+  @each $breakpoint in map-keys($breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $breakpoints);
+
+    @if(map-get($breakpoints, $breakpoint) > 0) {
+      @include media-breakpoint-up($breakpoint, $breakpoints) {
+        $media: map-get($media-prefix, up);
+
+        @each $key, $value in $positions-sizes {
+          .#{$position-prexix}-#{$media}#{$infix}-#{$key} {
+            top: $value;
+            right: $value;
+            bottom: $value;
+            left: $value;
+          }
+        }
+
+        @each $prop, $abbrev in (top: t, right: r, bottom: b, left: l) {
+          @each $key, $value in $positions-sizes {
+            .#{$position-prexix}-#{$abbrev}-#{$media}#{$infix}-#{$key} { #{$prop}: $value; }
+          }
+        }
+      }
+
+      @if(map-get($breakpoints, $breakpoint) != list.nth(list.nth($grid-breakpoints, -1), 2)) {
+        @include media-breakpoint-down($breakpoint, $breakpoints) {
+          $media: map-get($media-prefix, down);
+          @each $key, $value in $positions-sizes {
+            .#{$position-prexix}-#{$media}#{$infix}-#{$key} {
+              top: $value;
+              right: $value;
+              bottom: $value;
+              left: $value;
+            }
+          }
+
+          @each $prop, $abbrev in (top: t, right: r, bottom: b, left: l) {
+            @each $key, $value in $positions-sizes {
+              .#{$position-prexix}-#{$abbrev}-#{$media}#{$infix}-#{$key} { #{$prop}: $value; }
+            }
+          }
+        }
+      }
+    }
+
+    @include media-breakpoint-only($breakpoint, $breakpoints) {
+      $media: map-get($media-prefix, only);
+
+      @each $key, $value in $positions-sizes {
+        .#{$position-prexix}-#{$media}#{$infix}-#{$key} {
+          top: $value;
+          right: $value;
+          bottom: $value;
+          left: $value;
+        }
+      }
+
+      @each $prop, $abbrev in (top: t, right: r, bottom: b, left: l) {
+        @each $key, $value in $positions-sizes {
+          .#{$position-prexix}-#{$abbrev}-#{$media}#{$infix}-#{$key} { #{$prop}: $value; }
+        }
+      }
+    }
+  }
+}

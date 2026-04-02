@@ -1,0 +1,8 @@
+img {
+  display: inline-block;
+  max-width: 100%;
+  height: auto;
+  will-change: transform;
+  transform: translateZ(0);
+  transition: $default-transition;
+}

@@ -1,0 +1,37 @@
+$black: #000;
+$white: #fff;
+
+$color-1     : var(--igs-color-1);
+$color-1-rgb : var(--igs-color-1-rgb);
+$color-2     : var(--igs-color-2);
+$color-2-rgb : var(--igs-color-2-rgb);
+$color-3     : var(--igs-color-3);
+$color-3-rgb : var(--igs-color-3-rgb);
+$color-4     : var(--igs-color-4);
+$color-4-rgb : var(--igs-color-4-rgb);
+$color-5     : var(--igs-color-5);
+$color-5-rgb : var(--igs-color-5-rgb);
+$color-6     : var(--igs-color-6);
+$color-6-rgb : var(--igs-color-6-rgb);
+$color-7     : var(--igs-color-7);
+$color-7-rgb : var(--igs-color-7-rgb);
+
+$text-color    : var(--igs-text-color);
+$link-color    : var(--igs-link-color);
+$headings-color: var(--igs-title-color);
+
+$body-color: $text-color;
+$body-bg   : $white;
+
+$theme-colors: (
+  '1': $color-1,
+  '2': $color-2,
+  '3': $color-3,
+  '4': $color-4,
+  '5': $color-5,
+  '6': $color-6,
+  '7': $color-7,
+  'w': $white,
+  'b': $black,
+  'i': inherit
+);

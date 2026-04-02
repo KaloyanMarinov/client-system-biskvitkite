@@ -1,0 +1,16 @@
+//
+// Global Variables
+//
+$gutter: 20px;
+
+$escaped-characters: (
+  ('<', '%3c'),
+  ('>', '%3e'),
+  ('#', '%23'),
+  ('(', '%28'),
+  (')', '%29'),
+);
+
+$default-transition-speed: 350ms;
+
+$default-transition: all $default-transition-speed ease-in-out;

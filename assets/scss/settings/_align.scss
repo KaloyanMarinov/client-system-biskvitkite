@@ -1,0 +1,14 @@
+//
+// Alignments
+// 
+
+// Vertical Align
+$vertical-align-prefix: 'va';
+$vertical-aligns: (
+  'base': baseline,
+  't': top,
+  'm': middle,
+  'b': bottom,
+  'tt': text-top,
+  'tb': text-bottom
+);

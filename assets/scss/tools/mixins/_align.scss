@@ -1,0 +1,45 @@
+//
+// Alignments
+//
+@use 'sass:list';
+
+@mixin make-verticla-align($align) {
+  vertical-align: $align;
+}
+
+// Vertical Align
+@mixin make-vertical-aligns($aligns: $vertical-aligns, $breakpoints: $grid-breakpoints) {
+  @each $key, $value in $aligns {
+    .#{$vertical-align-prefix}-#{$key} { @include make-verticla-align($value) }
+  }
+
+  @each $breakpoint in map-keys($breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $breakpoints);
+
+    @if(map-get($breakpoints, $breakpoint) > 0) {
+      @include media-breakpoint-up($breakpoint, $breakpoints) {
+        $media: map-get($media-prefix, up);
+        @each $key, $value in $aligns {
+          .#{$vertical-align-prefix}-#{$media}#{$infix}-#{$key} { @include make-verticla-align($value) }
+        }
+      }
+
+      @if(map-get($breakpoints, $breakpoint) != list.nth(list.nth($grid-breakpoints, -1), 2)) {
+        $media: map-get($media-prefix, down);
+        @include media-breakpoint-down($breakpoint, $breakpoints) {
+          @each $key, $value in $aligns {
+            .#{$vertical-align-prefix}-#{$media}#{$infix}-#{$key} { @include make-verticla-align($value) }
+          }
+        }
+      }
+    }
+
+    @include media-breakpoint-only($breakpoint, $breakpoints) {
+      $media: map-get($media-prefix, only);
+      @each $key, $value in $aligns {
+        .#{$vertical-align-prefix}-#{$media}#{$infix}-#{$key} { @include make-verticla-align($value) }
+      }
+    }
+  }
+}
+

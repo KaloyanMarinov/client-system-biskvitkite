@@ -8,14 +8,14 @@
  *
  * Also maintains the unique identifier of this plugin as well as the current
  * version of the plugin.
- * 
+ *
  * @link       https://igamingsolutions.net
  * @since      1.0.0
  *
  * @since      1.0.0
  * @package    IGS_Client_System
  * @author     igamingsolutions.com <support@igamingsolutions.com>
- * 
+ *
  */
 class IGS_Client_System {
 
@@ -49,7 +49,6 @@ class IGS_Client_System {
 		$this->define_constants();
 		$this->includes();
 	}
-
 	/**
 	 * IGS_Client_System Instance.
 	 *
@@ -107,22 +106,37 @@ class IGS_Client_System {
 
 	/**
 	 * Load the dependencies for this plugin.
-	 * 
+	 *
    * @since 1.0.0
 	 * @access private
-	 * 
+	 *
 	 * @return void
-	 * 
+	 *
 	 */
 	private function includes() {
 
 		require_once IGS_CS_ABSPATH . '/includes/funcitons/igs-template-functions.php';
 		require_once IGS_CS_ABSPATH . '/includes/funcitons/igs-core-functions.php';
-		require_once IGS_CS_ABSPATH . '/includes/core/igs-constants.php';
-		require_once IGS_CS_ABSPATH . '/includes/abstracts/igs-loader.php';
-		require_once IGS_CS_ABSPATH . '/includes/igs-i18n.php';
 
-		require_once IGS_CS_ABSPATH . '/admin/igs-admin.php';
+		require_once IGS_CS_ABSPATH . '/includes/abstracts/igs-loader.php';
+		require_once IGS_CS_ABSPATH . '/includes/abstracts/igs-params.php';
+		require_once IGS_CS_ABSPATH . '/includes/abstracts/igs-post-params.php';
+		require_once IGS_CS_ABSPATH . '/includes/abstracts/igs-query.php';
+		require_once IGS_CS_ABSPATH . '/includes/abstracts/igs-post.php';
+
+		require_once IGS_CS_ABSPATH . '/includes/queries/igs-post-query.php';
+		require_once IGS_CS_ABSPATH . '/includes/queries/igs-subscriptions-query.php';
+
+		require_once IGS_CS_ABSPATH . '/includes/core/igs-i18n.php';
+		require_once IGS_CS_ABSPATH . '/includes/core/igs-constants.php';
+		require_once IGS_CS_ABSPATH . '/includes/core/igs-hooks.php';
+		require_once IGS_CS_ABSPATH . '/includes/core/igs-user.php';
+
+
+		if ( $this->is_request( 'admin' ) ) {
+      require_once IGS_CS_ABSPATH . '/admin/igs-admin.php';
+      $this->admin();
+    }
 
 		if ( $this->is_request( 'frontend' ) ) {
 			require_once IGS_CS_ABSPATH . '/public/igs-public.php';
@@ -180,5 +194,14 @@ class IGS_Client_System {
 		 */
 		return apply_filters( 'igs_cs_template_path', 'templates/' );
 	}
+
+  /**
+   * Get Admin Clas
+   *
+   * @return IGS_CS_Admin
+   */
+  public function admin() {
+    return IGS_CS_Admin::instance();
+  }
 
 }

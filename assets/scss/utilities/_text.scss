@@ -1,0 +1,62 @@
+//
+// Text
+//
+
+// Headigns
+@for $i from 1 through 6 {
+
+  .h#{$i} {
+    @extend %headings;
+
+    @include media-breakpoint-up(md) {
+      font-size: map-get($heading-desktop, h#{$i});
+    }
+
+    @include media-breakpoint-down(sm) {
+      font-size: map-get($heading-mobile, h#{$i});
+    }
+  }
+}
+
+// Text Colors
+@include make-text-colors();
+
+// Text Align
+@include make-text-aligns();
+
+// Text Transform
+@include make-text-transforms();
+
+// Text Decoration
+@include make-text-decorations();
+
+// Font Families
+@include make-font-families();
+
+// Font Sizes
+@include make-font-sizes();
+
+// Line Hieghts
+@include make-line-heights();
+
+// Font Weights
+@include make-font-weights();
+
+// Font Styles
+@include make-font-styles();
+
+// Letter Spacing
+@include make-letter-spacing();
+
+// Text Nowrap
+.ws-nw {
+  white-space: nowrap;
+}
+
+.tl-2 {
+  @include line-limit(2);
+}
+
+.tl-12 {
+  @include line-limit(12);
+}

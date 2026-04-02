@@ -1,0 +1,21 @@
+// Flex Object Center
+.foc {
+  @extend .d-f, .ai-c, .jc-c;
+
+    img {
+      @extend .w-a, .mh-100;
+    }
+}
+
+.ofc {
+  @extend .d-f, .ai-c, .jc-c, .mw-100;
+
+    > a {
+      @extend .d-if, .ai-c, .jc-c, .w-100, .h-100;
+    }
+
+    img {
+      @extend .min-w-100, .min-h-100, .mw-n;
+      object-fit: cover;
+    }
+}

@@ -1,0 +1,54 @@
+.sub-calendar {
+
+    .flatpickr-months {
+      display: none;
+    }
+
+    .prevMonthDay,
+    .nextMonthDay {
+      visibility: hidden;
+    }
+
+    .flatpickr-day.today {
+      border-color: $color-1;
+    }
+
+    .flatpickr-calendar {
+      width: 100%;
+      font-size: 20px;
+      overflow: hidden;
+    }
+
+    .flatpickr-innerContainer {
+      flex-direction: column;
+    }
+
+    .flatpickr-weekdays {
+      height: auto;
+    }
+
+    span.flatpickr-weekday {
+      padding: 10px 0;
+      font-size: 100%;
+      color: $white;
+      text-transform: uppercase;
+      background-color: $color-1;
+    }
+
+    .flatpickr-days {
+      flex: 1;
+      width: 100%;
+    }
+
+    .dayContainer {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .flatpickr-day {
+      max-width: percentage( 100 / 7 );
+      height: 50px;
+      line-height: 50px;
+      font-weight: $font-weight-bold;
+    }
+}

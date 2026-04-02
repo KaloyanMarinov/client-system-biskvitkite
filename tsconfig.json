@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "module": "commonjs",
+    "target": "es2017",
+    "lib": [ "es2019", "dom", "ES6" ],
+    "sourceMap": true,
+    "declaration": false,
+    "esModuleInterop": true,
+    "downlevelIteration": true,
+    "isolatedModules": false,
+  },
+  "awesomeTypescriptLoaderOptions": {
+    "useWebpackText": true,
+    "useTranspileModule": true,
+    "doTypeCheck": true,
+    "forkChecker": true
+  },
+  "exclude": [
+    "*.js",
+    "./node_modules",
+    "typings",
+    "lib/svgo-node.js",
+    "lib/svgo-node.test.js",
+    "lib/svgo.js",
+    "lib/svgo.test.js",
+    "lib/svgo/**/*.js",
+  ]
+}

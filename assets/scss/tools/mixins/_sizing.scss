@@ -1,0 +1,77 @@
+//
+// Sizing
+//
+@use 'sass:list';
+
+@mixin make-sizings($sizes: $sizes, $breakpoints: $grid-breakpoints) {
+  @each $prop, $abbrev in (width: w, height: h, max-width: mw, min-width: min-w, max-height: mh, min-height: min-h) {
+    @each $key, $value in $sizes {
+      .#{$abbrev}-#{$key} { #{$prop}: $value; }
+    }
+  }
+
+  // Viewport additional helpers
+  .min-vw-100 { min-width: 100vw; }
+  .min-vh-100 { min-height: 100vh; }
+
+  .vw-100 { width: 100vw; }
+  .vh-100 { height: 100vh; }
+
+  @each $breakpoint in map-keys($breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $breakpoints);
+
+    @if(map-get($breakpoints, $breakpoint) > 0) {
+      @include media-breakpoint-up($breakpoint, $breakpoints) {
+        $media: map-get($media-prefix, up);
+        @each $prop, $abbrev in (width: w, height: h, max-width: mw, min-width: min-w, max-height: mh, min-height: min-h) {
+          @each $key, $value in $sizes {
+            .#{$abbrev}-#{$media}#{$infix}-#{$key} { #{$prop}: $value; }
+          }
+        }
+
+        // Viewport additional helpers
+        .min-#{$media}#{$infix}-vw-100 { min-width: 100vw; }
+        .min-#{$media}#{$infix}-vh-100 { min-height: 100vh; }
+
+        .vw-#{$media}#{$infix}-100 { width: 100vw; }
+        .vh-#{$media}#{$infix}-100 { height: 100vh; }
+      }
+
+      @if(map-get($breakpoints, $breakpoint) != list.nth(list.nth($grid-breakpoints, -1), 2)) {
+        @include media-breakpoint-down($breakpoint, $breakpoints) {
+          $media: map-get($media-prefix, down);
+          @each $prop, $abbrev in (width: w, height: h, max-width: mw, min-width: min-w, max-height: mh, min-height: min-h) {
+            @each $key, $value in $sizes {
+              .#{$abbrev}-#{$media}#{$infix}-#{$key} { #{$prop}: $value; }
+            }
+          }
+
+          .w-#{$media}#{$infix}-a { width: auto; }
+
+          // Viewport additional helpers
+          .min-#{$media}#{$infix}-vw-100 { min-width: 100vw; }
+          .min-#{$media}#{$infix}-vh-100 { min-height: 100vh; }
+
+          .vw-#{$media}#{$infix}-100 { width: 100vw; }
+          .vh-#{$media}#{$infix}-100 { height: 100vh; }
+        }
+      }
+    }
+
+    @include media-breakpoint-only($breakpoint, $breakpoints) {
+      $media: map-get($media-prefix, only);
+      @each $prop, $abbrev in (width: w, height: h, max-width: mw, min-width: min-w, max-height: mh, min-height: min-h) {
+        @each $key, $value in $sizes {
+          .#{$abbrev}-#{$media}#{$infix}-#{$key} { #{$prop}: $value; }
+        }
+      }
+
+      // Viewport additional helpers
+      .min-#{$media}#{$infix}-vw-100 { min-width: 100vw; }
+      .min-#{$media}#{$infix}-vh-100 { min-height: 100vh; }
+
+      .vw-#{$media}#{$infix}-100 { width: 100vw; }
+      .vh-#{$media}#{$infix}-100 { height: 100vh; }
+    }
+  }
+}

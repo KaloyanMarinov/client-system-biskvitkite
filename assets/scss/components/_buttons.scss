@@ -1,0 +1,61 @@
+//
+// Buttons
+//
+%#{$btn-prefix} {
+  @extend .d-if, .ai-c, .jc-c, .zi-1, .mw-100;
+  column-gap: 6px;
+  font-family: $btn-font-family;
+  font-weight: $btn-font-weight;
+  color: $btn-color;
+  white-space: $btn-white-space;
+  user-select: none;
+  background-color: $btn-background-color;
+  transition: $btn-transition;
+
+    &:hover {
+      text-decoration: $btn-hover-decoration;
+    }
+}
+
+.#{$btn-prefix},
+.#{$btn-prefix}-sm {
+  @extend %#{$btn-prefix};
+}
+
+.#{$btn-prefix} {
+  height         : $btn-height;
+  padding-top    : $btn-padding-y;
+  padding-bottom : $btn-padding-y;
+  padding-left   : $btn-padding-x;
+  padding-right  : $btn-padding-x;
+  font-size      : $btn-font-size;
+  line-height    : $btn-line-height;
+  letter-spacing : $btn-letter-spacing;
+  text-transform : $btn-transform;
+  text-decoration: $btn-decoration;
+  border-radius  : $btn-border-radius;
+  border         : $btn-border-width $btn-border-style $btn-border-color;
+
+    &.disabled,
+    &:disabled {
+      opacity: $btn-disabled-opacity;
+    }
+
+    &-sm {
+      height         : $btn-sm-height;
+      padding-top    : $btn-sm-padding-y;
+      padding-bottom : $btn-sm-padding-y;
+      padding-left   : $btn-sm-padding-x;
+      padding-right  : $btn-sm-padding-x;
+      font-size      : $btn-sm-font-size;
+      line-height    : $btn-sm-line-height;
+      letter-spacing : $btn-sm-letter-spacing;
+      text-transform : $btn-sm-transform;
+      border-radius  : $btn-sm-border-radius;
+      border         : $btn-sm-border-width $btn-sm-border-style $btn-sm-border-color;
+    }
+}
+
+.button-primary {
+  @extend .bg-1, .bg-h-3, .tc-w, .tc-h-6;
+}

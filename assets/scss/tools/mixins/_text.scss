@@ -1,0 +1,389 @@
+//
+// Text
+//
+@use 'sass:list';
+
+@mixin make-text-colors($colors: $text-colors, $breakpoints: $grid-breakpoints) {
+  @each $key, $value in $colors {
+    .#{$text-color-prefix}-#{$key} { color: $value; }
+    .#{$text-color-prefix}-h-#{$key}:hover  { color: $value; }
+    .#{$text-color-prefix}-a-#{$key}.active  { color: $value; }
+  }
+
+  @each $breakpoint in map-keys($breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $breakpoints);
+    $media: map-get($media-prefix, up);
+    @if(map-get($breakpoints, $breakpoint) > 0) {
+      @include media-breakpoint-up($breakpoint, $breakpoints) {
+        @each $key, $value in $colors {
+          .#{$text-color-prefix}-#{$media}#{$infix}-#{$key} { color: $value; }
+          .#{$text-color-prefix}-h-#{$media}#{$infix}-#{$key}:hover { color: $value; }
+          .#{$text-color-prefix}-a-#{$media}#{$infix}-#{$key}.active { color: $value; }
+        }
+      }
+
+      @if(map-get($breakpoints, $breakpoint) != list.nth(list.nth($grid-breakpoints, -1), 2)) {
+        $media: map-get($media-prefix, down);
+        @include media-breakpoint-down($breakpoint, $breakpoints) {
+          @each $key, $value in $colors {
+            .#{$text-color-prefix}-#{$media}#{$infix}-#{$key} { color: $value; }
+            .#{$text-color-prefix}-h-#{$media}#{$infix}-#{$key}:hover { color: $value; }
+            .#{$text-color-prefix}-a-#{$media}#{$infix}-#{$key}.active { color: $value; }
+          }
+        }
+      }
+    }
+
+    @include media-breakpoint-only($breakpoint, $breakpoints) {
+      $media: map-get($media-prefix, only);
+      @each $key, $value in $colors {
+        .#{$text-color-prefix}-#{$media}#{$infix}-#{$key} { color: $value; }
+        .#{$text-color-prefix}-h-#{$media}#{$infix}-#{$key}:hover { color: $value; }
+        .#{$text-color-prefix}-a-#{$media}#{$infix}-#{$key}.active { color: $value; }
+      }
+    }
+  }
+}
+
+// Text Align
+@mixin make-text-aligns($aligns: $text-aligns, $breakpoints: $grid-breakpoints) {
+  @each $key, $value in $aligns {
+    .#{$text-align-prefix}-#{$key} { text-align: $value; }
+  }
+
+  @each $breakpoint in map-keys($breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $breakpoints);
+    $media: map-get($media-prefix, up);
+    @if(map-get($breakpoints, $breakpoint) > 0) {
+      @include media-breakpoint-up($breakpoint, $breakpoints) {
+
+        @each $key, $value in $aligns {
+          .#{$text-align-prefix}-#{$media}#{$infix}-#{$key} { text-align: $value; }
+        }
+      }
+
+      @if(map-get($breakpoints, $breakpoint) != list.nth(list.nth($grid-breakpoints, -1), 2)) {
+        @include media-breakpoint-down($breakpoint, $breakpoints) {
+          $media: map-get($media-prefix, down);
+          @each $key, $value in $aligns {
+            .#{$text-align-prefix}-#{$media}#{$infix}-#{$key} { text-align: $value; }
+          }
+        }
+      }
+    }
+
+    @include media-breakpoint-only($breakpoint, $breakpoints) {
+      $media: map-get($media-prefix, only);
+      @each $key, $value in $aligns {
+        .#{$text-align-prefix}-#{$media}#{$infix}-#{$key} { text-align: $value; }
+      }
+    }
+  }
+}
+
+// Text Transform
+@mixin make-text-transforms($transforms: $text-transforms, $breakpoints: $grid-breakpoints) {
+  @each $key, $value in $transforms {
+    .#{$text-transform-prefix}-#{$key} { text-transform: $value; }
+  }
+
+  @each $breakpoint in map-keys($breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $breakpoints);
+    $media: map-get($media-prefix, up);
+    @if(map-get($breakpoints, $breakpoint) > 0) {
+      @include media-breakpoint-up($breakpoint, $breakpoints) {
+
+        @each $key, $value in $transforms {
+          .#{$text-transform-prefix}-#{$media}#{$infix}-#{$key} { text-transform: $value; }
+        }
+      }
+
+      @if(map-get($breakpoints, $breakpoint) != list.nth(list.nth($grid-breakpoints, -1), 2)) {
+        $media: map-get($media-prefix, down);
+        @include media-breakpoint-down($breakpoint, $breakpoints) {
+          @each $key, $value in $transforms {
+            .#{$text-transform-prefix}-#{$media}#{$infix}-#{$key} { text-transform: $value; }
+          }
+        }
+      }
+    }
+
+    @include media-breakpoint-only($breakpoint, $breakpoints) {
+      $media: map-get($media-prefix, only);
+      @each $key, $value in $transforms {
+        .#{$text-transform-prefix}-#{$media}#{$infix}-#{$key} { text-transform: $value; }
+      }
+    }
+  }
+}
+
+// Text Decoration
+@mixin make-text-decorations($decorations: $text-decorations, $breakpoints: $grid-breakpoints) {
+  @each $key, $value in $decorations {
+    .#{$text-decoration-prefix}-#{$key} { text-decoration: $value; }
+    .#{$text-decoration-prefix}-h-#{$key}:hover { text-decoration: $value; }
+  }
+
+  @each $breakpoint in map-keys($breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $breakpoints);
+
+    @if(map-get($breakpoints, $breakpoint) > 0) {
+      @include media-breakpoint-up($breakpoint, $breakpoints) {
+        $media: map-get($media-prefix, up);
+        @each $key, $value in $decorations {
+          .#{$text-decoration-prefix}-#{$media}#{$infix}-#{$key} { text-decoration: $value; }
+          .#{$text-decoration-prefix}-#{$media}#{$infix}-h-#{$key}:hover { text-decoration: $value; }
+        }
+      }
+
+      @if(map-get($breakpoints, $breakpoint) != list.nth(list.nth($grid-breakpoints, -1), 2)) {
+        @include media-breakpoint-down($breakpoint, $breakpoints) {
+          $media: map-get($media-prefix, down);
+          @each $key, $value in $decorations {
+            .#{$text-decoration-prefix}-#{$media}#{$infix}-#{$key} { text-decoration: $value; }
+            .#{$text-decoration-prefix}-#{$media}#{$infix}-h-#{$key}:hover { text-decoration: $value; }
+          }
+        }
+      }
+    }
+
+    @include media-breakpoint-only($breakpoint, $breakpoints) {
+      $media: map-get($media-prefix, only);
+      @each $key, $value in $decorations {
+        .#{$text-decoration-prefix}-#{$media}#{$infix}-#{$key} { text-decoration: $value; }
+        .#{$text-decoration-prefix}-#{$media}#{$infix}-h-#{$key}:hover { text-decoration: $value; }
+      }
+    }
+  }
+}
+
+// Font Families
+@mixin make-font-families($familes: $font-families, $breakpoints: $grid-breakpoints) {
+  @each $key, $value in $familes {
+    .#{$font-family-prefix}-#{$key} { font-family: $value; }
+  }
+
+  @each $breakpoint in map-keys($breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $breakpoints);
+
+    @if(map-get($breakpoints, $breakpoint) > 0) {
+      @include media-breakpoint-up($breakpoint, $breakpoints) {
+        $media: map-get($media-prefix, up);
+        @each $key, $value in $sizes {
+          .#{$font-family-prefix}-#{$media}#{$infix}-#{$key} { font-family: $value; }
+        }
+      }
+
+      @if(map-get($breakpoints, $breakpoint) != list.nth(list.nth($grid-breakpoints, -1), 2)) {
+        @include media-breakpoint-down($breakpoint, $breakpoints) {
+          $media: map-get($media-prefix, down);
+          @each $key, $value in $sizes {
+            .#{$font-family-prefix}-#{$media}#{$infix}-#{$key} { font-family: $value; }
+          }
+        }
+      }
+    }
+
+    @include media-breakpoint-only($breakpoint, $breakpoints) {
+      $media: map-get($media-prefix, only);
+      @each $key, $value in $sizes {
+        .#{$font-family-prefix}-#{$media}#{$infix}-#{$key} { font-family: $value; }
+      }
+    }
+  }
+}
+
+// Font Sizes
+@mixin make-font-sizes($sizes: $font-sizes, $breakpoints: $grid-breakpoints) {
+  @each $key, $value in $sizes {
+    .#{$font-size-prefix}-#{$key} { font-size: $value; }
+  }
+
+  @each $breakpoint in map-keys($breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $breakpoints);
+
+    @if(map-get($breakpoints, $breakpoint) > 0) {
+      @include media-breakpoint-up($breakpoint, $breakpoints) {
+        $media: map-get($media-prefix, up);
+        @each $key, $value in $sizes {
+          .#{$font-size-prefix}-#{$media}#{$infix}-#{$key} { font-size: $value; }
+        }
+      }
+
+      @if(map-get($breakpoints, $breakpoint) != list.nth(list.nth($grid-breakpoints, -1), 2)) {
+        @include media-breakpoint-down($breakpoint, $breakpoints) {
+          $media: map-get($media-prefix, down);
+          @each $key, $value in $sizes {
+            .#{$font-size-prefix}-#{$media}#{$infix}-#{$key} { font-size: $value; }
+          }
+        }
+      }
+    }
+
+    @include media-breakpoint-only($breakpoint, $breakpoints) {
+      $media: map-get($media-prefix, only);
+      @each $key, $value in $sizes {
+        .#{$font-size-prefix}-#{$media}#{$infix}-#{$key} { font-size: $value; }
+      }
+    }
+  }
+}
+
+// Line Heights
+@mixin make-line-heights($sizes: $line-heights, $breakpoints: $grid-breakpoints) {
+  @each $key, $value in $sizes {
+    .#{$line-height-prefix}-#{$key} { line-height: $value; }
+  }
+
+  @each $breakpoint in map-keys($breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $breakpoints);
+
+    @if(map-get($breakpoints, $breakpoint) > 0) {
+      @include media-breakpoint-up($breakpoint, $breakpoints) {
+        $media: map-get($media-prefix, up);
+        @each $key, $value in $sizes {
+          .#{$line-height-prefix}-#{$media}#{$infix}-#{$key} { line-height: $value; }
+        }
+      }
+
+      @if(map-get($breakpoints, $breakpoint) != list.nth(list.nth($grid-breakpoints, -1), 2)) {
+        @include media-breakpoint-down($breakpoint, $breakpoints) {
+          $media: map-get($media-prefix, down);
+          @each $key, $value in $sizes {
+            .#{$line-height-prefix}-#{$media}#{$infix}-#{$key} { line-height: $value; }
+          }
+        }
+      }
+    }
+
+    @include media-breakpoint-only($breakpoint, $breakpoints) {
+      $media: map-get($media-prefix, only);
+      @each $key, $value in $sizes {
+        .#{$line-height-prefix}-#{$media}#{$infix}-#{$key} { line-height: $value; }
+      }
+    }
+  }
+}
+
+// Font Weights
+@mixin make-font-weights($weights: $font-weights, $breakpoints: $grid-breakpoints) {
+  @each $key, $value in $weights {
+    .#{$font-weight-prefix}-#{$key} { font-weight: $value; }
+  }
+
+  @each $breakpoint in map-keys($breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $breakpoints);
+
+    @if(map-get($breakpoints, $breakpoint) > 0) {
+      @include media-breakpoint-up($breakpoint, $breakpoints) {
+        $media: map-get($media-prefix, up);
+        @each $key, $value in $weights {
+          .#{$font-weight-prefix}-#{$media}#{$infix}-#{$key} { font-weight: $value; }
+        }
+      }
+
+      @if(map-get($breakpoints, $breakpoint) != list.nth(list.nth($grid-breakpoints, -1), 2)) {
+        @include media-breakpoint-down($breakpoint, $breakpoints) {
+          $media: map-get($media-prefix, down);
+          @each $key, $value in $weights {
+            .#{$font-weight-prefix}-#{$media}#{$infix}-#{$key} { font-weight: $value; }
+          }
+        }
+      }
+    }
+
+    @include media-breakpoint-only($breakpoint, $breakpoints) {
+      $media: map-get($media-prefix, only);
+      @each $key, $value in $weights {
+        .#{$font-weight-prefix}-#{$media}#{$infix}-#{$key} { font-weight: $value; }
+      }
+    }
+  }
+}
+
+// Font Styles
+@mixin make-font-styles($weights: $font-styles, $breakpoints: $grid-breakpoints) {
+  @each $key, $value in $weights {
+    .#{$font-style-prefix}-#{$key} { font-style: $value; }
+  }
+
+  @each $breakpoint in map-keys($breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $breakpoints);
+
+    @if(map-get($breakpoints, $breakpoint) > 0) {
+      @include media-breakpoint-up($breakpoint, $breakpoints) {
+        $media: map-get($media-prefix, up);
+        @each $key, $value in $weights {
+          .#{$font-style-prefix}-#{$media}#{$infix}-#{$key} { font-style: $value; }
+        }
+      }
+
+      @if(map-get($breakpoints, $breakpoint) != list.nth(list.nth($grid-breakpoints, -1), 2)) {
+        @include media-breakpoint-down($breakpoint, $breakpoints) {
+          $media: map-get($media-prefix, down);
+          @each $key, $value in $weights {
+            .#{$font-style-prefix}-#{$media}#{$infix}-#{$key} { font-style: $value; }
+          }
+        }
+      }
+    }
+
+    @include media-breakpoint-only($breakpoint, $breakpoints) {
+      $media: map-get($media-prefix, only);
+      @each $key, $value in $weights {
+        .#{$font-style-prefix}-#{$media}#{$infix}-#{$key} { font-style: $value; }
+      }
+    }
+  }
+}
+
+// Letter Spacing
+@mixin make-letter-spacing($spacings: $letter-spaings, $breakpoints: $grid-breakpoints) {
+  @each $key, $value in $spacings {
+    .#{$letter-spacin-prefix}-#{$key} { letter-spacing: $value; }
+  }
+
+  @each $breakpoint in map-keys($breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $breakpoints);
+
+    @if(map-get($breakpoints, $breakpoint) > 0) {
+      @include media-breakpoint-up($breakpoint, $breakpoints) {
+        $media: map-get($media-prefix, up);
+        @each $key, $value in $spacings {
+          .#{$letter-spacin-prefix}-#{$media}#{$infix}-#{$key} { letter-spacing: $value; }
+        }
+      }
+
+      @if(map-get($breakpoints, $breakpoint) != list.nth(list.nth($grid-breakpoints, -1), 2)) {
+        @include media-breakpoint-down($breakpoint, $breakpoints) {
+          $media: map-get($media-prefix, down);
+          @each $key, $value in $spacings {
+            .#{$letter-spacin-prefix}-#{$media}#{$infix}-#{$key} { letter-spacing: $value; }
+          }
+        }
+      }
+    }
+
+    @include media-breakpoint-only($breakpoint, $breakpoints) {
+      $media: map-get($media-prefix, only);
+      @each $key, $value in $spacings {
+        .#{$letter-spacin-prefix}-#{$media}#{$infix}-#{$key} { letter-spacing: $value; }
+      }
+    }
+  }
+}
+
+// Text Truncate
+@mixin text-truncate() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Line limit
+@mixin line-limit( $lines ) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

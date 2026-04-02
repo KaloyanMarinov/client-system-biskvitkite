@@ -1,0 +1,19 @@
+//
+// Tables
+//
+
+table {
+  border-collapse: collapse; // Prevent double borders
+}
+
+th,
+td {
+  @extend %reset-padding;
+  height: auto;
+}
+
+th {
+  font-weight: bolder; // 1
+  text-align: inherit; // 2
+  text-align: -webkit-match-parent; // 3
+}

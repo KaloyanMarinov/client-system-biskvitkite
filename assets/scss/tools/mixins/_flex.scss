@@ -1,0 +1,111 @@
+//
+// Flex
+//
+@use 'sass:list';
+
+@mixin make-flexs($flexs: $all-flexs, $breakpoints: $grid-breakpoints) {
+
+  @each $property, $flex-values in $flexs {
+    @each $key, $value in $flex-values {
+      .#{$flex-prefix}-#{$key} { #{$property}: $value; }
+    }
+  }
+
+  @each $breakpoint in map-keys($breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $breakpoints);
+
+    @if(map-get($breakpoints, $breakpoint) > 0) {
+      @include media-breakpoint-up($breakpoint, $breakpoints) {
+        $media: map-get($media-prefix, up);
+        @each $property, $flex-values in $flexs {
+          @each $key, $value in $flex-values {
+            .#{$flex-prefix}-#{$media}#{$infix}-#{$key} { #{$property}: $value; }    
+          }
+        }
+      }
+
+      @if(map-get($breakpoints, $breakpoint) != list.nth(list.nth($grid-breakpoints, -1), 2)) {
+        @include media-breakpoint-down($breakpoint, $breakpoints) {
+          $media: map-get($media-prefix, down);
+          @each $property, $flex-values in $flexs {
+            @each $key, $value in $flex-values {
+              .#{$flex-prefix}-#{$media}#{$infix}-#{$key} { #{$property}: $value; }    
+            }
+          }
+        }
+      }
+    }
+
+    @include media-breakpoint-only($breakpoint, $breakpoints) {
+      $media: map-get($media-prefix, only);
+      @each $property, $flex-values in $flexs {
+        @each $key, $value in $flex-values {
+          .#{$flex-prefix}-#{$media}#{$infix}-#{$key} { #{$property}: $value; }    
+        }
+      }
+    }
+  }
+}
+
+
+
+// Flex Align
+@mixin make-flex-aligns($aligns: $flex-aligns, $breakpoints: $grid-breakpoints) {
+
+  @each $key, $subaligns in $aligns {
+    @each $property, $values in $subaligns {
+      @each $subkey, $value in $values {
+        .#{$key}-#{$subkey} {
+          #{$property}: $value;
+        }
+      }
+    }
+  }
+
+  @each $breakpoint in map-keys($breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $breakpoints);
+
+    @if(map-get($breakpoints, $breakpoint) > 0) {
+      @include media-breakpoint-up($breakpoint, $breakpoints) {
+        $media: map-get($media-prefix, up);
+        @each $key, $subaligns in $aligns {
+          @each $property, $values in $subaligns {
+            @each $subkey, $value in $values {
+              .#{$key}-#{$media}#{$infix}-#{$subkey} {
+                #{$property}: $value;
+              }
+            }
+          }
+        }
+      }
+
+      @if(map-get($breakpoints, $breakpoint) != list.nth(list.nth($grid-breakpoints, -1), 2)) {
+        @include media-breakpoint-down($breakpoint, $breakpoints) {
+          $media: map-get($media-prefix, down);
+          @each $key, $subaligns in $aligns {
+            @each $property, $values in $subaligns {
+              @each $subkey, $value in $values {
+                .#{$key}-#{$media}#{$infix}-#{$subkey} {
+                  #{$property}: $value;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    @include media-breakpoint-only($breakpoint, $breakpoints) {
+      $media: map-get($media-prefix, only);
+      @each $key, $subaligns in $aligns {
+        @each $property, $values in $subaligns {
+          @each $subkey, $value in $values {
+            .#{$key}-#{$media}#{$infix}-#{$subkey} {
+              #{$property}: $value;
+            }
+          }
+        }
+      }
+    }
+  }
+}

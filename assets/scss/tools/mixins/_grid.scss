@@ -1,0 +1,72 @@
+/// Grid system
+//
+// Generate semantic grid columns with these mixins.
+@use 'sass:list';
+@use 'sass:math';
+
+@mixin make-container($gutter: $grid-gutter-width) {
+  width: 100%;
+  padding-right: math.div($gutter, 2);
+  padding-left: math.div($gutter, 2);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+// For each breakpoint, define the maximum width of the container in a media query
+@mixin make-container-max-widths($max-widths: $container-max-widths, $breakpoints: $grid-breakpoints) {
+  @each $breakpoint, $container-max-width in $max-widths {
+    @if(map-get($breakpoints, $breakpoint) != list.nth(list.nth($grid-breakpoints, -1), 2)) {
+      @include media-breakpoint-only($breakpoint, $breakpoints) {
+        max-width: $container-max-width;
+      }
+    } @else {
+      @include media-breakpoint-up($breakpoint, $breakpoints) {
+        max-width: $container-max-width;
+      }
+    }
+  }
+}
+
+@mixin make-row() {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+@mixin make-row-ready($gutter: $grid-gutter-width) {
+  margin-right: math.div(-$gutter, 2);
+  margin-left: math.div(-$gutter, 2);
+}
+
+@mixin make-col-ready($gutter: $grid-gutter-width) {
+  width: 100%;
+  padding-right: math.div($gutter, 2);
+  padding-left: math.div($gutter, 2);
+}
+
+@mixin make-col {
+  flex-basis: 0;
+  flex-grow: 1;
+  max-width: 100%;
+}
+
+@mixin make-col-size($size, $columns: $grid-columns) {
+  flex: 0 0 percentage(math.div($size, $columns));
+  max-width: percentage(math.div($size, $columns));
+}
+
+@mixin make-col-width($size: 100%, $height: null) {
+  flex: 0 0 $size;
+  max-width: $size;
+  height: $height;
+}
+
+@mixin make-col-auto() {
+  flex: 0 0 auto;
+  width: auto;
+  max-width: 100%;
+}
+
+@mixin make-col-offset($size, $columns: $grid-columns) {
+  $num: math.div($size, $columns);
+  margin-left: if($num == 0, 0, percentage($num));
+}

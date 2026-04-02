@@ -1,0 +1,68 @@
+//
+// Typography
+//
+%headings {
+  font-family: $headings-font-family;
+  font-weight: $headings-font-weight;
+  line-height: $headings-line-height;
+  text-transform: $headings-text-tranform;
+  color: $headings-color;
+
+    a {
+      color: $headings-link-color;
+      text-decoration: $headings-link-decoration;
+
+        &:hover {
+          color: $headings-hover-color;
+          text-decoration: $headings-link-hover-decoration;
+        }
+    }
+}
+
+body {
+  font-family: $font-family-base;
+  font-weight: $font-weight-base;
+  line-height: $line-height-base;
+  color: $body-color;
+  text-align: left;
+  background-color: $body-bg;
+
+    @include media-breakpoint-up(md) {
+      font-size: $font-size-desktop;
+    }
+
+    @include media-breakpoint-down(sm) {
+      font-size: $font-size-mobile;
+    }
+}
+
+@for $i from 1 through 6 {
+
+    h#{$i} {
+      @extend %headings;
+    }
+
+    h#{$i} {
+
+        @include media-breakpoint-up(md) {
+          font-size: map-get($heading-desktop, h#{$i});
+        }
+
+        @include media-breakpoint-down(sm) {
+          font-size: map-get($heading-mobile, h#{$i});
+        }
+    }
+}
+
+ul,
+ol {
+  list-style-position: $list-position;
+}
+
+ul {
+  list-style-type: $ul-list-style-type;
+}
+
+ol {
+  list-style-type: $ol-list-style-type;
+}

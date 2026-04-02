@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 /**
  * Plugin Name: Client System for Biskvitkite
  * Plugin URI: https://igamingsolutions.net/
@@ -19,12 +22,10 @@
  * Copying, distribution, or modification is strictly prohibited
  * without express written consent.
  *
- * @package           IGS_Client_System
- * @since             1.0.0
+ * @package IGS_Client_System
+ * @since 1.0.0
  */
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+
 /**
  * Security check: Abort if this file is called directly.
  */
@@ -95,6 +96,7 @@ function run_client_system() {
  *
  * @since  1.0.0
  * @return IGS_Client_System The single instance of the plugin.
+ *
  */
 function IGS_CS() {
   return IGS_Client_System::instance();

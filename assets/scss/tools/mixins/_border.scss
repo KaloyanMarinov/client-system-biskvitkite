@@ -1,0 +1,174 @@
+//
+// Borders
+//
+@use 'sass:list';
+
+@mixin make-border-radius($radius: $border-radius, $breakpoints: $grid-breakpoints) {
+  @each $key, $value in $radius {
+    @debug $value;
+    .#{$border-radius-prefix}-#{$key} { border-radius: $value; }
+    .#{$border-radius-prefix}-t-#{$key} { @include border-top-radius($value); }
+    .#{$border-radius-prefix}-b-#{$key} { @include border-bottom-radius($value); }
+    .#{$border-radius-prefix}-l-#{$key} { @include border-left-radius($value); }
+    .#{$border-radius-prefix}-r-#{$key} { @include border-right-radius($value); }
+  }
+
+  @each $breakpoint in map-keys($breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $breakpoints);
+
+    @if(map-get($breakpoints, $breakpoint) > 0) {
+      @include media-breakpoint-up($breakpoint, $breakpoints) {
+        @each $key, $value in $radius {
+          $media: map-get($media-prefix, up);
+          .#{$border-radius-prefix}-#{$media}#{$infix}-#{$key} { border-radius: $value; }
+          .#{$border-radius-prefix}-t-#{$media}#{$infix}-#{$key} { @include border-top-radius($value); }
+          .#{$border-radius-prefix}-b-#{$media}#{$infix}-#{$key} { @include border-bottom-radius($value); }
+          .#{$border-radius-prefix}-l-#{$media}#{$infix}-#{$key} { @include border-left-radius($value); }
+          .#{$border-radius-prefix}-r-#{$media}#{$infix}-#{$key} { @include border-right-radius($value); }
+        }
+      }
+
+      @if(map-get($breakpoints, $breakpoint) != list.nth(list.nth($grid-breakpoints, -1), 2)) {
+        @include media-breakpoint-down($breakpoint, $breakpoints) {
+          @each $key, $value in $radius {
+            $media: map-get($media-prefix, down);
+            .#{$border-radius-prefix}-#{$media}#{$infix}-#{$key} { border-radius: $value; }
+            .#{$border-radius-prefix}-t-#{$media}#{$infix}-#{$key} { @include border-top-radius($value); }
+            .#{$border-radius-prefix}-b-#{$media}#{$infix}-#{$key} { @include border-bottom-radius($value); }
+            .#{$border-radius-prefix}-l-#{$media}#{$infix}-#{$key} { @include border-left-radius($value); }
+            .#{$border-radius-prefix}-r-#{$media}#{$infix}-#{$key} { @include border-right-radius($value); }
+          }
+        }
+      }
+    }
+
+    @include media-breakpoint-only($breakpoint, $breakpoints) {
+      @each $key, $value in $radius {
+        $media: map-get($media-prefix, only);
+        .#{$border-radius-prefix}-#{$media}#{$infix}-#{$key} { border-radius: $value; }
+        .#{$border-radius-prefix}-t-#{$media}#{$infix}-#{$key} { @include border-top-radius($value); }
+        .#{$border-radius-prefix}-b-#{$media}#{$infix}-#{$key} { @include border-bottom-radius($value); }
+        .#{$border-radius-prefix}-l-#{$media}#{$infix}-#{$key} { @include border-left-radius($value); }
+        .#{$border-radius-prefix}-r-#{$media}#{$infix}-#{$key} { @include border-right-radius($value); }
+      }
+    }
+  }
+}
+
+@mixin border-top-radius($radius) {
+  border-top-left-radius: $radius;
+  border-top-right-radius: $radius;
+}
+
+@mixin border-right-radius($radius) {
+  border-top-right-radius: $radius;
+  border-bottom-right-radius: $radius;
+}
+
+@mixin border-bottom-radius($radius) {
+  border-bottom-right-radius: $radius;
+  border-bottom-left-radius: $radius;
+}
+
+@mixin border-left-radius($radius) {
+  border-top-left-radius: $radius;
+  border-bottom-left-radius: $radius;
+}
+
+@mixin make-border-widths($widths: $border-widths, $breakpoints: $grid-breakpoints) {
+  @each $key, $value in $widths {
+    .#{$border-width-prefix}-#{$key} { border: $value solid transparent; }
+  }
+
+  @each $prop, $abbrev in (top: t, right: r, bottom: b, left: l) {
+    @each $key, $value in $widths {
+      .#{$border-width-prefix}-#{$abbrev}-#{$key} { border-#{$prop}: $value solid transparent; }
+    }
+  }
+
+  @each $breakpoint in map-keys($breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $breakpoints);
+
+    @if(map-get($breakpoints, $breakpoint) > 0) {
+      @include media-breakpoint-up($breakpoint, $breakpoints) {
+        $media: map-get($media-prefix, up);
+        @each $key, $value in $widths {
+          .#{$border-width-prefix}-#{$media}#{$infix}-#{$key} {border: $value solid transparent; }
+        }
+
+        @each $prop, $abbrev in (top: t, right: r, bottom: b, left: l) {
+          @each $key, $value in $widths {
+            .#{$border-width-prefix}-#{$abbrev}-#{$media}#{$infix}-#{$key} { border-#{$prop}: $value solid transparent; }
+          }
+        }
+      }
+
+      @if(map-get($breakpoints, $breakpoint) != list.nth(list.nth($grid-breakpoints, -1), 2)) {
+        @include media-breakpoint-down($breakpoint, $breakpoints) {
+          $media: map-get($media-prefix, down);
+          @each $key, $value in $widths {
+            .#{$border-width-prefix}-#{$media}#{$infix}-#{$key} {border: $value solid transparent; }
+          }
+
+          @each $prop, $abbrev in (top: t, right: r, bottom: b, left: l) {
+            @each $key, $value in $widths {
+              .#{$border-width-prefix}-#{$abbrev}-#{$media}#{$infix}-#{$key} { border-#{$prop}: $value solid transparent; }
+            }
+          }
+        }
+      }
+    }
+
+    @include media-breakpoint-only($breakpoint, $breakpoints) {
+      $media: map-get($media-prefix, only);
+      @each $key, $value in $widths {
+        .#{$border-width-prefix}-#{$media}#{$infix}-#{$key} {border: $value solid transparent; }
+      }
+
+      @each $prop, $abbrev in (top: t, right: r, bottom: b, left: l) {
+        @each $key, $value in $widths {
+          .#{$border-width-prefix}-#{$abbrev}-#{$media}#{$infix}-#{$key} { border-#{$prop}: $value solid transparent; }
+        }
+      }
+    }
+  }
+}
+
+@mixin make-border-colors($colors: $border-colors, $breakpoints: $grid-breakpoints) {
+  @each $key, $value in $colors {
+    .#{$border-color-prefix}-#{$key} { border-color: $value; }
+    .#{$border-color-prefix}-h-#{$key}:hover { border-color: $value; }
+  }
+
+  @each $breakpoint in map-keys($breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $breakpoints);
+
+    @if(map-get($breakpoints, $breakpoint) > 0) {
+      @include media-breakpoint-up($breakpoint, $breakpoints) {
+        @each $key, $value in $colors {
+          $media: map-get($media-prefix, up);
+          .#{$border-color-prefix}-#{$media}#{$infix}-#{$key} {border-color: $value; }
+          .#{$border-color-prefix}-#{$media}#{$infix}-#{$key}:hover {border-color: $value; }
+        }
+      }
+
+      @if(map-get($breakpoints, $breakpoint) != list.nth(list.nth($grid-breakpoints, -1), 2)) {
+        @include media-breakpoint-down($breakpoint, $breakpoints) {
+          @each $key, $value in $colors {
+            $media: map-get($media-prefix, down);
+            .#{$border-color-prefix}-#{$media}#{$infix}-#{$key} {border-color: $value; }
+            .#{$border-color-prefix}-#{$media}#{$infix}-#{$key}:hover {border-color: $value; }
+          }
+        }
+      }
+    }
+
+    @include media-breakpoint-only($breakpoint, $breakpoints) {
+      @each $key, $value in $colors {
+        $media: map-get($media-prefix, only);
+        .#{$border-color-prefix}-#{$media}#{$infix}-#{$key} {border-color: $value; }
+        .#{$border-color-prefix}-#{$media}#{$infix}-#{$key}:hover {border-color: $value; }
+      }
+    }
+  }
+}

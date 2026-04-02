@@ -1,0 +1,372 @@
+//
+// Spacing
+//
+@use 'sass:list';
+
+// Margin and Padding
+@mixin make-spacings($spacers: $spacers, $breakpoints: $grid-breakpoints) {
+  @each $prop, $abbrev in (margin: m, padding: p) {
+    @each $key, $value in $spacers {
+      .#{$abbrev}-#{$key} { #{$prop}: $value; }
+
+      .#{$abbrev}t-#{$key},
+      .#{$abbrev}y-#{$key} {
+        #{$prop}-top: $value;
+      }
+
+      .#{$abbrev}r-#{$key},
+      .#{$abbrev}x-#{$key} {
+        #{$prop}-right: $value;
+      }
+
+      .#{$abbrev}b-#{$key},
+      .#{$abbrev}y-#{$key} {
+        #{$prop}-bottom: $value;
+      }
+
+      .#{$abbrev}l-#{$key},
+      .#{$abbrev}x-#{$key} {
+        #{$prop}-left: $value;
+      }
+    }
+  }
+
+  //Negative margins (e.g., where `.mb-n1` is negative version of `.mb-1`)
+  @each $key, $value in $spacers {
+    @if $value != 0 {
+      .m-n#{$key} { margin: -$value; }
+
+      .mt-n#{$key},
+      .my-n#{$key} {
+        margin-top: -$value;
+      }
+
+      .mr-n#{$key},
+      .mx-n#{$key} {
+        margin-right: -$value;
+      }
+
+      .mb-n#{$key},
+      .my-n#{$key} {
+        margin-bottom: -$value;
+      }
+
+      .ml-n#{$key},
+      .mx-n#{$key} {
+        margin-left: -$value;
+      }
+    }
+  }
+
+  // Some special margin utils
+  .m-a { margin: auto; }
+
+  .mt-a,
+  .my-a {
+    margin-top: auto;
+  }
+
+  .mr-a,
+  .mx-a {
+    margin-right: auto;
+  }
+
+  .mb-a,
+  .my-a {
+    margin-bottom: auto;
+  }
+
+  .ml-a,
+  .mx-a {
+    margin-left: auto;
+  }
+
+  @each $breakpoint in map-keys($breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $breakpoints);
+
+    @if(map-get($breakpoints, $breakpoint) > 0) {
+      @include media-breakpoint-up($breakpoint, $breakpoints) {
+        $media: map-get($media-prefix, up);
+        @each $prop, $abbrev in (margin: m, padding: p) {
+          @each $key, $value in $spacers {
+            .#{$abbrev}-#{$media}#{$infix}-#{$key} { #{$prop}: $value; }
+
+            .#{$abbrev}t-#{$media}#{$infix}-#{$key},
+            .#{$abbrev}y-#{$media}#{$infix}-#{$key} {
+              #{$prop}-top: $value;
+            }
+
+            .#{$abbrev}r-#{$media}#{$infix}-#{$key},
+            .#{$abbrev}x-#{$media}#{$infix}-#{$key} {
+              #{$prop}-right: $value;
+            }
+
+            .#{$abbrev}b-#{$media}#{$infix}-#{$key},
+            .#{$abbrev}y-#{$media}#{$infix}-#{$key} {
+              #{$prop}-bottom: $value;
+            }
+
+            .#{$abbrev}l-#{$media}#{$infix}-#{$key},
+            .#{$abbrev}x-#{$media}#{$infix}-#{$key} {
+              #{$prop}-left: $value;
+            }
+          }
+        }
+
+        //Negative margins (e.g., where `.mb-n1` is negative version of `.mb-1`)
+        @each $key, $value in $spacers {
+          @if $value != 0 {
+            .m-#{$media}#{$infix}-n#{$key} { margin: -$value; }
+
+            .mt-#{$media}#{$infix}-n#{$key},
+            .my-#{$media}#{$infix}-n#{$key} {
+              margin-top: -$value;
+            }
+
+            .mr-#{$media}#{$infix}-n#{$key},
+            .mx-#{$media}#{$infix}-n#{$key} {
+              margin-right: -$value;
+            }
+
+            .mb-#{$media}#{$infix}-n#{$key},
+            .my-#{$media}#{$infix}-n#{$key} {
+              margin-bottom: -$value;
+            }
+
+            .ml-#{$media}#{$infix}-n#{$key},
+            .mx-#{$media}#{$infix}-n#{$key} {
+              margin-left: -$value;
+            }
+          }
+        }
+
+        // Some special margin utils
+        .m-#{$media}#{$infix}-a { margin: auto; }
+
+        .mt-#{$media}#{$infix}-a,
+        .my-#{$media}#{$infix}-a {
+          margin-top: auto;
+        }
+
+        .mr-#{$media}#{$infix}-a,
+        .mx-#{$media}#{$infix}-a {
+          margin-right: auto;
+        }
+
+        .mb-#{$media}#{$infix}-a,
+        .my-#{$media}#{$infix}-a {
+          margin-bottom: auto;
+        }
+
+        .ml-#{$media}#{$infix}-a,
+        .mx-#{$media}#{$infix}-a {
+          margin-left: auto;
+        }
+      }
+
+      @if(map-get($breakpoints, $breakpoint) != list.nth(list.nth($grid-breakpoints, -1), 2)) {
+        @include media-breakpoint-down($breakpoint, $breakpoints) {
+          $media: map-get($media-prefix, down);
+          @each $prop, $abbrev in (margin: m, padding: p) {
+            @each $key, $value in $spacers {
+              .#{$abbrev}-#{$media}#{$infix}-#{$key} { #{$prop}: $value; }
+
+              .#{$abbrev}t-#{$media}#{$infix}-#{$key},
+              .#{$abbrev}y-#{$media}#{$infix}-#{$key} {
+                #{$prop}-top: $value;
+              }
+
+              .#{$abbrev}r-#{$media}#{$infix}-#{$key},
+              .#{$abbrev}x-#{$media}#{$infix}-#{$key} {
+                #{$prop}-right: $value;
+              }
+
+              .#{$abbrev}b-#{$media}#{$infix}-#{$key},
+              .#{$abbrev}y-#{$media}#{$infix}-#{$key} {
+                #{$prop}-bottom: $value;
+              }
+
+              .#{$abbrev}l-#{$media}#{$infix}-#{$key},
+              .#{$abbrev}x-#{$media}#{$infix}-#{$key} {
+                #{$prop}-left: $value;
+              }
+            }
+          }
+
+          //Negative margins (e.g., where `.mb-n1` is negative version of `.mb-1`)
+          @each $key, $value in $spacers {
+            @if $value != 0 {
+              .m-#{$media}#{$infix}-n#{$key} { margin: -$value; }
+
+              .mt-#{$media}#{$infix}-n#{$key},
+              .my-#{$media}#{$infix}-n#{$key} {
+                margin-top: -$value;
+              }
+
+              .mr-#{$media}#{$infix}-n#{$key},
+              .mx-#{$media}#{$infix}-n#{$key} {
+                margin-right: -$value;
+              }
+
+              .mb-#{$media}#{$infix}-n#{$key},
+              .my-#{$media}#{$infix}-n#{$key} {
+                margin-bottom: -$value;
+              }
+
+              .ml-#{$media}#{$infix}-n#{$key},
+              .mx-#{$media}#{$infix}-n#{$key} {
+                margin-left: -$value;
+              }
+            }
+          }
+
+          // Some special margin utils
+          .m-#{$media}#{$infix}-a { margin: auto; }
+
+          .mt-#{$media}#{$infix}-a,
+          .my-#{$media}#{$infix}-a {
+            margin-top: auto;
+          }
+
+          .mr-#{$media}#{$infix}-a,
+          .mx-#{$media}#{$infix}-a {
+            margin-right: auto;
+          }
+
+          .mb-#{$media}#{$infix}-a,
+          .my-#{$media}#{$infix}-a {
+            margin-bottom: auto;
+          }
+
+          .ml-#{$media}#{$infix}-a,
+          .mx-#{$media}#{$infix}-a {
+            margin-left: auto;
+          }
+        }
+      }
+    }
+
+    @include media-breakpoint-only($breakpoint, $breakpoints) {
+      $media: map-get($media-prefix, only);
+      @each $prop, $abbrev in (margin: m, padding: p) {
+        @each $key, $value in $spacers {
+          .#{$abbrev}-#{$media}#{$infix}-#{$key} { #{$prop}: $value; }
+
+          .#{$abbrev}t-#{$media}#{$infix}-#{$key},
+          .#{$abbrev}y-#{$media}#{$infix}-#{$key} {
+            #{$prop}-top: $value;
+          }
+
+          .#{$abbrev}r-#{$media}#{$infix}-#{$key},
+          .#{$abbrev}x-#{$media}#{$infix}-#{$key} {
+            #{$prop}-right: $value;
+          }
+
+          .#{$abbrev}b-#{$media}#{$infix}-#{$key},
+          .#{$abbrev}y-#{$media}#{$infix}-#{$key} {
+            #{$prop}-bottom: $value;
+          }
+
+          .#{$abbrev}l-#{$media}#{$infix}-#{$key},
+          .#{$abbrev}x-#{$media}#{$infix}-#{$key} {
+            #{$prop}-left: $value;
+          }
+        }
+      }
+
+      //Negative margins (e.g., where `.mb-n1` is negative version of `.mb-1`)
+      @each $key, $value in $spacers {
+        @if $value != 0 {
+          .m-#{$media}#{$infix}-n#{$key} { margin: -$value; }
+
+          .mt-#{$media}#{$infix}-n#{$key},
+          .my-#{$media}#{$infix}-n#{$key} {
+            margin-top: -$value;
+          }
+
+          .mr-#{$media}#{$infix}-n#{$key},
+          .mx-#{$media}#{$infix}-n#{$key} {
+            margin-right: -$value;
+          }
+
+          .mb-#{$media}#{$infix}-n#{$key},
+          .my-#{$media}#{$infix}-n#{$key} {
+            margin-bottom: -$value;
+          }
+
+          .ml-#{$media}#{$infix}-n#{$key},
+          .mx-#{$media}#{$infix}-n#{$key} {
+            margin-left: -$value;
+          }
+        }
+      }
+
+      // Some special margin utils
+      .m-#{$media}#{$infix}-a { margin: auto; }
+
+      .mt-#{$media}#{$infix}-a,
+      .my-#{$media}#{$infix}-a {
+        margin-top: auto;
+      }
+
+      .mr-#{$media}#{$infix}-a,
+      .mx-#{$media}#{$infix}-a {
+        margin-right: auto;
+      }
+
+      .mb-#{$media}#{$infix}-a,
+      .my-#{$media}#{$infix}-a {
+        margin-bottom: auto;
+      }
+
+      .ml-#{$media}#{$infix}-a,
+      .mx-#{$media}#{$infix}-a {
+        margin-left: auto;
+      }
+    }
+  }
+}
+
+// Gap
+@mixin make-gap($spacers: $spacers, $breakpoints: $grid-breakpoints) {
+  @each $key, $value in $spacers {
+    .g-#{$key} { gap: $value; }
+    .gy-#{$key} { row-gap: $value; }
+    .gx-#{$key} { column-gap: $value; }
+  }
+
+  @each $breakpoint in map-keys($breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $breakpoints);
+
+    @if(map-get($breakpoints, $breakpoint) > 0) {
+      @include media-breakpoint-up($breakpoint, $breakpoints) {
+        $media: map-get($media-prefix, up);
+        @each $key, $value in $spacers {
+          .g-#{$media}#{$infix}-#{$key} { gap: $value; }
+          .gy-#{$media}#{$infix}-#{$key} { row-gap: $value; }
+          .gx-#{$media}#{$infix}-#{$key} { column-gap: $value; }
+        }
+      }
+
+      @if(map-get($breakpoints, $breakpoint) != list.nth(list.nth($grid-breakpoints, -1), 2)) {
+        @include media-breakpoint-down($breakpoint, $breakpoints) {
+          $media: map-get($media-prefix, down);
+          @each $key, $value in $spacers {
+            .g-#{$media}#{$infix}-#{$key} { gap: $value; }
+            .gy-#{$media}#{$infix}-#{$key} { row-gap: $value; }
+            .gx-#{$media}#{$infix}-#{$key} { column-gap: $value; }
+          }
+        }
+      }
+    }
+
+    @include media-breakpoint-only($breakpoint, $breakpoints) {
+      $media: map-get($media-prefix, only);
+      @each $key, $value in $spacers {
+        .g-#{$media}#{$infix}-#{$key} { gap: $value; }
+        .gy-#{$media}#{$infix}-#{$key} { row-gap: $value; }
+        .gx-#{$media}#{$infix}-#{$key} { column-gap: $value; }
+      }
+    }
+  }
+}

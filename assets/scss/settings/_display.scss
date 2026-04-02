@@ -1,0 +1,15 @@
+//
+// Displays
+//
+$display-prefix: 'd';
+$displays: (
+  'n': none,
+  'i': inline,
+  'ib': inline-block,
+  'b': block,
+  't': table,
+  'tr': table-row,
+  'tc': table-cell,
+  'f': flex,
+  'if': inline-flex
+);

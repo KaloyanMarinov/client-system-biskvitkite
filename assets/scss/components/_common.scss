@@ -1,0 +1,12 @@
+#adminmenumain,
+#wpadminbar,
+#screen-meta,
+#wpfooter,
+.notice,
+.hidden {
+  display: none;
+}
+
+.loader {
+  background: url('#{$images-icons}loader.gif') no-repeat center / 32px 32px;
+}

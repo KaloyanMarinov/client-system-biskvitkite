@@ -5,14 +5,14 @@
  *
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
- * 
+ *
  * @link       https://igamingsolutions.net
  * @since      1.0.0
  *
  * @package    IGS_Client_System
  * @subpackage IGS_CS/Admin
  * @author     igamingsolutions.com <support@igamingsolutions.com>
- * 
+ *
  */
 class IGS_CS_Admin extends IGS_CS_Loader {
 
@@ -36,7 +36,7 @@ class IGS_CS_Admin extends IGS_CS_Loader {
   public function __construct( ) {
 
     $this->includes();
-  
+
   }
 
   /**
@@ -45,9 +45,30 @@ class IGS_CS_Admin extends IGS_CS_Loader {
    * @since 1.0.0
    */
   private function includes() {
+
+    require_once IGS_CS_ABSPATH . '/admin/igs-admin-menus.php';
     require_once IGS_CS_ABSPATH . '/admin/igs-admin-hooks.php';
+
+    require_once IGS_CS_ABSPATH . '/admin/igs-admin-subscriptions.php';
+
+  }
+
+  /**
+	 * Get Admin Menu Class.
+	 *
+	 * @return IGS_CS_Admin_Menus
+	 */
+  public function menus() {
+    return IGS_CS_Admin_Menus::instance();
+  }
+
+  /**
+	 * Get Subscriptions Class.
+	 *
+	 * @return IGS_CS_Admin_Subscriptions
+	 */
+  public function subscriptions() {
+    return IGS_CS_Admin_Subscriptions::instance();
   }
 
 }
-
-IGS_CS_Admin::instance();

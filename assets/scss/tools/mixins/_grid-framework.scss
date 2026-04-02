@@ -1,0 +1,73 @@
+// Framework grid generation
+//
+// Used only by Bootstrap to generate the correct number of grid classes given
+// any value of `$grid-columns`.
+@use 'sass:list';
+
+@mixin make-grid-system($columns: $grid-columns, $gutter: $grid-gutter-width, $breakpoints: $grid-breakpoints) {
+  // Common properties for all breakpoints
+
+  [class*=#{$row-prefix}] { @include make-row-ready(); }
+
+  [class*=#{$col-prefix}] { @include make-col-ready(); }
+
+  .#{$row-prefix} { @include make-row(); }
+  .#{$col-prefix} { @include make-col(); }
+  .#{$col-prefix}-auto { @include make-col-auto(); }
+
+  @for $i from 1 through $columns {
+    .#{$col-prefix}-#{$i} { @include make-col-size($i, $columns); }
+    .#{$order-prefix}-#{$i} { order: $i; }
+    .#{$offset-prefix}-#{$i} { @include make-col-offset($i, $columns); }
+  }
+
+  @each $breakpoint in map-keys($breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $breakpoints);
+
+    @if(map-get($grid-breakpoints, $breakpoint) > 0) {
+      @include media-breakpoint-up($breakpoint, $breakpoints) {
+        $media: map-get($media-prefix, up);
+
+        .#{$row-prefix}-#{$media}#{$infix} { @include make-row(); }
+        .#{$col-prefix}-#{$media}#{$infix} { @include make-col(); }
+        .#{$col-prefix}-#{$media}#{$infix}-auto { @include make-col-auto(); }
+
+        @for $i from 1 through $columns {
+          .#{$col-prefix}-#{$media}#{$infix}-#{$i} { @include make-col-size($i, $columns); }
+          .#{$order-prefix}-#{$media}#{$infix}-#{$i} { order: $i; }
+          .#{$offset-prefix}-#{$media}#{$infix}-#{$i} { @include make-col-offset($i, $columns); }
+        }
+      }
+
+      @if(map-get($breakpoints, $breakpoint) != list.nth(list.nth($grid-breakpoints, -1), 2)) {
+        @include media-breakpoint-down($breakpoint, $breakpoints) {
+          $media: map-get($media-prefix, down);
+
+          .#{$row-prefix}-#{$media}#{$infix} { @include make-row(); }
+          .#{$col-prefix}-#{$media}#{$infix} { @include make-col(); }
+          .#{$col-prefix}-#{$media}#{$infix}-auto { @include make-col-auto(); }
+
+          @for $i from 1 through $columns {
+            .#{$col-prefix}-#{$media}#{$infix}-#{$i} { @include make-col-size($i, $columns);}
+            .#{$order-prefix}-#{$media}#{$infix}-#{$i} { order: $i; }
+            .#{$offset-prefix}-#{$media}#{$infix}-#{$i} { @include make-col-offset($i, $columns); }
+          }
+        }
+      }
+    }
+
+    @include media-breakpoint-only($breakpoint, $breakpoints) {
+      $media: map-get($media-prefix, only);
+
+      .#{$row-prefix}-#{$media}#{$infix} { @include make-row(); }
+      .#{$col-prefix}-#{$media}#{$infix} { @include make-col(); }
+      .#{$col-prefix}-#{$media}#{$infix}-auto { @include make-col-auto(); }
+
+      @for $i from 1 through $columns {
+        .#{$col-prefix}-#{$media}#{$infix}-#{$i} { @include make-col-size($i, $columns); }
+        .#{$order-prefix}-#{$media}#{$infix}-#{$i} { order: $i; }
+        .#{$offset-prefix}-#{$media}#{$infix}-#{$i} { @include make-col-offset($i, $columns); }
+      }
+    }
+  }
+}

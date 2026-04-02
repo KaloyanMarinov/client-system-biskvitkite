@@ -1,0 +1,209 @@
+/* sass-lint:disable no-vendor-prefixes */
+%select {
+  appearance: none;
+  padding-right: 40px;
+  background: $input-bg $select-arrow no-repeat calc(100% - #{$select-arrow-space}) center;
+
+    &:focus::-ms-value {
+      color: $input-color;
+      background-color: $input-bg;
+    }
+}
+
+.#{$input-prefix},
+.input-text,
+.form-row select,
+#order_note_type {
+  display: block;
+  width: 100%;
+  padding: $input-padding-y $input-padding-x;
+  height: $input-height;
+  font-family: $input-font-family;
+  font-size: $input-font-size;
+  font-weight: $input-font-weight;
+  line-height: $input-line-height;
+  color: $input-color;
+  text-align: left;
+  background-color: $input-bg;
+  background-clip: padding-box;
+  border: $input-border-width $input-border-style $input-border-color;
+  border-radius: $input-border-raidus;
+  box-shadow: $input-box-shadow;
+  transition: $input-transition;
+
+    &:focus {
+      color: $input-focus-color;
+      border: $input-focus-border-width $input-focus-border-style $input-focus-border-color;
+      background-color: $input-focus-bg;
+      box-shadow: $input-focus-box-shadow;
+
+        &::placeholder {
+          color: $input-focus-color;
+        }
+    }
+
+    &::placeholder {
+      color: $input-placeholder-color;
+      opacity: 1;
+      text-transform: $input-placeholder-text-transform;
+    }
+
+    &::-ms-expand {
+      background-color: transparent;
+      border: none;
+    }
+
+    &::-moz-focusring {
+      color: transparent;
+      text-shadow: 0 0 0 $input-color;
+    }
+
+    &:disabled,
+    &[readonly] {
+      background-color: $input-disabled-bg;
+      opacity: 1;
+    }
+}
+
+.form-row label.radio,
+.#{$input-prefix}-radio {
+  @extend .d-f, .ai-c, .gx-8, .fw-b, .tt-u, .ps-r;
+
+    &::before {
+      content: '';
+      flex: 0 0 auto;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background-color: $white;
+      border: 5px solid $white;
+      box-shadow: 0 0 0 $input-border-width $input-border-color
+    }
+}
+
+
+.#{$input-prefix} {
+
+    @at-root select#{&} {
+      @extend %select;
+    }
+
+    @at-root textarea#{&} {
+      height: $textarea-height;
+    }
+}
+
+#order_note_type {
+  @extend %select;
+}
+
+.input-text {
+
+    @at-root select#{&} {
+      @extend %select;
+    }
+
+    @at-root textarea#{&} {
+      padding-top: 5px;
+      height: $textarea-height;
+    }
+}
+
+.#{$input-prefix},
+.input-radio {
+
+    @at-root input[type=radio]#{&}, input[type=checkbox]#{&} {
+      visibility: hidden;
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+
+        &:checked + label:before {
+          background-color: $input-border-color;
+        }
+    }
+}
+
+
+.#{$input-prefix}-ac {
+  position: relative;
+  color: $input-color;
+  background-color: $input-bg;
+  border: $input-border-width $input-border-style $input-border-color;
+  border-radius: $input-border-raidus;
+  z-index: 10;
+
+    &-btn {
+      display: block;
+      width: 100%;
+      padding: $input-padding-y $input-padding-x;
+      height: $input-height;
+      font-family: $input-font-family;
+      font-size: $input-font-size;
+      font-weight: $input-font-weight;
+      line-height: $input-line-height;
+      color: $input-color;
+      text-align: left;
+      padding-right: 40px;
+      background: transparent $select-arrow no-repeat calc(100% - #{$select-arrow-space}) center;
+    }
+
+    &-dd {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      margin-top: $input-border-width;
+      border: $input-border-width $input-border-style $input-border-color;
+      border-top: 0;
+      @include border-bottom-radius($input-border-raidus);
+      background-color: $body-bg;
+    }
+
+    &-fr {
+      max-height: 300px;
+      overflow: auto;
+    }
+
+
+}
+
+.form-row {
+  flex: 0 0 100%;
+  width: 100%;
+
+    &-first,
+    &-last {
+      flex: 0 0 auto;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: $font-weight-bold;
+    }
+
+    select {
+      @extend %select;
+    }
+
+    &.speedy_shipping_to {
+
+      .woocommerce-input-wrapper {
+        padding: 2px;
+        @extend .d-f, .f-w, .g-20;
+      }
+
+      label {
+        float: none;
+        padding-right: 0
+      }
+    }
+}
+
+#econt_edit_receiver_address,
+#speedy_edit_recipient_address form {
+  @extend .d-f, .f-w, .jc-sb, .gy-10, .of-h;
+}

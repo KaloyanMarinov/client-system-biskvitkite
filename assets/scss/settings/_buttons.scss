@@ -1,0 +1,40 @@
+//
+// Buttons
+//
+$btn-prefix          : 'button';
+$btn-height          : 46px;
+$btn-padding-y       : null;
+$btn-padding-x       : 30px;
+$btn-font-size       : 16px;
+$btn-line-height     : null;
+$btn-letter-spacing  : 1px;
+$btn-border-radius   : 5px;
+$btn-font-family     : $headings-font-family;
+$btn-font-weight     : $font-weight-bold;
+$btn-color           : $white;
+$btn-decoration      : none;
+$btn-hover-decoration: none;
+$btn-transform       : uppercase;
+$btn-white-space     : null;
+$btn-border-width    : 2px;
+$btn-background-color: transparent;
+$btn-border-style    : solid;
+$btn-border-color    : transparent;
+$btn-transition      : background-color 350ms ease-in-out, color 350ms ease-in-out, border-color 350ms ease-in-out;
+$btn-disabled-opacity: .5;
+
+
+//
+// Small Button
+//
+$btn-sm-height        : 40px;
+$btn-sm-padding-y     : null;
+$btn-sm-padding-x     : 15px;
+$btn-sm-font-size     : 14px;
+$btn-sm-transform     : null;
+$btn-sm-line-height   : $btn-line-height;
+$btn-sm-letter-spacing: null;
+$btn-sm-border-radius : $btn-border-radius;
+$btn-sm-border-width  : 1px;
+$btn-sm-border-style  : $btn-border-style;
+$btn-sm-border-color  : $btn-border-color;

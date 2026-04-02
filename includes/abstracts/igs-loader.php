@@ -7,20 +7,10 @@
  * @since      1.0.0
  *
  * @package    IGS_Client_System
- * @subpackage IGS_Client_System/includes
- */
+ * @subpackage IGS_Client_System/Abstracts
+*/
 
-/**
- * Register all actions and filters for the plugin.
- *
- * Maintain a list of all hooks that are registered throughout
- * the plugin, and register them with the WordPress API. Call the
- * run function to execute the list of actions and filters.
- *
- * @package    IGS_Client_System
- * @subpackage IGS_Client_System/includes
- * @author     igamingsolutions.com <support@igamingsolutions.com>
- */
+defined( 'ABSPATH' ) || exit;
 
 abstract class IGS_CS_Loader {
 
@@ -121,7 +111,7 @@ abstract class IGS_CS_Loader {
 
     if ( $this->filters ) {
       foreach ( $this->filters as $hook ) {
-        if ( ! empty( $hook['component'] ) && is_object( $hook['component'] ) ) {
+        if ( ! empty( $hook['component'] ) ) {
 					add_filter( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
 					} else {
 					add_filter( $hook['hook'], $hook['callback'], $hook['priority'], $hook['accepted_args'] );
@@ -131,7 +121,7 @@ abstract class IGS_CS_Loader {
 
     if ( $this->actions ) {
       foreach ( $this->actions as $hook ) {
-        if ( ! empty( $hook['component'] ) && is_object( $hook['component'] ) ) {
+        if ( ! empty( $hook['component'] ) ) {
 					add_action( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
 					} else {
 					add_action( $hook['hook'], $hook['callback'], $hook['priority'], $hook['accepted_args'] );

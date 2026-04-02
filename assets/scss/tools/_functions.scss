@@ -1,0 +1,98 @@
+@use 'sass:math';
+
+// Ascending
+// Used to evaluate Sass maps like our grid breakpoints.
+@mixin _assert-ascending($map, $map-name) {
+  $prev-key: null;
+  $prev-num: null;
+  @each $key, $num in $map {
+    @if $prev-num == null or unit($num) == "%" or unit($prev-num) == "%" {
+      // Do nothing
+    } @else if not comparable($prev-num, $num) {
+      @warn "Potentially invalid value for #{$map-name}: This map must be in ascending order, but key '#{$key}' has value #{$num} whose unit makes it incomparable to #{$prev-num}, the value of the previous key '#{$prev-key}' !";
+    } @else if $prev-num >= $num {
+      @warn "Invalid value for #{$map-name}: This map must be in ascending order, but key '#{$key}' has value #{$num} which isn't greater than #{$prev-num}, the value of the previous key '#{$prev-key}' !";
+    }
+    $prev-key: $key;
+    $prev-num: $num;
+  }
+}
+
+// Starts at zero
+// Used to ensure the min-width of the lowest breakpoint starts at 0.
+@mixin _assert-starts-at-zero($map, $map-name: "$grid-breakpoints") {
+  @if length($map) > 0 {
+    $values: map-values($map);
+    $first-value: nth($values, 1);
+    @if $first-value != 0 {
+      @warn "First breakpoint in #{$map-name} must start at 0, but starts at #{$first-value}.";
+    }
+  }
+}
+
+@function rem($pixels, $context: 16) {
+	$pixels: strip-units($pixels);
+
+  @return math.div($pixels, $context) * 1rem;
+}
+
+@function em($pixels, $context: 16) {
+	$pixels: strip-units($pixels);
+
+  @return math.div($pixels, $context) * 1em;
+}
+
+@function fade($color, $opacity) {
+  @return rgba($color, ($opacity * 0.01));
+}
+
+@function strip-units($number) {
+  @return math.div($number, ($number * 0 + 1));
+}
+
+@function theme-color($key: 'c1') {
+  @return map-get($theme-colors, $key);
+}
+
+// Color contrast
+@function color-yiq($color, $dark: $yiq-text-dark, $light: $yiq-text-light) {
+  $r: red($color);
+  $g: green($color);
+  $b: blue($color);
+
+  $yiq: (($r * 299) + ($g * 587) + ($b * 114)) * 0.001;
+
+  @if ($yiq >= $yiq-contrasted-threshold) {
+    @return $dark;
+  } @else {
+    @return $light;
+  }
+}
+
+@function str-replace($string, $search, $replace: '') {
+  $index: str-index($string, $search);
+
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+  }
+
+  @return $string;
+}
+
+@function escape-svg($svg: string) {
+  $encoded: '';
+  $slice: 2000;
+  $index: 0;
+  $loops: ceil(math.div(str-length($svg), $slice));
+  @for $i from 1 through $loops {
+    $chunk: str-slice($svg, $index, $index + $slice - 1);
+    $chunk: str-replace($chunk, '"', '\'');
+    $chunk: str-replace($chunk, '<', '%3C');
+    $chunk: str-replace($chunk, '>', '%3E');
+    $chunk: str-replace($chunk, '&', '%26');
+    $chunk: str-replace($chunk, '#', '%23');
+    $encoded: #{$encoded}#{$chunk};
+    $index: $index + $slice;
+  }
+  @return url("data:image/svg+xml;charset=utf8,#{$encoded}");
+}

@@ -1,0 +1,14 @@
+.ih {
+  @extend .of-h;
+
+    img {
+      transition: $default-transition;
+    }
+
+    @include media-breakpoint-up(md) {
+
+        &:hover img {
+          transform: scale(1.1);
+        }
+    }
+}

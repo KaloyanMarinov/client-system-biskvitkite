@@ -1,0 +1,43 @@
+//
+// Overflow
+//
+@use 'sass:list';
+
+@mixin make-overflow($overflow) {
+  overflow: $overflow;
+}
+
+@mixin make-overflows($overflows: $overflows, $breakpoints: $grid-breakpoints) {
+  @each $key, $value in $overflows {
+    .#{$overflow-prefix}-#{$key} { @include make-overflow($value); }
+  }
+
+  @each $breakpoint in map-keys($breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $breakpoints);
+
+    @if(map-get($breakpoints, $breakpoint) > 0) {
+      @include media-breakpoint-up($breakpoint, $breakpoints) {
+        $media: map-get($media-prefix, up);
+        @each $key, $value in $overflows {
+          .#{$overflow-prefix}-#{$media}#{$infix}-#{$key} { @include make-overflow($value); }
+        }
+      }
+
+      @if(map-get($breakpoints, $breakpoint) != list.nth(list.nth($grid-breakpoints, -1), 2)) {
+        @include media-breakpoint-down($breakpoint, $breakpoints) {
+          $media: map-get($media-prefix, down);
+          @each $key, $value in $overflows {
+            .#{$overflow-prefix}-#{$media}#{$infix}-#{$key} { @include make-overflow($value); }
+          }
+        }
+      }
+    }
+
+    @include media-breakpoint-only($breakpoint, $breakpoints) {
+      $media: map-get($media-prefix, only);
+      @each $key, $value in $overflows {
+        .#{$overflow-prefix}-#{$media}#{$infix}-#{$key} { @include make-overflow($value); }
+      }
+    }
+  }
+}
