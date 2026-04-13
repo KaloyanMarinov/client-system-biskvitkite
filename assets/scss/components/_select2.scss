@@ -1,6 +1,5 @@
 .select2-container {
   display: block;
-  width: 100% !important;
 }
 
 .select2-container--default {
@@ -18,7 +17,7 @@
         .select2-selection__rendered {
           display: flex;
           align-items: center;
-          height: $input-height;
+          height: $input-height - $input-border-width * 2;
           color: $input-color;
           line-height: 1;
           padding-left: $input-padding-x;

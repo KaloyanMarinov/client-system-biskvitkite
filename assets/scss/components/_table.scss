@@ -1,0 +1,50 @@
+.table,
+.woocommerce_subscriptions_related_orders {
+  width: 100%;
+
+    th, td {
+      padding: 10px 14px;
+      border: 1px solid currentColor;
+    }
+
+    thead {
+
+        td, th {
+          color: $white;
+          background-color: $color-1;
+          border-color: $color-1;
+
+            &:not(:last-child) {
+              border-right-color: currentColor;
+            }
+        }
+    }
+
+    tbody {
+
+        tr {
+
+          &:nth-child(even) {
+
+              th, td {
+                background-color: $color-5;
+              }
+          }
+        }
+    }
+
+    a {
+      color: $color-1;
+      text-decoration: none;
+
+        &:hover {
+          color: $link-color;
+          text-decoration: $link-hover-decoration
+        }
+    }
+}
+
+.table,
+.woocommerce_subscriptions_related_orders table {
+  width: 100%;
+}

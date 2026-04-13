@@ -34,8 +34,8 @@
     </div>
 
     <div class="d-f ai-c g-5 fs-14">
-      <p class="f-a"><?php _e('Type', 'igs-client-system'); ?></p>
-      <p class="f-1 ta-r fw-sb">Обикновен</p>
+      <p class="f-a"><?php _e('Price list', 'igs-client-system'); ?></p>
+      <p class="f-1 ta-r fw-sb"><?php echo $user->igs_get_price_list_label(); ?></p>
     </div>
 
     <div class="d-f ai-c g-5 fs-14">
@@ -46,6 +46,11 @@
     <div class="d-f ai-c g-5 fs-14">
       <p class="f-a"><?php _e('Orders', 'igs-client-system'); ?></p>
       <p class="f-1 ta-r fw-sb"><?php echo $user->igs_order_count(); ?></p>
+    </div>
+
+    <div class="d-f ai-c g-5 fs-14">
+      <p class="f-a"><?php _e('Uncollected Orders', 'igs-client-system'); ?></p>
+      <p class="f-1 ta-r fw-sb"><?php echo $user->igs_order_returned_count(); ?></p>
     </div>
 
     <?php echo $user->igs_get_edit_button(); ?>

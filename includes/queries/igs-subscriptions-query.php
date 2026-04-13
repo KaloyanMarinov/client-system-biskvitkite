@@ -75,7 +75,7 @@ class IGS_CS_Subscriptions_Query extends IGS_CS_Post_Query {
 
 			$meta_params = array(
 				'igs_next_date' => $this->get_next_data_param(),
-				'igs_client'    => $this->get_client_param()
+				'igs_customer'    => $this->get_customer_param()
       );
 		}
 
@@ -132,19 +132,13 @@ class IGS_CS_Subscriptions_Query extends IGS_CS_Post_Query {
     return $this->igs_set_meta_param('_schedule_next_payment', $value, $compare, 'DATETIME');
   }
 
-  protected function get_client_param() {
+  protected function get_customer_param() {
 
-    if ( ! $client = $this->igs_get_param('igs_client') )
+    if ( ! $customer = $this->igs_get_param('igs_customer') )
       return;
 
-    $params = array(
-      'relation' => 'OR',
-      $this->igs_set_meta_param('_billing_first_name', $client, 'LIKE'),
-      $this->igs_set_meta_param('_billing_last_name', $client, 'LIKE'),
-      $this->igs_set_meta_param('_billing_email', $client, 'LIKE'),
-    );
+    return $this->igs_set_meta_param('_customer_user', $customer);
 
-    return $params;
   }
 
 }

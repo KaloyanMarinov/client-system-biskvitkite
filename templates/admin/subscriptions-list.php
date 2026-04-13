@@ -24,13 +24,13 @@
         while ( $module->get_query()->have_posts() ) : $module->get_query()->the_post();
           igs_cs_get_template( 'admin/loop/list-subscription' );
         endwhile;
-        wp_reset_query();
       ?>
     </div>
-
-    <?php echo $module->get_pagination(); ?>
-  <?php } else { ?>
-    <p><?php _e('Not Fount Subscriptions', 'igs-client-system'); ?></p>
+  <?php
+    echo $module->get_pagination();
+      wp_reset_query();
+    } else { ?>
+    <p><?php _e('No Subscriptions Found', 'igs-client-system'); ?></p>
   <?php } ?>
 
 </main>

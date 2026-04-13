@@ -14,7 +14,7 @@
  * @author     igamingsolutions.com <support@igamingsolutions.com>
  *
  */
-class IGS_CS_Admin_Subscriptions extends IGS_CS_Loader {
+class IGS_CS_Admin_Subscriptions {
 
   /**
    * The single instance of the Admin class.
@@ -49,6 +49,7 @@ class IGS_CS_Admin_Subscriptions extends IGS_CS_Loader {
     require_once IGS_CS_ABSPATH . '/admin/components/igs-admin-list-subscription.php';
     require_once IGS_CS_ABSPATH . '/admin/components/igs-admin-schedule.php';
     require_once IGS_CS_ABSPATH . '/admin/components/igs-admin-users.php';
+    require_once IGS_CS_ABSPATH . '/admin/components/igs-admin-export.php';
 
   }
 
@@ -80,6 +81,16 @@ class IGS_CS_Admin_Subscriptions extends IGS_CS_Loader {
    */
   public function get_users() {
     return IGS_CS_Users::instance();
+  }
+
+  /**
+   * Get Users Component.
+   *
+   * @since  1.0.0
+   * @return IGS_CS_Export
+   */
+  public function get_export() {
+    return IGS_CS_Export::instance();
   }
 
   /**

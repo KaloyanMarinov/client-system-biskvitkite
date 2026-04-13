@@ -4,6 +4,11 @@ import { Bulgarian } from "flatpickr/dist/l10n/bg.js"
 class Script {
 
   constructor() {
+    this.dataPicker();
+    this.toggleExportPeriod();
+  }
+
+  dataPicker() {
     flatpickr('.js-datepicker', {
       locale: Bulgarian,
       dateFormat: 'd.m.Y',
@@ -49,6 +54,22 @@ class Script {
       }
     });
   }
+
+  toggleExportPeriod() {
+    const selectStatus = document.querySelector('.igs_export_sub_status select') as HTMLSelectElement;
+    const selectPeriod = document.querySelector('.igs_export_sub_period') as HTMLElement;
+
+    if (selectStatus && selectPeriod) {
+      selectStatus.addEventListener('change', () => {
+        if (selectStatus.value !== 'wc-active') {
+          selectPeriod.style.display = 'none';
+        } else {
+          selectPeriod.style.display = '';
+        }
+      });
+    }
+  }
+
 }
 
 new Script;

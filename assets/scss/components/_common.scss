@@ -10,3 +10,70 @@
 .loader {
   background: url('#{$images-icons}loader.gif') no-repeat center / 32px 32px;
 }
+
+.order-status {
+  display: inline-flex;
+  font-size: 12px;
+  padding: 4px;
+  border-radius: 4px;
+  color: #454545;
+  white-space: nowrap;
+  background: #e5e5e5;
+  border-bottom: 1px solid rgba($black, .05);
+}
+
+.status-completed {
+  color: #003d66;
+  background-color: #c8d7e1;
+}
+
+.status-processing,
+.status-active {
+  color: #2c4700;
+  background: #c6e1c6;
+}
+
+.status-on-hold {
+  color: #570000;
+  background: #eba3a3;
+}
+
+.status-failed {
+  color: #573b00;
+  background: #f8dda7;
+}
+
+.status-trash {
+  color: #550202;
+  background: #eba3a3;
+}
+
+.status-returned {
+  color: #fff;
+  background: #ff0044;
+}
+
+.status-sending {
+  color: #fff;
+  background: #389ef7;
+}
+
+.igs-main {
+
+    .notice {
+      display: block;
+    }
+}
+
+.notice {
+  font-weight: $font-weight-bold;
+  font-size: 14px;
+
+    &-success {
+      color: #00a32a;
+    }
+
+    &-error {
+      color: #d63638;
+    }
+}

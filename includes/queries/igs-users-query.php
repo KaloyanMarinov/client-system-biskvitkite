@@ -6,25 +6,24 @@
  * @since      1.0.0
  *
  * @package    IGS_Client_System
- * @subpackage IGS_Client_System/Abstracts
+ * @subpackage IGS_Client_System/Queries
  *
  */
-
 defined( 'ABSPATH' ) || exit;
 
-abstract class IGS_CS_Query extends IGS_CS_Post_Params {
+class IGS_CS_Users_Query extends IGS_CS_Users_Params {
 
   /**
-	 * Stores Params data.
+	 * Users Params data.
 	 *
 	 * @var array
 	 */
 	protected $query_args = array();
 
 	/**
-	 * Stores Params data.
+	 * Users data.
 	 *
-	 * @var WP_Query
+	 * @var WP_User_Query
 	 */
 	protected $query;
 
@@ -36,12 +35,11 @@ abstract class IGS_CS_Query extends IGS_CS_Post_Params {
 
 			if ( method_exists( $this, $key ) ) {
         $value = $this->$key();
+
 				if ( is_null( $value ) )
 					return;
 
         $query_args = array_merge( $query_args, $value );
-      } elseif ( $this->igs_get_param( $key ) && $this->igs_get_tax_query() && $this->igs_get_tax_query_param( $key ) ) {
-        $query_args['tax_query'][] = $this->igs_get_tax_query_param( $key ) ;
       } elseif ( ! is_null( $this->igs_get_param( $key ) ) && $this->igs_get_meta_query() && $this->igs_get_meta_param( $key ) ) {
         $query_args['meta_query'][] = $this->igs_get_meta_param( $key ) ;
       }
@@ -49,6 +47,18 @@ abstract class IGS_CS_Query extends IGS_CS_Post_Params {
 
     return $query_args;
   }
+
+
+	/**
+	 * Get the default query params.
+	 *
+	 * @return array
+	 */
+	protected function igs_get_default_query_args() {
+
+		return array(  );
+
+	}
 
 	/**
 	 * Create a new query.
@@ -60,16 +70,12 @@ abstract class IGS_CS_Query extends IGS_CS_Post_Params {
     parent::__construct( $params );
 
 		$this->igs_set_query_args();
+		$this->igs_set_paged();
+
+		$this->query = new WP_User_Query( $this->igs_get_query_args() );
 
 	}
 
-  /*
-	|--------------------------------------------------------------------------
-	| Getters
-	|--------------------------------------------------------------------------
-	|
-	| Functions for getting query data.
-	*/
 
 	/**
 	 * Get the current params.
@@ -78,7 +84,7 @@ abstract class IGS_CS_Query extends IGS_CS_Post_Params {
 	 */
 	public function igs_get_query_args() {
 
-		return apply_filters( 'igs_query_args', $this->query_args );
+		return apply_filters( 'igs_users_query_args', $this->query_args );
 
 	}
 
@@ -102,66 +108,11 @@ abstract class IGS_CS_Query extends IGS_CS_Post_Params {
 	/**
 	 * Get WP_Query
 	 *
-	 * @return WP_Query
+	 * @return WP_User_Query
 	 */
   public function igs_get_query() {
 
     return $this->query;
-
-	}
-
-  /**
-	 * Get WP_Query Max Num Pages
-	 *
-	 * @return int
-	 */
-  public function igs_get_max_num_pages() {
-
-    return $this->igs_get_query()->max_num_pages;
-
-  }
-
-	/**
-	 * Get WP_Query Founds Posts
-	 *
-	 * @return int
-	 */
-  public function igs_get_found_posts() {
-
-    return $this->igs_get_query()->found_posts;
-
-  }
-
-	/**
-	 * Get WP_Query Post Count
-	 *
-	 * @return int
-	 */
-	public function igs_get_post_count() {
-
-    return $this->igs_get_query()->post_count;
-
-  }
-
-	/**
-	 * Get WP_Query Offset
-	 *
-	 * @return int
-	 */
-	public function igs_get_offset() {
-
-    return $this->igs_get_query()->offset;
-
-	}
-
-	/**
-	 * Get WP_Query Posts
-	 *
-	 * @return array
-	 */
-	public function igs_get_posts() {
-
-    return $this->igs_get_query()->posts;
 
 	}
 
@@ -170,10 +121,9 @@ abstract class IGS_CS_Query extends IGS_CS_Post_Params {
 	| Getters
 	|--------------------------------------------------------------------------
 	|
-	| Functions for getting query data.
+	| Functions for getting params data.
 	*/
-
-	/**
+  /**
 	 * Set a query args variable.
 	 */
 	protected function igs_set_query_args() {
@@ -197,6 +147,27 @@ abstract class IGS_CS_Query extends IGS_CS_Post_Params {
 	protected function igs_set_query_arg( $arg, $value ) {
 
 		$this->query_args[ $arg ] = $value;
+
+	}
+
+  protected function igs_set_paged( ) {
+
+    $paged = isset($_GET['paged']) ? $_GET['paged'] : 1;
+
+    $this->igs_set_query_arg( 'paged',  $paged);
+
+	}
+
+  protected function igs_set_meta_params() {
+
+		$meta_params = array();
+    $price_list = $this->igs_get_param('igs_price_list');
+
+		if ( ! is_null( $price_list ) ) {
+      $meta_params['igs_price_list'] = $this->igs_set_meta_param('price_list', $price_list, '=', 'NUMBER');
+    }
+
+    return apply_filters( 'igs_subscriptions_meta_params', $meta_params );
 
 	}
 

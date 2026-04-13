@@ -11,6 +11,9 @@
     return;
   }
 
+  $customer        = $subscription->igs_set_customer();
+  $returned_orders = $customer->igs_order_returned_count();
+
 ?>
 
 <div class="flc-3">
@@ -28,7 +31,7 @@
     <?php echo $subscription->igs_get_birthday_badge(); ?>
 
     <div class="d-f f-c gy-10">
-      <p class="fw-b fs-14"><?php echo $subscription->igs_get_billing_email(); ?></p>
+      <p class="fw-b fs-14"><?php echo $customer->igs_get_billing_email(); ?></p>
       <p class="fw-b fs-14"><?php echo $subscription->igs_get_billing_phone(); ?></p>
     </div>
 
@@ -60,6 +63,11 @@
     <div class="d-f ai-c g-5 fs-14">
       <p class="f-a"><?php _e('Orders', 'igs-client-system'); ?>:</p>
       <p class="f-1 ta-r fw-sb"><?php echo count( $subscription->get_related_orders() ); ?></p>
+    </div>
+
+    <div class="d-f ai-c g-5 fs-14 fw-b tt-u" <?php echo $returned_orders ? 'style="color: red"' : ''; ?>>
+      <p class="f-a"><?php _e('Uncollected Orders', 'igs-client-system'); ?>:</p>
+      <p class="f-1 ta-r"><?php echo $returned_orders; ?></p>
     </div>
 
     <div class="d-f ai-c g-5 fs-14">

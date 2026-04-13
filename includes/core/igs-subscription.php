@@ -467,6 +467,117 @@ class IGS_CS_Subscription extends WC_Subscription {
     return $can_be_updated;
   }
 
+  public static function related_orders_table_header_columns($columns) {
+
+    $columns = array(
+      esc_html__( 'Order #', 'igs-client-system' ),
+      esc_html__( 'Date', 'igs-client-system' ),
+      esc_html__( 'Type order', 'igs-client-system' ),
+      esc_html__( 'Status', 'igs-client-system' ),
+      esc_html__( 'Total', 'igs-client-system' ),
+      esc_html__( 'Actions', 'igs-client-system' ),
+    );
+
+    return $columns;
+
+  }
+
+  public static function related_orders_table_row( $order ) {
+    remove_action('wcs_related_orders_meta_box_rows', 'WCS_Meta_Box_Related_Orders::output_rows',  10);
+
+    $orders_to_display     = array();
+		$subscriptions         = array();
+		$initial_subscriptions = array();
+		$orders_by_type        = array();
+		$unknown_orders        = array(); // Orders which couldn't be loaded.
+		$is_subscription       = wcs_is_subscription( $order );
+		$this_order            = $order;
+
+		if ( $is_subscription ) {
+			$subscription    = wcs_get_subscription( $order );
+			$subscriptions[] = $subscription;
+
+			$initial_subscriptions         = wcs_get_subscriptions_for_resubscribe_order( $subscription );
+			$orders_by_type['resubscribe'] = WCS_Related_Order_Store::instance()->get_related_order_ids( $subscription, 'resubscribe' );
+		} else {
+			$subscriptions         = wcs_get_subscriptions_for_order( $order, array( 'order_type' => array( 'parent', 'renewal' ) ) );
+			$initial_subscriptions = wcs_get_subscriptions_for_order( $order, array( 'order_type' => array( 'resubscribe' ) ) );
+		}
+
+		foreach ( $subscriptions as $subscription ) {
+			if ( 1 === count( $subscriptions ) && $subscription->get_parent_id() ) {
+				$orders_by_type['parent'][] = $subscription->get_parent_id();
+			}
+			$orders_by_type['renewal'] = $subscription->get_related_orders( 'ids', 'renewal' );
+			$subscription->update_meta_data( '_relationship', __( 'Subscription', 'igs-client-system' ) );
+			$orders_to_display[] = $subscription;
+		}
+
+		foreach ( $initial_subscriptions as $subscription ) {
+			$subscription->update_meta_data( '_relationship', __( 'Initial Subscription', 'igs-client-system' ) );
+			$orders_to_display[] = $subscription;
+		}
+
+		foreach ( $orders_by_type as $order_type => $orders ) {
+			foreach ( $orders as $order_id ) {
+				$order = wc_get_order( $order_id );
+
+				switch ( $order_type ) {
+					case 'renewal':
+						$relation = __('Renewal', 'igs-client-system');
+						break;
+					case 'parent':
+						$relation = __('New Subscription', 'igs-client-system');
+						break;
+					case 'resubscribe':
+						$relation = wcs_is_subscription( $order ) ? __( 'Resubscribed Subscription', 'igs-client-system' ) : __( 'Resubscribe Order', 'igs-client-system' );
+						break;
+					default:
+						$relation = _x( 'Unknown Order Type', 'igs-client-system' );
+						break;
+				}
+
+				if ( $order ) {
+					$order->update_meta_data( '_relationship', $relation );
+					$orders_to_display[] = $order;
+				} else {
+					$unknown_orders[] = array(
+						'order_id' => $order_id,
+						'relation' => $relation,
+					);
+				}
+			}
+		}
+
+		if ( has_filter( 'woocommerce_subscriptions_admin_related_orders_to_display' ) ) {
+			wcs_deprecated_hook( 'woocommerce_subscriptions_admin_related_orders_to_display', 'subscriptions-core 5.1.0', 'wcs_admin_subscription_related_orders_to_display' );
+
+			$orders_to_display = apply_filters( 'woocommerce_subscriptions_admin_related_orders_to_display', $orders_to_display, $subscriptions, get_post( $this_order->get_id() ) );
+		}
+
+		$orders_to_display = apply_filters( 'wcs_admin_subscription_related_orders_to_display', $orders_to_display, $subscriptions, $this_order );
+
+		wcs_sort_objects( $orders_to_display, 'date_created', 'descending' );
+
+		foreach ( $orders_to_display as $order ) {
+			if ( $order->get_id() === $this_order->get_id() ) {
+				continue;
+			}
+
+			igs_cs_get_template( '/admin/part/related-orders-row', array( 'order' => $order ) );
+
+		}
+
+		foreach ( $unknown_orders as $order_and_relationship ) {
+			$order_id     = $order_and_relationship['order_id'];
+			$relationship = $order_and_relationship['relation'];
+
+			include WC_SUBSCRIPTIONS_CORE_PATH . 'admin/meta-boxes/views/html-unknown-related-orders-row.php';
+		}
+
+
+  }
+
   /**
    * Handle manual renewal action.
    *
@@ -495,6 +606,8 @@ class IGS_CS_Subscription extends WC_Subscription {
       wp_die( $renewal_order->get_error_message() );
     }
 
+    do_action( 'igs_renew_subscription', $renewal_order->get_id(), $renewal_order );
+
     $renewal_order->update_status( 'processing', __( 'Manual system renewal', 'igs-client-system' ) );
     $next_payment_date = $subscription->calculate_date( 'next_payment' );
     $subscription->update_dates( array(
@@ -505,7 +618,6 @@ class IGS_CS_Subscription extends WC_Subscription {
     wp_redirect( admin_url( 'post.php?post=' . $renewal_order->get_id() . '&action=edit' ) );
     exit;
   }
-
 
   public static function igs_handle_save_subscription() {
 
@@ -522,9 +634,34 @@ class IGS_CS_Subscription extends WC_Subscription {
       wp_die( __( 'Subscription not found.', 'igs-client-system' ) );
     }
 
+    $errors   = array();
+    $base_url = admin_url( 'admin.php?page='. IGS_CS()->admin()->menus()->get_subscriptions_slug() .'&action=edit&id=' . $sub_id);
+
+    $input_data['_billing_first_name']      = sanitize_text_field( $_POST['_billing_first_name'] );
+    $input_data['_billing_last_name']       = sanitize_text_field( $_POST['_billing_last_name'] );
+    $input_data['_billing_phone']           = sanitize_text_field( $_POST['_billing_phone'] );
+    $input_data['_billing_email']           = sanitize_email( $_POST['_billing_email'] );
+    $input_data['_billing_is_invoice']      = $_POST['_billing_is_invoice'];
+    $input_data['_billing_invoice_company'] = sanitize_text_field( $_POST['_billing_invoice_company'] );
+    $input_data['_billing_invoice_mol']     = sanitize_text_field( $_POST['_billing_invoice_mol'] );
+    $input_data['_billing_invoice_eik']     = sanitize_text_field( $_POST['_billing_invoice_eik'] );
+    $input_data['_billing_invoice_town']    = sanitize_text_field( $_POST['_billing_invoice_town'] );
+    $input_data['_billing_invoice_address'] = sanitize_text_field( $_POST['_billing_invoice_address'] );
+    $input_data['customer_note']            = sanitize_text_field( $_POST['customer_note'] );
+
+    if ( empty( $input_data['_billing_first_name'] ) ) $errors[] = 'first_name';
+    if ( empty( $input_data['_billing_last_name'] ) ) $errors[]  = 'last_name';
+    if ( empty( $input_data['_billing_phone'] ) ) $errors[]      = 'phone_number';
+
+    if ( empty( $input_data['_billing_email'] ) ) {
+      $errors[] = 'email_required';
+    } elseif ( ! is_email( $input_data['_billing_email'] ) ) {
+      $errors[] = 'email_invalid';
+    }
+
     if ( isset($_POST['start_timestamp_utc'] ) ) {
       if( empty( $_POST['start_timestamp_utc'] ) ) {
-        $_POST['start_timestamp_utc'] = 0;
+        $errors[] = 'start_date';
       } else {
         $_POST['start_timestamp_utc'] = strtotime( $_POST['start_timestamp_utc'] );;
       }
@@ -532,9 +669,9 @@ class IGS_CS_Subscription extends WC_Subscription {
 
     if ( isset($_POST['next_payment_timestamp_utc'] ) ) {
       if( empty( $_POST['next_payment_timestamp_utc'] ) ) {
-        $_POST['next_payment_timestamp_utc'] = 0;
+        $errors[] = 'next_date';
       } else {
-        $_POST['next_payment_timestamp_utc'] = strtotime( $_POST['next_payment_timestamp_utc'] );;
+        $_POST['next_payment_timestamp_utc'] = strtotime( $_POST['next_payment_timestamp_utc'] . '06:00:00' );
       }
     }
 
@@ -544,6 +681,20 @@ class IGS_CS_Subscription extends WC_Subscription {
       } else {
         $_POST['end_timestamp_utc'] = strtotime( $_POST['end_timestamp_utc'] );;
       }
+    }
+
+    if ( isset( $input_data['_billing_is_invoice'] ) && $input_data['_billing_is_invoice'] ) {
+      if ( empty ( $input_data['_billing_invoice_company'] ) ) $errors[] = 'invoice_company';
+      if ( empty ( $input_data['_billing_invoice_mol'] ) ) $errors[] = 'invoice_mol';
+      if ( empty ( $input_data['_billing_invoice_eik'] ) ) $errors[] = 'invoice_eik';
+      if ( empty ( $input_data['_billing_invoice_town'] ) ) $errors[] = 'invoice_town';
+      if ( empty ( $input_data['_billing_invoice_address'] ) ) $errors[] = 'invoice_address';
+    }
+
+    if ( ! empty( $errors ) ) {
+      set_transient('igs_edit_subscription_data_' . $sub_id, $input_data, 300);
+      wp_safe_redirect( add_query_arg( 'errors', implode( ',', $errors ), $base_url ) );
+      exit;
     }
 
     WCS_Meta_Box_Subscription_Data::save( $sub_id, get_post( $sub_id ) );
@@ -575,9 +726,17 @@ class IGS_CS_Subscription extends WC_Subscription {
       $subscription->add_order_note( sprintf( 'Методът за доставка е променен на: %s', $method_title ) );
     }
 
+    $subscription->update_meta_data( '_billing_invoice_company', $input_data['_billing_invoice_company'] );
+    $subscription->update_meta_data( '_billing_invoice_mol', $input_data['_billing_invoice_mol'] );
+    $subscription->update_meta_data( '_billing_invoice_eik', $input_data['_billing_invoice_eik'] );
+    $subscription->update_meta_data( '_billing_invoice_vatnum', $input_data['_billing_invoice_vatnum'] );
+    $subscription->update_meta_data( '_billing_invoice_mol', $input_data['_billing_invoice_mol'] );
+    $subscription->update_meta_data( '_billing_invoice_town', $input_data['_billing_invoice_town'] );
+    $subscription->update_meta_data( '_billing_invoice_address', $input_data['_billing_invoice_address'] );
+    $subscription->set_customer_note( $input_data['customer_note'] );
     $subscription->save();
 
-    wp_redirect( admin_url( 'admin.php?page=igs-subscriptions&action=edit&id=' . $sub_id . '&updated=true' ) );
+    wp_redirect( admin_url( 'admin.php?page='. IGS_CS()->admin()->menus()->get_subscriptions_slug() .'&action=edit&id=' . $sub_id . '&updated=true' ) );
     exit;
 
   }

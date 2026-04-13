@@ -15,16 +15,9 @@ class IGS_CS_Users {
    * The query handler instance.
    *
    * @since 1.0.0
-   * @var array|null
+   * @var IGS_CS_Users_Query |null
    */
-  protected $users = null;
-
-  /**
-	 * Stores Params data.
-	 *
-	 * @var array
-	 */
-	protected $params = array();
+  protected $igs_cs_query = null;
 
   /**
    * Singleton instance.
@@ -40,72 +33,38 @@ class IGS_CS_Users {
 
   public function __construct() {
 
-    $this->params = $this->get_params();
-    $this->users  = $this->get_users_only_subscription();
+    if ( is_null( $this->igs_cs_query ) ) {
+
+      $this->igs_cs_query = new IGS_CS_Users_Query ( $this->igs_get_params() );
+
+    }
+
+    return $this->igs_cs_query;
 
   }
 
-  public function get_params() {
+  public function igs_get_params() {
 
     $defaults = array(
-      'igs_orderby'  => 'date',
-      'igs_order'    => 'DESC',
-      'igs_per_page' => 32,
+      'igs_count_total' => true
     );
 
     return wp_parse_args( $_GET, $defaults );
 
   }
 
-  /**
-	 * Get the value of a params variable.
-	 *
-	 * @param string $param Params variable to get value for.
-	 * @param mixed  $default Default value if query variable is not set.
-	 * @return mixed Param variable value if set, otherwise default.
-	 */
-	public function get_param( $param, $default = null ) {
+  public function get_param( $param ) {
 
-		if ( ! isset( $this->params[ $param ] ) || $this->params[ $param ] == '' )
-			return $default;
-
-		return $this->params[ $param ];
-
-	}
-
-  protected function get_users_only_subscription() {
-
-    $cache_key    = 'igs_get_users' ;
-    $cached_users = wp_cache_get( $cache_key, 'igs_users' );
-
-    if ( false === $cached_users || ! is_array( $cached_users ) ) {
-
-      global $wpdb;
-
-      $cached_users = $wpdb->get_col( "
-        SELECT DISTINCT meta_value
-        FROM {$wpdb->postmeta}
-        WHERE meta_key = '_customer_user'
-        AND post_id IN (SELECT ID FROM {$wpdb->posts} WHERE post_type = 'shop_subscription')
-        AND meta_value > 0
-      " );
-
-      $base_expiration = MONTH_IN_SECONDS;
-      $random_offset   = mt_rand( 0, DAY_IN_SECONDS );
-      $expiration_time = $base_expiration + $random_offset;
-      wp_cache_set( $cache_key, $cached_users, 'igs_users', $expiration_time );
-
-    }
-
-    return $cached_users;
+    return $this->igs_cs_query->igs_get_param( $param );
 
   }
 
-  public function get_users() {
+  public function get_query() {
 
-    return $this->users;
+    return $this->igs_cs_query->igs_get_query();
 
   }
+
 
   /**
    * Get the query handler and execute the search.
@@ -115,20 +74,7 @@ class IGS_CS_Users {
    */
   public function no_found_rows() {
 
-    igs_cs_get_template('admin/part/found-results', array('results' => count( $this->get_users() )));
-
-  }
-
-  public function get_user_by_page() {
-
-    if ( ! $users = $this->get_users() )
-      return;
-
-    $paged    = isset( $_GET['paged'] ) ? $_GET['paged'] : 1;
-    $per_page = 24;
-    $offset   = $per_page * $paged;
-
-    return array_slice( $users, $offset, $per_page );
+    igs_cs_get_template('admin/part/found-results', array('results' => $this->get_query()->get_total() ));
 
   }
 
@@ -145,44 +91,30 @@ class IGS_CS_Users {
   }
 
   /**
-   * Render the filter active subscribtion template.
-   */
-  public function get_filter_active_subscriber() {
-
-    $options = array(
-      ''    => __('All', 'igs-client-system'),
-      'yes' => __('Yes', 'igs-client-system'),
-      'no'  => __('No', 'igs-client-system'),
-    );
-
-
-    $options = apply_filters( 'igs_cs_get_filter_active_subscriber', $options, $this );
-
-    $selected = $this->get_param( 'igs_active_subscriber' );
-
-    igs_cs_get_template( 'admin/part/filter-user-active_subscriber', array(
-      'options'  => $options,
-      'selected' => $selected
-    ) );
-
-  }
-
-  /**
    * Render the filter Sort template.
    */
-  public function get_filter_sort() {
+  public function get_filter_price_list() {
 
-    $sorts = apply_filters( 'igs_cs_user_filter_sort', array(
-      'name'   => __('Name', 'igs-client-system'),
-      'date'   => __('Date registered', 'igs-client-system'),
-      'orders' => __('Orders', 'igs-client-system'),
-    ), $this );
+    $name     = 'igs_price_list';
+    $label    = __('Price list', 'igs-client-system');
+    $selected = $this->get_param( $name );
+    $prices   = get_terms(array(
+      'taxonomy'   => 'product_prices_list',
+      'hide_empty' => false,
+      'fields'     => 'id=>name'
+    ));
 
-    $selected = $this->get_param( 'igs_orderby' );
+    $options = array(
+      ''  => __('All', 'igs-client-system' ),
+      '0' => __('Standard', 'igs-client-system' )
+    ) + $prices;
 
-    igs_cs_get_template( 'admin/part/filter-sort', array(
-      'sorts'   => $sorts,
-      'selected' => $selected
+    igs_cs_get_template( 'admin/part/filter-select', array(
+      'label'    => $label,
+      'name'     => $name,
+      'options'  => $options,
+      'selected' => $selected,
+      'class'    => ''
     ) );
 
   }
@@ -211,72 +143,88 @@ class IGS_CS_Users {
    */
   public function get_filter_per_page() {
 
-    $results_per_page = apply_filters( 'igs_cs_filter_per_page', array(8, 16, 24, 32, 40), $this );
+    $options = apply_filters( 'igs_cs_user_filter_number', array(8, 16, 24, 32, 40), $this );
 
-    $selected = $this->get_param( 'igs_per_page' );
+    $selected = $this->get_param( 'igs_number' );
 
-    igs_cs_get_template( 'admin/part/filter-results', array(
-      'results_per_page' => $results_per_page,
-      'selected'         => $selected
+    igs_cs_get_template( 'admin/part/filter-results-number', array(
+      'options'  => $options,
+      'selected' => $selected
     ) );
 
   }
 
   /**
-   * Render the filter name template.
+   * Render the filter client template.
    */
-  public function get_filter_name() {
+  public function get_filter_client() {
 
-    $label       = __('Name', 'igs-client-system');
-    $placeholder = esc_attr__( 'Enter name', 'igs-client-system' );
-    $name        = 'igs_name';
-    $value       = $this->get_param( $name );
+    $label       = __('Client', 'igs-client-system');
+    $placeholder = esc_attr__( 'Search for a customer&hellip;', 'woocommerce-subscriptions' );
+    $name        = 'igs_customer';
+    $value       = $this->get_param( $name, '' ) ?: '';
+    $selected   = '';
 
-    igs_cs_get_template( 'admin/part/filter-text', array(
+    if ( $value ) {
+      $user     = get_user_by( 'id', $value );
+      $selected = esc_html( $user->display_name ) . ' (#' . absint( $user->ID ) . ' &ndash; ' . esc_html( $user->user_email ) . ')';
+    }
+
+    igs_cs_get_template( 'admin/part/filter-user', array(
       'label'       => $label,
       'placeholder' => $placeholder,
       'name'        => $name,
+      'selected'    => $selected,
       'value'       => $value
     ) );
 
   }
 
   /**
-   * Render the filter email template.
+   * Render the pagination template.
+   * * Подаваме нужните данни за страниците директно към темплейта.
    */
-  public function get_filter_email() {
+  public function get_pagination() {
 
-    $label       = __('Email address', 'igs-client-system');
-    $placeholder = esc_attr__( 'Enter e-mail', 'igs-client-system' );
-    $name        = 'igs_email';
-    $value       = $this->get_param( $name );
+    $query = $this->get_query();
 
-    igs_cs_get_template( 'admin/part/filter-text', array(
-      'label'       => $label,
-      'placeholder' => $placeholder,
-      'name'        => $name,
-      'value'       => $value
-    ) );
+    $total_users = $query->get_total();
+    $users_per_page = $query->get('number');
+
+    $max_num_pages = ceil( $total_users / $users_per_page );
+
+    return igs_cs_get_pagination( $max_num_pages );
 
   }
 
-  /**
-   * Render the filter phone template.
-   */
-  public function get_filter_phone() {
+  public function igs_display_admin_notices() {
 
-    $label       = __('Phone number', 'igs-client-system');
-    $placeholder = esc_attr__( 'Enter phone number', 'igs-client-system' );
-    $name        = 'igs_phone';
-    $value       = $this->get_param( $name );
+    if ( isset( $_GET['updated'] ) ) {
+      wp_admin_notice(
+        __('Customer data updated successfully.', 'igs-client-system'),
+        array( 'type' => 'success', 'dismissible' => true )
+      );
+    }
 
-    igs_cs_get_template( 'admin/part/filter-text', array(
-      'label'       => $label,
-      'placeholder' => $placeholder,
-      'name'        => $name,
-      'value'       => $value
-    ) );
+    if ( isset( $_GET['errors'] ) ) {
+      $error_codes = explode( ',', $_GET['errors'] );
+      $map = array(
+        'first_name'     => __('First Name is a required field.', 'igs-client-system'),
+        'last_name'      => __('Last Name is a required field.', 'igs-client-system'),
+        'phone_number'   => __('Phone number is a required field.', 'igs-client-system'),
+        'email_required' => __('Email address is a required field.', 'igs-client-system'),
+        'email_invalid'  => __('The provided email format is invalid.', 'igs-client-system'),
+        'email_exists'   => __('This email is already registered to another client.', 'igs-client-system'),
+      );
 
+      echo '<div class="d-f f-c gy-10">';
+      foreach ( $error_codes as $code ) {
+        if ( isset( $map[ $code ] ) ) {
+          wp_admin_notice( $map[ $code ], array( 'type' => 'error', 'dismissible' => false ) );
+        }
+      }
+      echo '</div>';
+    }
   }
 
 }

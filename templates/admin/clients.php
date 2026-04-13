@@ -5,8 +5,6 @@
 
   /** @var \IGS_CS_Users $module */
 
-  $users = $module->get_user_by_page();
-
 ?>
 
 <main class="igs-main pb-50">
@@ -20,11 +18,18 @@
 
   <?php $module->get_filter( $clients_page ); ?>
 
-  <div class="flr gy-20">
-    <?php
-      foreach ($users as $user_id ) {
-        igs_cs_get_template( 'admin/loop/client' , array('user_id' => $user_id ) );
-      }
-    ?>
-  </div>
+  <?php if ( $users = $module->get_query()->get_results() ) { ?>
+    <div class="flr gy-20">
+      <?php
+        foreach ($users as $user_id ) {
+          igs_cs_get_template( 'admin/loop/client' , array('user_id' => $user_id ) );
+        }
+      ?>
+    </div>
+  <?php
+      echo $module->get_pagination();
+    } else {
+  ?>
+      <p><?php _e('No customers found.', 'igs-client-system'); ?></p>
+  <?php } ?>
 </main>

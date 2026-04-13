@@ -89,6 +89,7 @@
     }
 
     @at-root textarea#{&} {
+      padding-top: 10px;
       height: $textarea-height;
     }
 }

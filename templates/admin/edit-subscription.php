@@ -2,6 +2,8 @@
 
   defined( 'ABSPATH' ) || exit;
 
+  $module = IGS_CS()->admin()->subscriptions()->get_list();
+
   /** @var \IGS_CS_Subscription $subscription */
 
   // Check if the subscription is a valid IGS Subscription and ensure its visibility before proceeding.
@@ -9,7 +11,20 @@
     return;
   }
 
-  $customer = $subscription->igs_set_customer();
+  $first_name      = $temp_data ? $temp_data['_billing_first_name'] : $subscription->get_billing_first_name();
+  $last_name       = $temp_data ? $temp_data['_billing_last_name'] : $subscription->get_billing_last_name();
+  $phone           = $temp_data ? $temp_data['_billing_phone'] : $subscription->igs_get_billing_phone();
+  $email           = $temp_data ? $temp_data['_billing_email'] : $subscription->igs_get_billing_email();
+  $invoice_company = $temp_data ? $temp_data['_billing_invoice_company'] : $subscription->get_meta('_billing_invoice_company');
+  $invoice_mol     = $temp_data ? $temp_data['_billing_invoice_mol'] : $subscription->get_meta('_billing_invoice_mol');
+  $invoice_eik     = $temp_data ? $temp_data['_billing_invoice_eik'] : $subscription->get_meta('_billing_invoice_eik');
+  $invoice_vatnum  = $temp_data ? $temp_data['_billing_invoice_vatnum'] : $subscription->get_meta('_billing_invoice_vatnum');
+  $invoice_town    = $temp_data ? $temp_data['_billing_invoice_town'] : $subscription->get_meta('_billing_invoice_town');
+  $invoice_address = $temp_data ? $temp_data['_billing_invoice_address'] : $subscription->get_meta('_billing_invoice_address');
+  $customer_note   = $temp_data ? $temp_data['customer_note'] : $subscription->get_customer_note();
+
+  $customer        = $subscription->igs_set_customer();
+  $returned_orders = $customer->igs_order_returned_count();
 
 ?>
 
@@ -25,13 +40,13 @@
 
   <div class="flr">
     <div class="flc-8 d-f f-c gy-30">
+      <?php echo $module->igs_display_admin_notices(); ?>
       <form action="<?php echo admin_url('admin-post.php'); ?>" method="post" class="d-f f-c gy-25">
         <input type="hidden" name="action" value="igs_save_subscription_data">
         <input type="hidden" name="subscription_id" value="<?php echo $subscription->get_id(); ?>">
         <?php
           wp_nonce_field( 'igs_subscription_save_action', 'igs_subscription_save_nonce' );
           wp_nonce_field( 'woocommerce_save_data', 'woocommerce_meta_nonce' );
-          wp_nonce_field( 'igs_subscription_save_action', 'igs_subscription_save_nonce' );
         ?>
 
         <div class="d-f ai-c">
@@ -51,30 +66,40 @@
           <p><?php _e('Subscriber from', 'igs-client-system'); ?>: <?php echo $subscription->igs_get_months_subscriber(); ?></p>
         </div>
 
+        <?php if ( $returned_orders ) { ?>
+          <p class="fw-b tt-u fs-18" style="color: red"><?php _e('Uncollected Orders', 'igs-client-system'); ?>: <?php echo $returned_orders; ?></p>
+        <?php } ?>
+
         <div class="flr gy-25">
           <div class="flc-u-sm-6">
             <p class="fw-b mb-10"><?php _e('Client', 'igs-client-system') ?>:</p>
-            <?php
-							$user_string = '';
-							$user_id     = '';
 
-							if ( $subscription->get_user_id() && ( false !== get_userdata( $subscription->get_user_id() ) ) ) {
-								$user_id     = absint( $subscription->get_user_id() );
-								$user        = get_user_by( 'id', $user_id );
-								$user_string = esc_html( $user->display_name ) . ' (#' . absint( $user->ID ) . ' &ndash; ' . esc_html( $user->user_email ) . ')';
-							}
+            <div class="d-f gx-10">
+              <?php
+                $user_string = '';
+                $user_id     = '';
 
-							WCS_Select2::render(
-								array(
-									'class'       => 'wc-customer-search',
-									'name'        => 'customer_user',
-									'id'          => 'customer_user',
-									'placeholder' => esc_attr__( 'Search for a customer&hellip;', 'woocommerce-subscriptions' ),
-									'selected'    => $user_string,
-									'value'       => $user_id,
-								)
-							);
-						?>
+                if ( $subscription->get_user_id() && ( false !== get_userdata( $subscription->get_user_id() ) ) ) {
+                  $user_id     = absint( $subscription->get_user_id() );
+                  $user        = new IGS_CS_User( $user_id );
+
+                  $user_string = esc_html( $user->igs_display_name() ) . ' (#' . absint( $user_id ) . ' &ndash; ' . esc_html( $user->igs_get_email() ) . ')';
+                }
+
+                WCS_Select2::render(
+                  array(
+                    'class'       => 'wc-customer-search',
+                    'name'        => 'customer_user',
+                    'id'          => 'customer_user',
+                    'placeholder' => esc_attr__( 'Search for a customer&hellip;', 'woocommerce-subscriptions' ),
+                    'selected'    => $user_string,
+                    'value'       => $user_id,
+                  )
+                );
+
+                echo $user->igs_get_edit();
+              ?>
+            </div>
           </div>
 
           <div class="flc-u-md-3">
@@ -141,22 +166,27 @@
         <div class="flr gy-25">
           <div class="flc-u-sm-6">
             <p class="fw-b mb-10"><?php _e('First Name', 'igs-client-system') ?> *</p>
-            <input type="text" class="field" name="_billing_first_name" id="_billing_first_name" value="<?php echo $subscription->get_billing_first_name(); ?>">
+            <input type="text" class="field" name="_billing_first_name" id="_billing_first_name" value="<?php echo $first_name; ?>">
           </div>
 
           <div class="flc-u-sm-6">
             <p class="fw-b mb-10"><?php _e('Last Name', 'igs-client-system') ?> *</p>
-            <input type="text" class="field" name="_billing_last_name" id="_billing_last_name" value="<?php echo $subscription->get_billing_last_name(); ?>">
+            <input type="text" class="field" name="_billing_last_name" id="_billing_last_name" value="<?php echo $last_name; ?>">
           </div>
 
           <div class="flc-u-sm-6">
             <p class="fw-b mb-10"><?php _e('Phone number', 'igs-client-system') ?> *</p>
-            <input type="text" class="field" name="_billing_phone" id="_billing_phone" value="<?php echo $subscription->igs_get_billing_phone(); ?>">
+            <input type="text" class="field" name="_billing_phone" id="_billing_phone" value="<?php echo $phone; ?>">
           </div>
 
           <div class="flc-u-sm-6">
             <p class="fw-b mb-10"><?php _e('Email address', 'igs-client-system') ?> *</p>
-            <input type="text" class="field" name="_billing_email" id="_billing_email" value="<?php echo $subscription->igs_get_billing_email(); ?>">
+            <input type="text" class="field" name="_billing_email" id="_billing_email" value="<?php echo $email; ?>">
+          </div>
+
+          <div class="flc-u-">
+            <p class="fw-b mb-10"><?php _e('Customer note', 'igs-client-system') ?></p>
+            <textarea type="text" class="field" name="customer_note" placeholder="<?php esc_attr_e('Additional information for the order, such as allergens, special customer requirements, and others.', 'igs-client-system') ?>"><?php echo $customer_note; ?></textarea>
           </div>
 
           <div class="flc-12">
@@ -259,32 +289,32 @@
 
           <div class="flc-u-sm-6">
             <p class="fw-b mb-10"><?php _e('Company', 'igs-client-system') ?> *</p>
-            <input type="text" class="field" name="_billing_invoice_company" id="_billing_invoice_company" value="<?php echo $subscription->get_meta('_billing_invoice_company'); ?>">
+            <input type="text" class="field" name="_billing_invoice_company" id="_billing_invoice_company" value="<?php echo $invoice_company; ?>">
           </div>
 
           <div class="flc-u-sm-6">
             <p class="fw-b mb-10"><?php _e('Materially Responsible Person', 'igs-client-system') ?> *</p>
-            <input type="text" class="field" name="_billing_invoice_mol" id="_billing_invoice_mol" value="<?php echo $subscription->get_meta('_billing_invoice_mol'); ?>">
+            <input type="text" class="field" name="_billing_invoice_mol" id="_billing_invoice_mol" value="<?php echo $invoice_mol; ?>">
           </div>
 
           <div class="flc-u-sm-6">
             <p class="fw-b mb-10"><?php _e('UIC / Tax ID', 'igs-client-system') ?> *</p>
-            <input type="text" class="field" name="_billing_invoice_eik" id="_billing_invoice_eik" value="<?php echo $subscription->get_meta('_billing_invoice_eik'); ?>">
+            <input type="text" class="field" name="_billing_invoice_eik" id="_billing_invoice_eik" value="<?php echo $invoice_eik; ?>">
           </div>
 
           <div class="flc-u-sm-6">
             <p class="fw-b mb-10"><?php _e('VAT Number', 'igs-client-system') ?></p>
-            <input type="text" class="field" name="_billing_invoice_vatnum" id="_billing_invoice_vatnum" value="<?php echo $subscription->get_meta('_billing_invoice_vatnum'); ?>">
+            <input type="text" class="field" name="_billing_invoice_vatnum" id="_billing_invoice_vatnum" value="<?php echo $invoice_vatnum; ?>">
           </div>
 
           <div class="flc-u-sm-6">
             <p class="fw-b mb-10"><?php _e('Town', 'igs-client-system') ?> *</p>
-            <input type="text" class="field" name="_billing_invoice_town" id="_billing_invoice_town" value="<?php echo $subscription->get_meta('_billing_invoice_town'); ?>">
+            <input type="text" class="field" name="_billing_invoice_town" id="_billing_invoice_town" value="<?php echo $invoice_town; ?>">
           </div>
 
           <div class="flc-u-sm-6">
             <p class="fw-b mb-10"><?php _e('Address', 'igs-client-system') ?> *</p>
-            <input type="text" class="field" name="_billing_invoice_address" id="_billing_invoice_address" value="<?php echo $subscription->get_meta('_billing_invoice_address'); ?>">
+            <input type="text" class="field" name="_billing_invoice_address" id="_billing_invoice_address" value="<?php echo $invoice_address; ?>">
           </div>
         </div>
 
@@ -292,6 +322,10 @@
       </form>
 
       <?php do_action('woocommerce_admin_order_data_after_billing_address', $subscription); ?>
+
+      <h3><?php _ex('Orders for the subscription', 'edit', 'igs-client-system') ?></h3>
+
+      <?php WCS_Meta_Box_Related_Orders::output($subscription); ?>
     </div>
 
     <div class="flc-4 d-f f-c gy-30">
@@ -301,9 +335,5 @@
       </div>
     </div>
   </div>
-
-  <?php
-    // WCS_Meta_Box_Related_Orders::output($subscription);
-  ?>
 </main>
-<?php //igs_cs_print($subscription->igs_get_notes());
+<?php

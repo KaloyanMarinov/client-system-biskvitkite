@@ -14,7 +14,7 @@
  * @author     igamingsolutions.com <support@igamingsolutions.com>
  *
  */
-class IGS_CS_Admin {
+class IGS_CS_Admin_Product {
 
   /**
    * The single instance of the Admin class.
@@ -22,7 +22,7 @@ class IGS_CS_Admin {
    * @since 1.0.0
    * @access private
    * @static
-   * @var IGS_CS_Admin|null $_instance Singleton instance.
+   * @var IGS_CS_Admin_Product|null $_instance Singleton instance.
    */
   private static $_instance = null;
 
@@ -46,40 +46,20 @@ class IGS_CS_Admin {
    */
   private function includes() {
 
-    require_once IGS_CS_ABSPATH . '/admin/igs-admin-menus.php';
-    require_once IGS_CS_ABSPATH . '/admin/igs-admin-hooks.php';
-
-    require_once IGS_CS_ABSPATH . '/admin/igs-admin-order.php';
-    require_once IGS_CS_ABSPATH . '/admin/igs-admin-subscriptions.php';
-    require_once IGS_CS_ABSPATH . '/admin/igs-admin-product.php';
+    require_once IGS_CS_ABSPATH . '/admin/components/igs-admin-product-data.php';
 
   }
 
   /**
-	 * Get Subscriptions Class.
-	 *
-	 * @return IGS_CS_Admin_Order
-	 */
-  public function order() {
-    return IGS_CS_Admin_Order::instance();
-  }
-
-  /**
-	 * Get Admin Menu Class.
-	 *
-	 * @return IGS_CS_Admin_Menus
-	 */
-  public function menus() {
-    return IGS_CS_Admin_Menus::instance();
-  }
-
-  /**
-	 * Get Subscriptions Class.
-	 *
-	 * @return IGS_CS_Admin_Subscriptions
-	 */
-  public function subscriptions() {
-    return IGS_CS_Admin_Subscriptions::instance();
-  }
+   * Get Product Data Component.
+   *
+   * @since  1.0.0
+   * @return IGS_CS_Admin_Product
+   */
+  // public function get_product_data() {
+  //   return IGS_CS_Admin_Product_Data::instance();
+  // }
 
 }
+
+IGS_CS_Admin_Product::instance();

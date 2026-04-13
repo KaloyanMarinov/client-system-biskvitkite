@@ -120,10 +120,12 @@ class IGS_Client_System {
 
 		require_once IGS_CS_ABSPATH . '/includes/abstracts/igs-loader.php';
 		require_once IGS_CS_ABSPATH . '/includes/abstracts/igs-params.php';
+		require_once IGS_CS_ABSPATH . '/includes/abstracts/igs-users-params.php';
 		require_once IGS_CS_ABSPATH . '/includes/abstracts/igs-post-params.php';
 		require_once IGS_CS_ABSPATH . '/includes/abstracts/igs-query.php';
 		require_once IGS_CS_ABSPATH . '/includes/abstracts/igs-post.php';
 
+		require_once IGS_CS_ABSPATH . '/includes/queries/igs-users-query.php';
 		require_once IGS_CS_ABSPATH . '/includes/queries/igs-post-query.php';
 		require_once IGS_CS_ABSPATH . '/includes/queries/igs-subscriptions-query.php';
 

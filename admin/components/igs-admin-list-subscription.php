@@ -15,7 +15,7 @@ class IGS_CS_List_Subscription {
    * The query handler instance.
    *
    * @since 1.0.0
-   * @var IGS_CS_Query|null
+   * @var IGS_CS_Subscriptions_Query|null
    */
   protected $igs_cs_query = null;
 
@@ -35,7 +35,7 @@ class IGS_CS_List_Subscription {
 
     if ( is_null( $this->igs_cs_query ) ) {
 
-      $this->igs_cs_query = new IGS_CS_Subscriptions_Query( $this->igs_get_param() );
+      $this->igs_cs_query = new IGS_CS_Subscriptions_Query( $this->igs_get_params() );
 
     }
 
@@ -43,11 +43,12 @@ class IGS_CS_List_Subscription {
 
   }
 
-  public function igs_get_param() {
+  public function igs_get_params() {
 
     $defaults = array(
-      'igs_type'     => '4',
-      'igs_results'  => '',
+      'igs_type'    => '4',
+      'igs_results' => '',
+      'igs_order'   => 'ASC'
     );
 
     return wp_parse_args( $_GET, $defaults );
@@ -101,17 +102,22 @@ class IGS_CS_List_Subscription {
    */
   public function get_filter_sort() {
 
-    $sorts = apply_filters( 'igs_cs_filter_sort', array(
+    $name     = 'igs_orderby';
+    $label    = __('Sort by', 'igs-client-system');
+    $selected = $this->get_param( $name );
+
+    $options    = apply_filters( 'igs_cs_filter_sort', array(
       'date'      => __('Start Date', 'igs-client-system'),
-      'next_date' => __('Next Date', 'igs-client-system'),
+      'next_date' => _x('Next Date', 'filter', 'igs-client-system'),
       'last_date' => __('Last Date', 'igs-client-system'),
     ), $this );
 
-    $selected = $this->get_param( 'igs_orderby' );
-
-    igs_cs_get_template( 'admin/part/filter-sort', array(
-      'sorts'   => $sorts,
-      'selected' => $selected
+    igs_cs_get_template( 'admin/part/filter-select', array(
+      'label'    => $label,
+      'name'     => $name,
+      'options'  => $options,
+      'selected' => $selected,
+      'class'    => ''
     ) );
 
   }
@@ -218,27 +224,72 @@ class IGS_CS_List_Subscription {
   }
 
   /**
-   * Render the filter Client template.
+   * Render the filter client template.
    */
   public function get_filter_client() {
 
-    $value = $this->get_param( 'igs_client' );
+    $label       = __('Client', 'igs-client-system');
+    $placeholder = esc_attr__( 'Search for a customer&hellip;', 'woocommerce-subscriptions' );
+    $name        = 'igs_customer';
+    $value       = $this->get_param( $name, '' ) ?: '';
+    $selected   = '';
 
-    igs_cs_get_template( 'admin/part/filter-client', array(
-      'value' => $value
+    if ( $value ) {
+      $user     = get_user_by( 'id', $value );
+      $selected = esc_html( $user->display_name ) . ' (#' . absint( $user->ID ) . ' &ndash; ' . esc_html( $user->user_email ) . ')';
+    }
+
+    igs_cs_get_template( 'admin/part/filter-user', array(
+      'label'       => $label,
+      'placeholder' => $placeholder,
+      'name'        => $name,
+      'selected'    => $selected,
+      'value'       => $value
     ) );
 
   }
 
+
   /**
    * Render the pagination template.
-   * * Подаваме нужните данни за страниците директно към темплейта.
    */
   public function get_pagination() {
 
-    $query = $this->get_query();
+    return igs_cs_get_pagination( $this->igs_cs_query->igs_get_max_num_pages() );
 
-    return igs_cs_get_pagination( $query );
+  }
 
+  public function igs_display_admin_notices() {
+
+    if ( isset( $_GET['updated'] ) ) {
+      wp_admin_notice(
+        __('Subscription data updated successfully.', 'igs-client-system'),
+        array( 'type' => 'success', 'dismissible' => true )
+      );
+    }
+
+    if ( isset( $_GET['errors'] ) ) {
+      $error_codes = explode( ',', $_GET['errors'] );
+      $map = array(
+        'first_name'      => __('First Name is a required field.', 'igs-client-system'),
+        'last_name'       => __('Last Name is a required field.', 'igs-client-system'),
+        'phone_number'    => __('Phone number is a required field.', 'igs-client-system'),
+        'email_required'  => __('Email address is a required field.', 'igs-client-system'),
+        'email_invalid'   => __('The provided email format is invalid.', 'igs-client-system'),
+        'invoice_company' => __('The Inovice Company name is a required field.', 'igs-client-system'),
+        'invoice_mol'     => __('The Inovice Materially Responsible Person is a required field.', 'igs-client-system'),
+        'invoice_eik'     => __('The Inovice UIC / Tax ID is a required field.', 'igs-client-system'),
+        'invoice_town'    => __('The Inovice Town is a required field.', 'igs-client-system'),
+        'invoice_address' => __('The Inovice Address is a required field.', 'igs-client-system'),
+      );
+
+      echo '<div class="d-f f-c gy-10">';
+      foreach ( $error_codes as $code ) {
+        if ( isset( $map[ $code ] ) ) {
+          wp_admin_notice( $map[ $code ], array( 'type' => 'error', 'dismissible' => false ) );
+        }
+      }
+      echo '</div>';
+    }
   }
 }
