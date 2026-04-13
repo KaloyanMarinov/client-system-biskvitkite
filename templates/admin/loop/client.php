@@ -11,6 +11,8 @@
     return;
   }
 
+  $returned_orders = $user->igs_order_returned_count()
+
 ?>
 
 <div class="flc-3">
@@ -48,9 +50,9 @@
       <p class="f-1 ta-r fw-sb"><?php echo $user->igs_order_count(); ?></p>
     </div>
 
-    <div class="d-f ai-c g-5 fs-14">
+    <div class="d-f ai-c g-5 fs-14 fw-b tt-u" <?php echo $returned_orders ? 'style="color:red"' : ''; ?>>
       <p class="f-a"><?php _e('Uncollected Orders', 'igs-client-system'); ?></p>
-      <p class="f-1 ta-r fw-sb"><?php echo $user->igs_order_returned_count(); ?></p>
+      <p class="f-1 ta-r"><?php echo $returned_orders; ?></p>
     </div>
 
     <?php echo $user->igs_get_edit_button(); ?>

@@ -496,6 +496,56 @@ class IGS_CS_User {
 
   }
 
+  public static function igs_add_price_list_fields($user) {
+    $current_val = get_user_meta($user->ID, 'price_list', true);
+    $prices = get_terms(array(
+      'taxonomy'   => 'product_prices_list',
+      'hide_empty' => false,
+      'fields'     => 'id=>name'
+    ));
+
+    $options = array('0' => __('Standard', 'igs-client-system' )) + $prices;
+  ?>
+
+    <table class="form-table">
+      <tr class="user-price-list-wrap">
+        <th>
+          <label for="price_list"><?php _e('Price List', 'igs-client-system'); ?></label>
+        </th>
+        <td>
+          <select name="price_list" id="price_list">
+            <?php foreach ($options as $key => $value) { ?>
+              <option value="<?php echo $key; ?>" <?php selected($current_val, $key); ?>><?php echo $value; ?></option>
+            <?php } ?>
+          </select>
+        </td>
+      </tr>
+    </table>
+
+    <script>
+      jQuery(document).ready(function($) {
+        console.log('asd');
+        console.log($('.user-price-list-wrap'));
+        console.log($('.user-display-name-wrap'));
+        $('.user-price-list-wrap').insertAfter($('.user-display-name-wrap'));
+      });
+    </script>
+<?php
+  }
+
+  public static function igs_save_price_list_user_field($user_id) {
+
+    if ( ! current_user_can('edit_user', $user_id) ) {
+      return false;
+    }
+
+    if (isset($_POST['price_list'])) {
+      update_user_meta($user_id, 'price_list', sanitize_text_field($_POST['price_list']));
+    } else {
+      update_user_meta($user_id, 'price_list', 0);
+    }
+  }
+
   public static function igs_handle_save_user() {
 
     if ( ! current_user_can( 'manage_options' ) ) {

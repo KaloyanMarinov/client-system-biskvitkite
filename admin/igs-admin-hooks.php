@@ -71,6 +71,12 @@ class IGS_CS_Admin_Hooks extends IGS_CS_Loader {
     $this->add_action('save_post', $this, 'save_post_action', 10, 2 );
     $this->add_action('before_delete_post', $this, 'save_post_action', 10, 2 );
     $this->add_action('profile_update', $this, 'profile_update_action', 10, 3);
+    $this->add_action('user_new_form', 'IGS_CS_User', 'igs_add_price_list_fields', 10, 1);
+    $this->add_action('show_user_profile', 'IGS_CS_User', 'igs_add_price_list_fields', 10, 1);
+    $this->add_action('edit_user_profile', 'IGS_CS_User', 'igs_add_price_list_fields', 10, 1);
+    $this->add_action('personal_options_update', 'IGS_CS_User', 'igs_save_price_list_user_field');
+    $this->add_action('edit_user_profile_update', 'IGS_CS_User', 'igs_save_price_list_user_field');
+    $this->add_action('user_register', 'IGS_CS_User', 'igs_save_price_list_user_field');
     $this->add_action('wcs_related_orders_meta_box_rows', 'IGS_CS_Subscription', 'related_orders_table_row', 5 );
     $this->add_action('admin_post_igs_save_subscription_data', 'IGS_CS_Subscription', 'igs_handle_save_subscription', 10 );
     $this->add_action('admin_post_igs_save_user_data', 'IGS_CS_User', 'igs_handle_save_user', 10 );

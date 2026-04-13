@@ -40,8 +40,8 @@ echo '<Table>' . "\n";
 
 echo '<Column ss:Width="60"/>' . "\n";
 echo '<Column ss:Width="200"/>' . "\n";
+echo '<Column ss:Width="200"/>' . "\n";
 echo '<Column ss:Width="300"/>' . "\n";
-echo '<Column ss:Width="100"/>' . "\n";
 echo '<Column ss:Width="100"/>' . "\n";
 echo '<Column ss:Width="100"/>' . "\n";
 echo '<Column ss:Width="100"/>' . "\n";
