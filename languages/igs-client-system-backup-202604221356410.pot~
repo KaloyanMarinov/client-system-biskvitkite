@@ -1,0 +1,727 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Client System for Biskvitkite\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-22 12:40+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.8.3; wp-6.9.4; php-8.3.30\n"
+"X-Domain: igs-client-system"
+
+#: templates/admin/part/export-active-subscirptions-xls.php:58 templates/admin/part/export-subscirptions-xls.php:55 templates/admin/part/export-orders-xls.php:60 templates/admin/loop/list-subscription.php:39
+msgid "#"
+msgstr ""
+
+#: includes/core/igs-subscription.php:267
+msgid "%d day"
+msgid_plural "%d days"
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/admin/part/export-active-subscirptions-xls.php:83 templates/admin/part/export-subscirptions-xls.php:82 templates/admin/part/export-orders-xls.php:84
+msgid "%d piece"
+msgid_plural "%d pieces"
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/admin/part/found-results.php:11
+msgid "%d Result"
+msgid_plural "%d Results"
+msgstr[0] ""
+msgstr[1] ""
+
+#: admin/hooks/igs-admin-product-hooks.php:100
+msgid "A link to a price list."
+msgstr ""
+
+#: includes/core/igs-subscription.php:478 templates/admin/part/user-subscriptions-table.php:14 templates/admin/part/user-orders-table.php:15
+msgid "Actions"
+msgstr ""
+
+#: templates/admin/edit-user.php:52 templates/admin/part/filter-user-active_subscriber.php:8 templates/admin/loop/client.php:44
+msgid "Active subscriber"
+msgstr ""
+
+#: admin/hooks/igs-admin-product-hooks.php:96
+msgid "Add new list"
+msgstr ""
+
+#: templates/admin/edit-subscription.php:189
+msgid "Additional information for the order, such as allergens, special customer requirements, and others."
+msgstr ""
+
+#: admin/igs-admin-order.php:93 admin/igs-admin-order.php:104 admin/igs-admin-order.php:168 templates/admin/edit-subscription.php:316
+msgid "Address"
+msgstr ""
+
+#: admin/hooks/igs-admin-product-hooks.php:89
+msgctxt "Admin menu name"
+msgid "Prices List"
+msgstr ""
+
+#: admin/components/igs-admin-users.php:108 admin/components/igs-admin-list-subscription.php:194 includes/core/igs-subscription.php:412
+msgid "All"
+msgstr ""
+
+#: admin/hooks/igs-admin-product-hooks.php:91
+msgid "All Prices List"
+msgstr ""
+
+#: includes/core/igs-subscription.php:336
+msgid "Are you sure you want to create a renewal order?"
+msgstr ""
+
+#: admin/components/igs-admin-users.php:128 admin/components/igs-admin-list-subscription.php:131
+msgid "Ascending"
+msgstr ""
+
+#. Description of the plugin
+msgid "Biskvitkite.bg client management extension"
+msgstr ""
+
+#: admin/components/igs-admin-users.php:162 admin/components/igs-admin-list-subscription.php:231 templates/admin/edit-subscription.php:75 templates/admin/part/filter-client.php:8
+msgid "Client"
+msgstr ""
+
+#: templates/admin/edit-user.php:44
+msgid "Client #"
+msgstr ""
+
+#. Name of the plugin
+msgid "Client System for Biskvitkite"
+msgstr ""
+
+#: includes/igs-client-system.php:74
+msgid "Cloning is forbidden"
+msgstr ""
+
+#: templates/admin/edit-subscription.php:291
+msgid "Company"
+msgstr ""
+
+#: admin/components/igs-admin-product-data.php:61 templates/admin/part/export-active-subscirptions-xls.php:59 templates/admin/part/export-subscirptions-xls.php:56 templates/admin/part/export-orders-xls.php:62
+msgid "Customer"
+msgstr ""
+
+#: admin/components/igs-admin-users.php:204
+msgid "Customer data updated successfully."
+msgstr ""
+
+#: includes/core/igs-user.php:556
+msgid "Customer not found."
+msgstr ""
+
+#: templates/admin/edit-subscription.php:188
+msgid "Customer note"
+msgstr ""
+
+#: admin/igs-admin-menus.php:138 admin/igs-admin-menus.php:139 admin/igs-admin-menus.php:351 templates/admin/header.php:19
+msgid "Customers"
+msgstr ""
+
+#: templates/admin/header.php:9
+msgid "Dashborad"
+msgstr ""
+
+#: includes/core/igs-subscription.php:474 templates/admin/schedule-calendar.php:28 templates/admin/part/user-subscriptions-table.php:11 templates/admin/part/export-orders-xls.php:69 templates/admin/part/user-orders-table.php:11
+msgid "Date"
+msgstr ""
+
+#: templates/admin/edit-user.php:47
+msgid "Date registered"
+msgstr ""
+
+#: admin/components/igs-admin-list-subscription.php:200
+msgid "Delayed"
+msgstr ""
+
+#: templates/admin/part/export-active-subscirptions-xls.php:65 templates/admin/part/export-subscirptions-xls.php:62 templates/admin/part/export-orders-xls.php:71 templates/admin/loop/list-subscription.php:74
+msgid "Delivery"
+msgstr ""
+
+#: templates/admin/edit-subscription.php:193
+msgid "Delivery Method"
+msgstr ""
+
+#: admin/components/igs-admin-users.php:129 admin/components/igs-admin-list-subscription.php:132
+msgid "Descending"
+msgstr ""
+
+#: includes/igs-client-system.php:83
+msgid "Deserialization of instances of this class is forbidden!"
+msgstr ""
+
+#: templates/admin/part/export-filter.php:22 templates/admin/part/export-filter.php:40
+msgid "Download XLS"
+msgstr ""
+
+#: includes/core/igs-user.php:445
+msgid "Edit"
+msgstr ""
+
+#: templates/admin/edit-subscription.php:164
+msgctxt "edit"
+msgid "Delivery"
+msgstr ""
+
+#: templates/admin/edit-subscription.php:239
+msgctxt "edit"
+msgid "Invoice"
+msgstr ""
+
+#: templates/admin/edit-user.php:107
+msgctxt "edit"
+msgid "Orders"
+msgstr ""
+
+#: templates/admin/edit-subscription.php:326
+msgctxt "edit"
+msgid "Orders for the subscription"
+msgstr ""
+
+#: templates/admin/edit-subscription.php:137
+msgctxt "edit"
+msgid "Payment"
+msgstr ""
+
+#: templates/admin/edit-user.php:60
+msgctxt "edit"
+msgid "Personal data"
+msgstr ""
+
+#: templates/admin/edit-user.php:111
+msgctxt "edit"
+msgid "Subscriptions"
+msgstr ""
+
+#: admin/hooks/igs-admin-product-hooks.php:94
+msgid "Edit list"
+msgstr ""
+
+#: templates/admin/edit-user.php:79 templates/admin/edit-subscription.php:183
+msgid "Email address"
+msgstr ""
+
+#: admin/components/igs-admin-users.php:215 admin/components/igs-admin-list-subscription.php:277
+msgid "Email address is a required field."
+msgstr ""
+
+#: templates/admin/edit-subscription.php:131
+msgid "End date"
+msgstr ""
+
+#: templates/admin/part/filter-client.php:10
+msgid "Enter client"
+msgstr ""
+
+#: templates/admin/part/filter-number.php:10
+msgid "Enter Number"
+msgstr ""
+
+#: admin/igs-admin-menus.php:147 admin/igs-admin-menus.php:148 admin/igs-admin-menus.php:358 templates/admin/header.php:20
+msgid "Export"
+msgstr ""
+
+#: templates/admin/part/filter.php:24 templates/admin/part/users-filter.php:21
+msgid "Filter"
+msgstr ""
+
+#: admin/components/igs-admin-export.php:104 admin/components/igs-admin-list-subscription.php:111 templates/admin/part/filter-next-date.php:8
+msgctxt "filter"
+msgid "Next Date"
+msgstr ""
+
+#: admin/components/igs-admin-export.php:127
+msgctxt "filter"
+msgid "Type Export"
+msgstr ""
+
+#: templates/admin/edit-user.php:64 templates/admin/edit-subscription.php:168
+msgid "First Name"
+msgstr ""
+
+#: admin/components/igs-admin-users.php:212 admin/components/igs-admin-list-subscription.php:274
+msgid "First Name is a required field."
+msgstr ""
+
+#: templates/admin/part/found-results.php:9
+msgid "Found:"
+msgstr ""
+
+#: admin/components/igs-admin-export.php:119
+msgid "Full"
+msgstr ""
+
+#: includes/core/igs-subscription.php:369
+msgid "Happy Birthday"
+msgstr ""
+
+#. URI of the plugin
+#. Author URI of the plugin
+msgid "https://igamingsolutions.net/"
+msgstr ""
+
+#: templates/admin/loop/client.php:34
+msgid "ID"
+msgstr ""
+
+#. Author of the plugin
+msgid "iGaming Solutions LTD"
+msgstr ""
+
+#: includes/core/igs-subscription.php:517
+msgid "Initial Subscription"
+msgstr ""
+
+#: includes/core/igs-dependencies.php:245
+msgid "installed but not activated"
+msgstr ""
+
+#: templates/admin/edit-subscription.php:243
+msgid "Issuing an invoice to a company."
+msgstr ""
+
+#: templates/admin/loop/list-subscription.php:54
+msgid "Last"
+msgstr ""
+
+#: admin/components/igs-admin-list-subscription.php:112
+msgid "Last Date"
+msgstr ""
+
+#: templates/admin/edit-user.php:69 templates/admin/edit-subscription.php:173
+msgid "Last Name"
+msgstr ""
+
+#: admin/components/igs-admin-users.php:213 admin/components/igs-admin-list-subscription.php:275
+msgid "Last Name is a required field."
+msgstr ""
+
+#: templates/admin/edit-subscription.php:64
+msgid "Last renew"
+msgstr ""
+
+#: includes/core/igs-subscription.php:611
+msgid "Manual system renewal"
+msgstr ""
+
+#: templates/admin/edit-subscription.php:296
+msgid "Materially Responsible Person"
+msgstr ""
+
+#: admin/igs-admin-menus.php:91 admin/igs-admin-menus.php:92 admin/igs-admin-menus.php:323
+msgctxt "menu"
+msgid "Client Software"
+msgstr ""
+
+#: admin/hooks/igs-admin-product-hooks.php:97
+msgid "New list name"
+msgstr ""
+
+#: includes/core/igs-subscription.php:530
+msgid "New Subscription"
+msgstr ""
+
+#: templates/admin/part/user-orders-table.php:35
+msgid "New subscription"
+msgstr ""
+
+#: templates/admin/loop/list-subscription.php:49
+msgid "Next"
+msgstr ""
+
+#: templates/admin/part/export-active-subscirptions-xls.php:64
+msgid "Next Date"
+msgstr ""
+
+#: templates/admin/part/export-subscirptions-xls.php:61
+msgid "Next date"
+msgstr ""
+
+#: admin/components/igs-admin-list-subscription.php:199
+msgid "Next Month"
+msgstr ""
+
+#: templates/admin/edit-subscription.php:126
+msgid "Next payment"
+msgstr ""
+
+#: admin/components/igs-admin-export.php:96 admin/components/igs-admin-list-subscription.php:197
+msgid "Next week"
+msgstr ""
+
+#: includes/core/igs-user.php:347
+msgid "No"
+msgstr ""
+
+#: templates/admin/clients.php:33
+msgid "No customers found."
+msgstr ""
+
+#: templates/admin/part/export-active-subscirptions-xls.php:74
+msgid "No deliveries scheduled for this day."
+msgstr ""
+
+#: admin/components/igs-admin-export.php:141
+msgid "No found results"
+msgstr ""
+
+#: admin/hooks/igs-admin-product-hooks.php:98
+msgid "No prices list found"
+msgstr ""
+
+#: templates/admin/schedule-calendar.php:60
+msgid "No scheduled renewals"
+msgstr ""
+
+#: templates/admin/edit-user.php:54
+msgid "No subscription"
+msgstr ""
+
+#: templates/admin/subscriptions-list.php:33
+msgid "No Subscriptions Found"
+msgstr ""
+
+#: templates/admin/edit-subscription.php:280
+msgid "No, do not issue an invoice"
+msgstr ""
+
+#: includes/core/igs-dependencies.php:249
+msgid "not installed"
+msgstr ""
+
+#: templates/admin/part/export-active-subscirptions-xls.php:69 templates/admin/part/export-subscirptions-xls.php:66 templates/admin/part/export-orders-xls.php:75
+msgid "Notes"
+msgstr ""
+
+#: includes/core/igs-subscription.php:322
+msgid "One Month"
+msgid_plural "%d Months"
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/admin/part/user-orders-table.php:37
+msgid "One-time purchase"
+msgstr ""
+
+#: includes/core/igs-subscription.php:473 templates/admin/part/user-orders-table.php:10
+msgid "Order #"
+msgstr ""
+
+#: templates/admin/part/filter-order.php:8
+msgid "Order by"
+msgstr ""
+
+#: templates/admin/edit-subscription.php:333
+msgid "Order Notes"
+msgstr ""
+
+#: templates/admin/header.php:14 templates/admin/edit-user.php:57 templates/admin/part/export-active-subscirptions-xls.php:61 templates/admin/part/export-subscirptions-xls.php:58 templates/admin/part/export-orders-xls.php:65 templates/admin/part/export-filter.php:31 templates/admin/loop/list-subscription.php:64 templates/admin/loop/client.php:49
+msgid "Orders"
+msgstr ""
+
+#: includes/core/igs-subscription.php:272
+msgid "Overdue by"
+msgstr ""
+
+#: admin/hooks/igs-admin-product-hooks.php:92
+msgid "Parent list"
+msgstr ""
+
+#: admin/hooks/igs-admin-product-hooks.php:93
+msgid "Parent list:"
+msgstr ""
+
+#: templates/admin/part/export-active-subscirptions-xls.php:67 templates/admin/part/export-subscirptions-xls.php:64 templates/admin/part/export-orders-xls.php:73
+msgid "Payment Method"
+msgstr ""
+
+#: templates/admin/part/export-active-subscirptions-xls.php:60 templates/admin/part/export-subscirptions-xls.php:57 templates/admin/part/export-orders-xls.php:63
+msgid "Phone Number"
+msgstr ""
+
+#: templates/admin/edit-user.php:74 templates/admin/edit-subscription.php:178
+msgid "Phone number"
+msgstr ""
+
+#: admin/components/igs-admin-users.php:214 admin/components/igs-admin-list-subscription.php:276
+msgid "Phone number is a required field."
+msgstr ""
+
+#: includes/core/igs-dependencies.php:257
+msgid "Please install and activate the required plugins, then reactivate this plugin."
+msgstr ""
+
+#: admin/components/igs-admin-product-data.php:95 admin/components/igs-admin-product-data.php:155
+msgid "price"
+msgstr ""
+
+#: includes/core/igs-user.php:513 templates/admin/edit-user.php:84
+msgid "Price List"
+msgstr ""
+
+#: admin/hooks/igs-admin-product-hooks.php:88 admin/components/igs-admin-users.php:99 templates/admin/edit-user.php:49 templates/admin/loop/client.php:39
+msgid "Price list"
+msgstr ""
+
+#: admin/hooks/igs-admin-product-hooks.php:99
+msgid "Price List Link"
+msgstr ""
+
+#: admin/hooks/igs-admin-product-hooks.php:85 admin/hooks/igs-admin-product-hooks.php:87
+msgid "Prices List"
+msgstr ""
+
+#: includes/core/igs-subscription.php:268
+msgid "Remaining"
+msgstr ""
+
+#: includes/core/igs-subscription.php:339
+msgid "Renew Now"
+msgstr ""
+
+#: includes/core/igs-subscription.php:527 templates/admin/part/user-orders-table.php:33
+msgid "Renewal"
+msgstr ""
+
+#: templates/admin/schedule-calendar.php:22
+msgid "Renewal schedule"
+msgstr ""
+
+#: includes/core/igs-dependencies.php:228
+msgid "requires the following plugins to be installed and activated:"
+msgstr ""
+
+#: includes/core/igs-subscription.php:533
+msgid "Resubscribe Order"
+msgstr ""
+
+#: includes/core/igs-subscription.php:533
+msgid "Resubscribed Subscription"
+msgstr ""
+
+#: templates/admin/part/filter-results-number.php:8 templates/admin/part/filter-results.php:8
+msgid "Results per page"
+msgstr ""
+
+#: templates/admin/part/related-orders-row.php:16 templates/admin/part/user-subscriptions-table.php:37 templates/admin/part/user-orders-table.php:44
+msgid "Review"
+msgstr ""
+
+#: templates/admin/edit-user.php:104 templates/admin/edit-subscription.php:321
+msgid "Save changes"
+msgstr ""
+
+#: admin/igs-admin-menus.php:129 admin/igs-admin-menus.php:130 admin/igs-admin-menus.php:344 templates/admin/header.php:17
+msgid "Schedule"
+msgstr ""
+
+#: admin/hooks/igs-admin-product-hooks.php:90
+msgid "Search"
+msgstr ""
+
+#: includes/core/igs-subscription.php:593
+msgid "Security check failed."
+msgstr ""
+
+#: templates/admin/part/visibility-product-data.php:13
+msgid "Select who can see this product in the frontend."
+msgstr ""
+
+#: templates/admin/part/visibility-product-data.php:21
+msgid "Select..."
+msgstr ""
+
+#: templates/admin/part/export-active-subscirptions-xls.php:66 templates/admin/part/export-subscirptions-xls.php:63 templates/admin/part/export-orders-xls.php:72
+msgid "Shipping Address"
+msgstr ""
+
+#: admin/igs-admin-order.php:111 admin/igs-admin-order.php:175
+msgid "Shipping to address"
+msgstr ""
+
+#: admin/igs-admin-order.php:102 admin/igs-admin-order.php:166
+msgid "Shipping to APS"
+msgstr ""
+
+#: admin/igs-admin-order.php:91 admin/igs-admin-order.php:157
+msgid "Shipping to office"
+msgstr ""
+
+#: admin/components/igs-admin-export.php:120
+msgid "Short"
+msgstr ""
+
+#: admin/components/igs-admin-list-subscription.php:106
+msgid "Sort by"
+msgstr ""
+
+#: admin/components/igs-admin-users.php:109 includes/core/igs-user.php:316 includes/core/igs-user.php:507 templates/admin/edit-user.php:92
+msgid "Standard"
+msgstr ""
+
+#: admin/components/igs-admin-list-subscription.php:110
+msgid "Start Date"
+msgstr ""
+
+#: templates/admin/edit-subscription.php:121
+msgid "Start date"
+msgstr ""
+
+#: admin/components/igs-admin-export.php:63 admin/components/igs-admin-export.php:80 includes/core/igs-subscription.php:476 templates/admin/part/export-active-subscirptions-xls.php:63 templates/admin/part/filter-status.php:8 templates/admin/part/export-subscirptions-xls.php:60 templates/admin/part/user-subscriptions-table.php:12 templates/admin/part/user-orders-table.php:13 templates/admin/loop/list-subscription.php:44
+msgid "Status"
+msgstr ""
+
+#: templates/admin/edit-subscription.php:66 templates/admin/part/export-active-subscirptions-xls.php:68 templates/admin/part/export-subscirptions-xls.php:65 templates/admin/loop/list-subscription.php:59
+msgid "Subscriber from"
+msgstr ""
+
+#: includes/core/igs-subscription.php:512
+msgid "Subscription"
+msgstr ""
+
+#: templates/admin/edit-subscription.php:54 templates/admin/part/user-subscriptions-table.php:10
+msgid "Subscription #"
+msgstr ""
+
+#: admin/components/igs-admin-list-subscription.php:266
+msgid "Subscription data updated successfully."
+msgstr ""
+
+#: includes/core/igs-subscription.php:634
+msgid "Subscription not found."
+msgstr ""
+
+#: templates/admin/part/filter-number.php:8
+msgid "Subscription number"
+msgstr ""
+
+#: templates/admin/edit-subscription.php:106
+msgid "Subscription status"
+msgstr ""
+
+#: admin/igs-admin-menus.php:111 admin/igs-admin-menus.php:112 admin/igs-admin-menus.php:330 templates/admin/header.php:11 templates/admin/part/export-filter.php:13
+msgid "Subscriptions"
+msgstr ""
+
+#: templates/admin/schedule-calendar.php:29
+msgid "Subscriptions for renewal"
+msgstr ""
+
+#: admin/hooks/igs-admin-product-hooks.php:101
+msgctxt "Template name"
+msgid "Products by Price List"
+msgstr ""
+
+#: templates/admin/part/user-orders-table.php:49
+msgid "The customer has no orders placed."
+msgstr ""
+
+#: templates/admin/part/user-subscriptions-table.php:42
+msgid "The customer has no subscriptions placed."
+msgstr ""
+
+#: admin/components/igs-admin-list-subscription.php:283
+msgid "The Inovice Address is a required field."
+msgstr ""
+
+#: admin/components/igs-admin-list-subscription.php:279
+msgid "The Inovice Company name is a required field."
+msgstr ""
+
+#: admin/components/igs-admin-list-subscription.php:280
+msgid "The Inovice Materially Responsible Person is a required field."
+msgstr ""
+
+#: admin/components/igs-admin-list-subscription.php:282
+msgid "The Inovice Town is a required field."
+msgstr ""
+
+#: admin/components/igs-admin-list-subscription.php:281
+msgid "The Inovice UIC / Tax ID is a required field."
+msgstr ""
+
+#: includes/core/igs-subscription.php:616
+msgid "The next payment date has been updated based on the manual renewal."
+msgstr ""
+
+#: admin/components/igs-admin-users.php:216 admin/components/igs-admin-list-subscription.php:278
+msgid "The provided email format is invalid."
+msgstr ""
+
+#: admin/components/igs-admin-users.php:217
+msgid "This email is already registered to another client."
+msgstr ""
+
+#: admin/components/igs-admin-export.php:97 admin/components/igs-admin-list-subscription.php:198
+msgid "This Month"
+msgstr ""
+
+#: admin/components/igs-admin-export.php:95 admin/components/igs-admin-list-subscription.php:196
+msgid "This week"
+msgstr ""
+
+#: admin/components/igs-admin-export.php:94 admin/components/igs-admin-list-subscription.php:195 includes/core/igs-subscription.php:275
+msgid "Today"
+msgstr ""
+
+#: includes/core/igs-subscription.php:477 templates/admin/part/export-active-subscirptions-xls.php:62 templates/admin/part/export-subscirptions-xls.php:59 templates/admin/part/user-subscriptions-table.php:13 templates/admin/part/export-orders-xls.php:67 templates/admin/part/user-orders-table.php:14
+msgid "Total"
+msgstr ""
+
+#: templates/admin/edit-subscription.php:311
+msgid "Town"
+msgstr ""
+
+#: includes/core/igs-subscription.php:475 templates/admin/part/user-orders-table.php:12
+msgid "Type order"
+msgstr ""
+
+#: templates/admin/edit-subscription.php:301
+msgid "UIC / Tax ID"
+msgstr ""
+
+#: templates/admin/edit-subscription.php:70 templates/admin/loop/list-subscription.php:69 templates/admin/loop/client.php:54
+msgid "Uncollected Orders"
+msgstr ""
+
+#: admin/hooks/igs-admin-product-hooks.php:95
+msgid "Update list"
+msgstr ""
+
+#: templates/admin/edit-subscription.php:306
+msgid "VAT Number"
+msgstr ""
+
+#: includes/core/igs-dependencies.php:238
+#, php-format
+msgid "version %s is installed, but version %s or higher is required"
+msgstr ""
+
+#: admin/components/igs-admin-product-data.php:32
+msgid "Visibility"
+msgstr ""
+
+#: templates/admin/part/visibility-product-data.php:17
+msgid "Visibility Level"
+msgstr ""
+
+#: includes/core/igs-user.php:345
+msgid "Yes"
+msgstr ""
+
+#: templates/admin/edit-subscription.php:263
+msgid "Yes, issue an invoice"
+msgstr ""
+
+#: admin/igs-admin-menus.php:165 admin/igs-admin-menus.php:202 admin/igs-admin-menus.php:217 admin/igs-admin-menus.php:254 admin/hooks/igs-admin-export-hooks.php:64 admin/hooks/igs-admin-export-hooks.php:154 includes/core/igs-subscription.php:625 includes/core/igs-user.php:547
+msgid "You do not have sufficient permissions to access this page."
+msgstr ""

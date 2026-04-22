@@ -1,40 +1,36 @@
 <?php
 
 /**
- * The public-specific functionality of the plugin.
+ * Public-facing orchestrator.
  *
- * Defines the plugin name, version, and two examples hooks for how to
- * enqueue the admin-specific stylesheet and JavaScript.
- * 
+ * Loads every focused hook class that lives under public/hooks/.
+ * Add new frontend modules there — one file per concern:
+ *
+ *  - IGS_CS_Public_Setup_Hooks   → global init (user context)
+ *  - IGS_CS_Public_Product_Hooks → price-list product visibility
+ *  - IGS_CS_Public_Pricing_Hooks → per-price-list product pricing
+ *  - IGS_CS_Public_Enqueue_Hooks → frontend CSS / JS (extend as needed)
+ *
  * @link       https://igamingsolutions.net
  * @since      1.0.0
  *
  * @package    IGS_Client_System
- * @subpackage IGS_CS/Public
- * @author     igamingsolutions.com <support@igamingsolutions.com>
- * 
+ * @subpackage IGS_Client_System/Public
  */
-class IGS_CS_Public extends IGS_CS_Loader {
+
+defined( 'ABSPATH' ) || exit;
+
+class IGS_CS_Public {
 
   /**
-   * The single instance of the Public class.
-   *
-   * @since 1.0.0
-   * @access private
-   * @static
-   * @var IGS_CS_Public|null $_instance Singleton instance.
+   * @var IGS_CS_Public|null
    */
   private static $_instance = null;
 
   /**
-   * Reference to the Public Hooks instance.
-   *
    * @since 1.0.0
-   * @access private
-   * @var IGS_CS_Public_Hooks $hooks Public hooks handler.
+   * @return IGS_CS_Public
    */
-  private $hooks;
-
   public static function instance() {
     if ( is_null( self::$_instance ) ) {
       self::$_instance = new self();
@@ -42,19 +38,24 @@ class IGS_CS_Public extends IGS_CS_Loader {
     return self::$_instance;
   }
 
-  public function __construct( ) {
-
+  public function __construct() {
     $this->includes();
-
   }
 
   /**
-   * Loads necessary public-specific dependencies.
+   * Load all focused public hook classes.
+   * Each class self-registers its WordPress hooks on instantiation.
    *
    * @since 1.0.0
+   * @return void
    */
   private function includes() {
-    require_once IGS_CS_ABSPATH . '/public/igs-public-hooks.php';
+
+    require_once IGS_CS_ABSPATH . '/public/hooks/igs-public-setup-hooks.php';
+    require_once IGS_CS_ABSPATH . '/public/hooks/igs-public-product-hooks.php';
+    require_once IGS_CS_ABSPATH . '/public/hooks/igs-public-pricing-hooks.php';
+    require_once IGS_CS_ABSPATH . '/public/hooks/igs-public-enqueue-hooks.php';
+
   }
 
 }

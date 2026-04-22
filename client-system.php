@@ -66,7 +66,7 @@ function activate_igs_client_system() {
  * @return   void
  */
 function deactivate_igs_client_system() {
-  require_once dirname( IGS_CS_PLUGIN_FILE ) . '/includes/igs-activator.php';
+  require_once dirname( IGS_CS_PLUGIN_FILE ) . '/includes/igs-deactivator.php';
   IGS_CS_Deactivator::deactivate();
 }
 

@@ -115,14 +115,14 @@ class IGS_CS_Admin_Menus {
       array($this, 'igs_cs_subscription_page')
     );
 
-    add_submenu_page(
-      'igs-client-software',
-      __('Orders', 'woocommerce'),
-      __('Orders', 'woocommerce'),
-      'manage_options',
-      'wc-orders',
-      array($this, 'igs_cs_schedule_page')
-    );
+    // add_submenu_page(
+    //   'igs-client-software',
+    //   __('Orders', 'woocommerce'),
+    //   __('Orders', 'woocommerce'),
+    //   'manage_options',
+    //   'wc-orders',
+    //   array($this, 'igs_cs_schedule_page')
+    // );
 
     add_submenu_page(
       'igs-client-software',

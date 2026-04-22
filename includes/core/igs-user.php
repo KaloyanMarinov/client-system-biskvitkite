@@ -522,15 +522,10 @@ class IGS_CS_User {
       </tr>
     </table>
 
-    <script>
-      jQuery(document).ready(function($) {
-        console.log('asd');
-        console.log($('.user-price-list-wrap'));
-        console.log($('.user-display-name-wrap'));
-        $('.user-price-list-wrap').insertAfter($('.user-display-name-wrap'));
-      });
-    </script>
 <?php
+    // The JS that repositions this field in the WP admin profile form
+    // is enqueued by IGS_CS_Admin_Form_Hooks::enqueue_user_profile_scripts()
+    // to keep model classes free of presentation concerns.
   }
 
   public static function igs_save_price_list_user_field($user_id) {

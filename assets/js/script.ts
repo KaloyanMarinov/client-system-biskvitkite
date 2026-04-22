@@ -6,6 +6,7 @@ class Script {
   constructor() {
     this.dataPicker();
     this.toggleExportPeriod();
+    this.toggleOrderExportPeriod();
   }
 
   dataPicker() {
@@ -62,6 +63,21 @@ class Script {
     if (selectStatus && selectPeriod) {
       selectStatus.addEventListener('change', () => {
         if (selectStatus.value !== 'wc-active') {
+          selectPeriod.style.display = 'none';
+        } else {
+          selectPeriod.style.display = '';
+        }
+      });
+    }
+  }
+
+  toggleOrderExportPeriod() {
+    const selectStatus = document.querySelector('.igs_export_order_status select') as HTMLSelectElement;
+    const selectPeriod = document.querySelector('.igs_export_order_period') as HTMLElement;
+
+    if (selectStatus && selectPeriod) {
+      selectStatus.addEventListener('change', () => {
+        if (selectStatus.value === 'wc-processing') {
           selectPeriod.style.display = 'none';
         } else {
           selectPeriod.style.display = '';

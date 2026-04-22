@@ -82,4 +82,13 @@ class IGS_CS_Admin {
     return IGS_CS_Admin_Subscriptions::instance();
   }
 
+  /**
+   * Get Product Class.
+   *
+   * @return IGS_CS_Admin_Product
+   */
+  public function product() {
+    return IGS_CS_Admin_Product::instance();
+  }
+
 }

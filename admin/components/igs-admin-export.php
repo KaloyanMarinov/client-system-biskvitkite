@@ -81,6 +81,7 @@ class IGS_CS_Export {
       'name'     => 'status',
       'options'  => $statuses,
       'selected' => $selected,
+      'class'    => 'igs_export_order_status'
     ) );
 
   }
@@ -113,11 +114,39 @@ class IGS_CS_Export {
   /**
    * Render the filter orders type template.
    */
+  /**
+   * Render the order period filter select.
+   */
+  public function get_filter_order_period() {
+
+    $periods = array(
+      'all'        => __('All period',   'igs-client-system'),
+      'this_week'  => __('This week',    'igs-client-system'),
+      'this_month' => __('This month',   'igs-client-system'),
+      'this_year'  => __('This Year',    'igs-client-system'),
+      'last_month' => __('Last Month',   'igs-client-system'),
+      'last_year'  => __('Last Year',    'igs-client-system'),
+    );
+
+    igs_cs_get_template( 'admin/part/filter-select', array(
+      'label'    => _x('Period', 'filter', 'igs-client-system'),
+      'name'     => 'igs_order_period',
+      'options'  => $periods,
+      'selected' => 'all',
+      'hide'     => true,
+      'class'    => 'igs_export_order_period',
+    ) );
+
+  }
+
+  /**
+   * Render the filter orders type template.
+   */
   public function get_filter_order_type() {
 
     $options = array(
-      'full'  => __('Full', 'igs-client-system'),
       'short' => __('Short', 'igs-client-system'),
+      'full'  => __('Full', 'igs-client-system'),
     );
 
     $options  = apply_filters( 'igs_cs_filter_order_types', $options, $this );

@@ -33,6 +33,7 @@
   <div class="flr gy-15">
     <?php
       $module->get_filter_orders_status();
+      $module->get_filter_order_period();
       $module->get_filter_order_type();
     ?>
 

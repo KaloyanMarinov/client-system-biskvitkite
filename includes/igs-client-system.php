@@ -118,6 +118,8 @@ class IGS_Client_System {
 		require_once IGS_CS_ABSPATH . '/includes/funcitons/igs-template-functions.php';
 		require_once IGS_CS_ABSPATH . '/includes/funcitons/igs-core-functions.php';
 
+		require_once IGS_CS_ABSPATH . '/includes/services/igs-product-visibility.php';
+
 		require_once IGS_CS_ABSPATH . '/includes/abstracts/igs-loader.php';
 		require_once IGS_CS_ABSPATH . '/includes/abstracts/igs-params.php';
 		require_once IGS_CS_ABSPATH . '/includes/abstracts/igs-users-params.php';
