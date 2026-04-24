@@ -77,8 +77,9 @@ class Script {
     const itemsList = document.getElementById('igs-subscription-items');
     if ( !itemsList ) return;
 
-    const form = itemsList.closest('form') as HTMLFormElement;
-    const jq   = (window as any).jQuery;
+    const form  = itemsList.closest('form') as HTMLFormElement;
+    const jq    = (window as any).jQuery;
+    const i18n  = (window as any).igs_cs_i18n || {};
 
     const initProductSearch = (select: HTMLSelectElement) => {
       if ( !jq ) return;
@@ -122,7 +123,7 @@ class Script {
       const target = e.target as HTMLElement;
       if ( !target.classList.contains('igs-remove-item') ) return;
       if ( itemsList.querySelectorAll('.igs-item-row').length <= 1 ) {
-        alert('The subscription must contain at least one product.');
+        alert( i18n.subscription_min_one_product );
         return;
       }
       target.closest('.igs-item-row')?.remove();
@@ -139,7 +140,7 @@ class Script {
           <td class="p-5">
             <input type="hidden" name="igs_line_product_id[]" value="0" class="igs-pid">
             <select class="field igs-product-search w-100"
-                    data-placeholder="Search product…"></select>
+                    data-placeholder="${i18n.search_product_placeholder || ''}"></select>
           </td>
           <td class="p-5 w-80">
             <input type="number" name="igs_line_qty[]" value="1" min="1" class="field ta-c">
@@ -160,12 +161,12 @@ class Script {
         const zeroPids = itemsList.querySelectorAll<HTMLInputElement>('.igs-pid[value="0"]');
         if ( zeroPids.length > 0 ) {
           e.preventDefault();
-          alert('Please select replacement products for all deleted items before saving.');
+          alert( i18n.subscription_select_replacements );
           return;
         }
         if ( itemsList.querySelectorAll('.igs-item-row').length === 0 ) {
           e.preventDefault();
-          alert('The subscription must contain at least one product.');
+          alert( i18n.subscription_min_one_product );
         }
       });
     }

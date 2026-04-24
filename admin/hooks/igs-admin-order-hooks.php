@@ -63,12 +63,14 @@ class IGS_CS_Admin_Order_Hooks extends IGS_CS_Loader {
     $this->add_action( 'woocommerce_before_order_object_save', $this, 'save_preparation_date_hpos', 10, 1 );
 
     // Orders list column – classic.
-    $this->add_filter( 'manage_edit-shop_order_columns',      $this, 'add_preparation_date_column',    20, 1 );
-    $this->add_action( 'manage_shop_order_posts_custom_column', $this, 'render_preparation_date_column', 10, 2 );
+    $this->add_filter( 'manage_edit-shop_order_columns',        $this, 'add_preparation_date_column',      20, 1 );
+    $this->add_action( 'manage_shop_order_posts_custom_column', $this, 'render_preparation_date_column',   10, 2 );
+    $this->add_action( 'manage_shop_order_posts_custom_column', $this, 'render_returned_orders_column',    10, 2 );
 
     // Orders list column – HPOS.
-    $this->add_filter( 'woocommerce_shop_order_list_table_columns',        $this, 'add_preparation_date_column',          20, 1 );
-    $this->add_action( 'woocommerce_shop_order_list_table_custom_column',  $this, 'render_preparation_date_column_hpos',   10, 2 );
+    $this->add_filter( 'woocommerce_shop_order_list_table_columns',       $this, 'add_preparation_date_column',         20, 1 );
+    $this->add_action( 'woocommerce_shop_order_list_table_custom_column', $this, 'render_preparation_date_column_hpos', 10, 2 );
+    $this->add_action( 'woocommerce_shop_order_list_table_custom_column', $this, 'render_returned_orders_column_hpos',  10, 2 );
 
     // AJAX: search subscription products (used in subscription edit UI).
     $this->add_action( 'wp_ajax_igs_search_subscription_products', $this, 'ajax_search_subscription_products' );
@@ -191,6 +193,7 @@ class IGS_CS_Admin_Order_Hooks extends IGS_CS_Loader {
       // Insert after the order date column.
       if ( 'order_date' === $key ) {
         $new['igs_preparation_date'] = __( 'Preparation Date', 'igs-client-system' );
+        $new['igs_returned_orders']  = __( 'Uncollected Orders', 'igs-client-system' );
       }
     }
 
@@ -257,6 +260,92 @@ class IGS_CS_Admin_Order_Hooks extends IGS_CS_Loader {
 
     $dt = DateTime::createFromFormat( 'Y-m-d', $stored );
     echo $dt ? esc_html( $dt->format( 'd.m.Y' ) ) : '&mdash;';
+
+  }
+
+  /**
+   * Render the uncollected-orders cell – classic (CPT) orders list.
+   *
+   * @since 1.0.0
+   * @param string $column
+   * @param int    $post_id
+   * @return void
+   */
+  public function render_returned_orders_column( $column, $post_id ) {
+
+    if ( 'igs_returned_orders' !== $column ) {
+      return;
+    }
+
+    $this->output_returned_orders( wc_get_order( $post_id ) );
+
+  }
+
+  /**
+   * Render the uncollected-orders cell – HPOS orders list.
+   *
+   * @since 1.0.0
+   * @param string   $column
+   * @param WC_Order $order
+   * @return void
+   */
+  public function render_returned_orders_column_hpos( $column, $order ) {
+
+    if ( 'igs_returned_orders' !== $column ) {
+      return;
+    }
+
+    $this->output_returned_orders( $order );
+
+  }
+
+  /**
+   * Echo the count of wc-returned orders for the customer attached to an order.
+   *
+   * Results are cached per customer ID for the duration of the request so the
+   * list table never fires more than one DB query per unique customer.
+   *
+   * @since 1.0.0
+   * @param WC_Order|false $order
+   * @return void
+   */
+  private function output_returned_orders( $order ) {
+
+    if ( ! $order ) {
+      echo '&mdash;';
+      return;
+    }
+
+    $customer_id = $order->get_customer_id();
+
+    if ( ! $customer_id ) {
+      echo '&mdash;';
+      return;
+    }
+
+    $cache_key = 'igs_returned_' . $customer_id;
+    $count     = wp_cache_get( $cache_key, 'igs_cs' );
+
+    if ( false === $count ) {
+      $ids   = wc_get_orders( array(
+        'customer_id' => $customer_id,
+        'status'      => array( 'wc-returned' ),
+        'limit'       => -1,
+        'return'      => 'ids',
+      ) );
+      $count = count( $ids );
+      wp_cache_set( $cache_key, $count, 'igs_cs', 300 );
+    }
+
+    if ( $count > 0 ) {
+      printf(
+        '<span style="color:red;font-weight:bold;" title="%s">%d</span>',
+        esc_attr( sprintf( _n( '%d uncollected order', '%d uncollected orders', $count, 'igs-client-system' ), $count ) ),
+        (int) $count
+      );
+    } else {
+      echo '&mdash;';
+    }
 
   }
 

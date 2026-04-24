@@ -110,6 +110,13 @@ class IGS_CS_Admin_UI_Hooks extends IGS_CS_Loader {
       array( 'strategy' => 'async', 'in_footer' => true )
     );
 
+    wp_localize_script( 'igs-cs-scripts', 'igs_cs_i18n', array(
+      'subscription_min_one_product'     => __( 'The subscription must contain at least one product.',                    'igs-client-system' ),
+      'subscription_select_replacements' => __( 'Please select replacement products for all deleted items before saving.', 'igs-client-system' ),
+      'search_product_placeholder'       => __( 'Search product…',                                                        'igs-client-system' ),
+      'preparation_date_required'        => __( 'Please enter a preparation date for orders with "Cooking" status.',       'igs-client-system' ),
+    ) );
+
     $is_subscription_edit = (
       isset( $_GET['action'], $_GET['page'] ) &&
       'edit' === $_GET['action'] &&
