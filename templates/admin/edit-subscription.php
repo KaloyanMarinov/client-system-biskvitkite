@@ -161,6 +161,51 @@
           </div>
         </div>
 
+        <h3><?php _e('Products', 'igs-client-system'); ?></h3>
+
+        <table id="igs-subscription-items" class="w-100">
+          <thead>
+            <tr>
+              <th class="py-10 px-5"><?php _e( 'Product', 'igs-client-system' ); ?></th>
+              <th class="py-10 px-5 w-80"><?php _e( 'Quantity', 'igs-client-system' ); ?></th>
+              <th class=""></th>
+            </tr>
+          </thead>
+          <tbody>
+          <?php foreach ( $subscription->get_items() as $item_id => $item ) :
+            $product    = $item->get_product();
+            $product_id = $product ? $product->get_id() : 0;
+            $is_deleted = ! $product || ! $product->exists() || 'trash' === get_post_status( $product_id );
+            $pid        = $is_deleted ? 0 : $product_id;
+          ?>
+          <tr class="igs-item-row<?php echo $is_deleted ? ' igs-item-invalid' : ''; ?>">
+            <td class="p-5">
+              <input type="hidden" name="igs_line_product_id[]" value="<?php echo esc_attr( $pid ); ?>" class="igs-pid">
+              <?php if ( $is_deleted ) : ?>
+                <p style="color:red;" class="pb-10">⚠ <?php echo esc_html( $item->get_name() ); ?> (<?php _e( 'deleted', 'igs-client-system' ); ?>)</p>
+              <?php endif; ?>
+              <select class="field igs-product-search w-100"
+                      data-placeholder="<?php echo $is_deleted ? esc_attr__( 'Select replacement product…', 'igs-client-system' ) : esc_attr__( 'Search product…', 'igs-client-system' ); ?>">
+                <?php if ( ! $is_deleted ) : ?>
+                  <option value="<?php echo esc_attr( $pid ); ?>" selected><?php echo esc_html( wp_strip_all_tags( $product->get_formatted_name() ) ); ?></option>
+                <?php endif; ?>
+              </select>
+            </td>
+            <td class="p-5 w-80">
+              <input type="number" name="igs_line_qty[]" value="<?php echo absint( $item->get_quantity() ); ?>" min="1" class="field ta-c">
+            </td>
+            <td class="p-5 w-80">
+              <button type="button" class="button tc-1 bg-h-1 tc-h-w igs-remove-item"><?php _e( 'Delete', 'igs-client-system' ); ?></button>
+            </td>
+          </tr>
+          <?php endforeach; ?>
+          </tbody>
+        </table>
+
+        <div class="px-5">
+          <button type="button" id="igs-add-product-btn" class="button button-primary"><?php _e( '+ Add product', 'igs-client-system' ); ?></button>
+        </div>
+
         <h3><?php _ex('Delivery', 'edit', 'igs-client-system') ?></h3>
 
         <div class="flr gy-25">
@@ -187,6 +232,49 @@
           <div class="flc-u-">
             <p class="fw-b mb-10"><?php _e('Customer note', 'igs-client-system') ?></p>
             <textarea type="text" class="field" name="customer_note" placeholder="<?php esc_attr_e('Additional information for the order, such as allergens, special customer requirements, and others.', 'igs-client-system') ?>"><?php echo $customer_note; ?></textarea>
+          </div>
+
+          <div class="flc-12">
+            <p class="fw-b mb-15"><?php _e('Payment Method', 'igs-client-system') ?></p>
+
+
+            <?php
+              $gateways        = array_filter(
+                WC()->payment_gateways()->payment_gateways(),
+                fn( $g ) => 'yes' === $g->enabled
+              );
+              $current_payment = $subscription->get_payment_method();
+            ?>
+
+            <ul class="d-f f-w g-20">
+              <?php foreach ( $gateways as $gateway_id => $gateway ) : ?>
+                <li>
+                  <?php
+                    $input_id    = 'payment_method_' . esc_attr( $gateway_id );
+                    $input_attrs = array(
+                      'type'  => 'radio',
+                      'name'  => 'payment_method',
+                      'id'    => $input_id,
+                      'value' => esc_attr( $gateway_id ),
+                      'class' => 'field',
+                    );
+
+                    if ( $gateway_id === $current_payment ) {
+                      $input_attrs['checked'] = 'checked';
+                    }
+
+                    echo wp_sprintf( '<input %1$s>', igs_cs_html_attributes( $input_attrs ) );
+                    echo wp_sprintf( '<label %2$s>%1$s</label>',
+                      esc_html( $gateway->get_title() ),
+                      igs_cs_html_attributes( array(
+                        'for'   => $input_id,
+                        'class' => 'field-radio ps-r',
+                      ) )
+                    );
+                  ?>
+                </li>
+              <?php endforeach; ?>
+            </ul>
           </div>
 
           <div class="flc-12">

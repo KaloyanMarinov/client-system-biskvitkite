@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Client System for Biskvitkite\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-25 15:02+0000\n"
-"PO-Revision-Date: 2026-04-24 01:12+0000\n"
+"PO-Revision-Date: 2026-04-24 01:09+0000\n"
 "Last-Translator: \n"
 "Language-Team: Български\n"
 "Language: bg_BG\n"
@@ -751,11 +751,11 @@ msgstr "Форматът на имейла е невалиден"
 
 #: admin/components/igs-admin-list-subscription.php:284
 msgid "The subscription contains deleted products. Please select replacement products before saving."
-msgstr "Абонаментът съдържа изтрити продукти. Изберете заместващи продукти преди да запазите."
+msgstr ""
 
 #: admin/components/igs-admin-list-subscription.php:285
 msgid "The subscription must contain at least one product."
-msgstr "Абонаментът трябва да съдържа поне един продукт."
+msgstr ""
 
 #: admin/components/igs-admin-users.php:217
 msgid "This email is already registered to another client."
@@ -789,7 +789,7 @@ msgstr "Общо"
 
 #: templates/admin/part/export-orders-xls.php:187
 msgid "Total Quantity"
-msgstr "Общо количество"
+msgstr "Общо к-во"
 
 #: templates/admin/edit-subscription.php:399
 msgid "Town"

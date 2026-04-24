@@ -34,6 +34,7 @@
     <?php
       $module->get_filter_orders_status();
       $module->get_filter_order_period();
+      $module->get_filter_order_date();
       $module->get_filter_order_type();
     ?>
 

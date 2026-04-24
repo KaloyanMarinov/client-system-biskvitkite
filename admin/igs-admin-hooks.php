@@ -14,6 +14,7 @@
  *  - IGS_CS_Admin_Product_Hooks      → product taxonomy, data tabs and pricing
  *  - IGS_CS_Admin_Shipping_Hooks     → delivery price recalculation after renewal
  *  - IGS_CS_Admin_Subscription_Hooks → WCS menus, statuses, filters, manual renewal
+ *  - IGS_CS_Admin_Order_Hooks        → preparation date field on WC orders
  *
  * @link       https://igamingsolutions.net
  * @since      1.0.0
@@ -63,6 +64,7 @@ class IGS_CS_Admin_Hooks {
     require_once IGS_CS_ABSPATH . '/admin/hooks/igs-admin-product-hooks.php';
     require_once IGS_CS_ABSPATH . '/admin/hooks/igs-admin-shipping-hooks.php';
     require_once IGS_CS_ABSPATH . '/admin/hooks/igs-admin-subscription-hooks.php';
+    require_once IGS_CS_ABSPATH . '/admin/hooks/igs-admin-order-hooks.php';
 
   }
 

@@ -20,8 +20,9 @@
       echo $module->get_filter_per_page();
     ?>
 
-    <div class="flc-3 as-fe">
+    <div class="flc-3 as-fe d-f gx-5">
       <button type="submit" class="button bg-3 bg-h-1 tc-6 tc-h-w w-100"><?php _e('Filter', 'igs-client-system'); ?></button>
+      <a href="<?php echo esc_url( admin_url( 'admin.php?page=' . $subscription_page->get_subscriptions_slug() ) ); ?>" class="button bg-h-3 tc-6 tc-h-w f-a ta-c"><?php _e('Reset', 'igs-client-system'); ?></a>
     </div>
   </div>
 

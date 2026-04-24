@@ -280,7 +280,9 @@ class IGS_CS_List_Subscription {
         'invoice_mol'     => __('The Inovice Materially Responsible Person is a required field.', 'igs-client-system'),
         'invoice_eik'     => __('The Inovice UIC / Tax ID is a required field.', 'igs-client-system'),
         'invoice_town'    => __('The Inovice Town is a required field.', 'igs-client-system'),
-        'invoice_address' => __('The Inovice Address is a required field.', 'igs-client-system'),
+        'invoice_address'  => __('The Inovice Address is a required field.', 'igs-client-system'),
+        'deleted_products' => __('The subscription contains deleted products. Please select replacement products before saving.', 'igs-client-system'),
+        'no_products'      => __('The subscription must contain at least one product.', 'igs-client-system'),
       );
 
       echo '<div class="d-f f-c gy-10">';

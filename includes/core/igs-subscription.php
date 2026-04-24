@@ -579,6 +579,53 @@ class IGS_CS_Subscription extends WC_Subscription {
   }
 
   /**
+   * Update every product line item in a renewal order to the current price.
+   *
+   * Applies the customer's price-list override when one is configured,
+   * identical to the logic in IGS_CS_Public_Pricing_Hooks::get_price().
+   *
+   * @since 1.0.0
+   * @param WC_Order        $order
+   * @param WC_Subscription $subscription
+   * @return void
+   */
+  private static function update_renewal_product_prices( WC_Order $order, WC_Subscription $subscription ) {
+
+    // Always use the current site currency for renewal orders so that currency
+    // changes (e.g. BGN → EUR) are reflected immediately on new renewals.
+    $order->set_currency( get_woocommerce_currency() );
+
+    $user       = new IGS_CS_User( $subscription->get_user_id() );
+    $price_list = $user->igs_get_price_list();
+
+    foreach ( $order->get_items() as $item ) {
+      /** @var WC_Order_Item_Product $item */
+      $product = $item->get_product();
+
+      if ( ! $product ) {
+        continue;
+      }
+
+      $price = (float) $product->get_price();
+
+      if ( $price_list ) {
+        $custom = $product->get_meta( '_list_price_' . $price_list );
+        if ( $custom !== '' && $custom !== false ) {
+          $price = (float) wc_format_decimal( $custom );
+        }
+      }
+
+      $qty = $item->get_quantity();
+      $item->set_subtotal( $price * $qty );
+      $item->set_total( $price * $qty );
+      $item->save();
+    }
+
+    $order->calculate_totals();
+
+  }
+
+  /**
    * Handle manual renewal action.
    *
    * @since 1.0.0
@@ -606,9 +653,31 @@ class IGS_CS_Subscription extends WC_Subscription {
       wp_die( $renewal_order->get_error_message() );
     }
 
+    // wcs_create_renewal_order() does not reliably copy the payment method,
+    // so set it explicitly from the subscription.
+    $renewal_order->set_payment_method( $subscription->get_payment_method() );
+    $renewal_order->set_payment_method_title( $subscription->get_payment_method_title() );
+
+    // Remove copied shipping items – the shipping integration will add fresh
+    // ones with recalculated prices via the igs_renew_subscription action.
+    foreach ( $renewal_order->get_items( 'shipping' ) as $item_id => $item ) {
+      $renewal_order->remove_item( $item_id );
+    }
+    $renewal_order->save();
+
+    // Update product line-item prices to current, respecting the customer's
+    // assigned price list.
+    self::update_renewal_product_prices( $renewal_order, $subscription );
+
     do_action( 'igs_renew_subscription', $renewal_order->get_id(), $renewal_order );
 
-    $renewal_order->update_status( 'processing', __( 'Manual system renewal', 'igs-client-system' ) );
+    $is_bacs       = ( 'bacs' === $subscription->get_payment_method() );
+    $renewal_status = $is_bacs ? 'on-hold'    : 'processing';
+    $renewal_note   = $is_bacs
+      ? __( 'Manual system renewal – awaiting bank transfer', 'igs-client-system' )
+      : __( 'Manual system renewal', 'igs-client-system' );
+
+    $renewal_order->update_status( $renewal_status, $renewal_note );
     $next_payment_date = $subscription->calculate_date( 'next_payment' );
     $subscription->update_dates( array(
       'next_payment' => $next_payment_date
@@ -648,6 +717,15 @@ class IGS_CS_Subscription extends WC_Subscription {
     $input_data['_billing_invoice_town']    = sanitize_text_field( $_POST['_billing_invoice_town'] );
     $input_data['_billing_invoice_address'] = sanitize_text_field( $_POST['_billing_invoice_address'] );
     $input_data['customer_note']            = sanitize_text_field( $_POST['customer_note'] );
+
+    // Products validation.
+    $posted_product_ids = array_map( 'absint', (array) ( $_POST['igs_line_product_id'] ?? [] ) );
+    if ( in_array( 0, $posted_product_ids, true ) ) {
+      $errors[] = 'deleted_products';
+    }
+    if ( empty( array_filter( $posted_product_ids ) ) ) {
+      $errors[] = 'no_products';
+    }
 
     if ( empty( $input_data['_billing_first_name'] ) ) $errors[] = 'first_name';
     if ( empty( $input_data['_billing_last_name'] ) ) $errors[]  = 'last_name';
@@ -700,6 +778,17 @@ class IGS_CS_Subscription extends WC_Subscription {
     WCS_Meta_Box_Subscription_Data::save( $sub_id, get_post( $sub_id ) );
     WCS_Meta_Box_Schedule::save( $sub_id, get_post( $sub_id ) );
 
+    if ( isset( $_POST['payment_method'] ) ) {
+      $new_payment_method = sanitize_text_field( $_POST['payment_method'] );
+      $gateways           = WC()->payment_gateways()->payment_gateways();
+
+      $subscription->set_payment_method( $new_payment_method );
+
+      if ( isset( $gateways[ $new_payment_method ] ) ) {
+        $subscription->set_payment_method_title( $gateways[ $new_payment_method ]->get_title() );
+      }
+    }
+
     if ( isset( $_POST['shipping_method'] ) ) {
       $new_method_id = sanitize_text_field( $_POST['shipping_method'] );
 
@@ -708,9 +797,9 @@ class IGS_CS_Subscription extends WC_Subscription {
       $shipping_item = ! empty( $shipping_methods ) ? reset( $shipping_methods ) : new WC_Order_Item_Shipping();
 
       $all_available_methods = array(
-        'local_pickup'           => 'Вземане от място',
+        'local_pickup'           => 'Local Pickup',
         'speedy_shipping_method' => 'Speedy',
-        'econt_shipping_method'  => 'Еконт Експрес'
+        'econt_shipping_method'  => 'Econt Express'
       );
       $method_title = isset( $all_available_methods[ $new_method_id ] ) ? $all_available_methods[ $new_method_id ] : $new_method_id;
 
@@ -723,7 +812,48 @@ class IGS_CS_Subscription extends WC_Subscription {
 
       $shipping_item->save();
 
-      $subscription->add_order_note( sprintf( 'Методът за доставка е променен на: %s', $method_title ) );
+      $subscription->add_order_note( sprintf( 'Shipping method changed to: %s', $method_title ) );
+    }
+
+    // Update product line items.
+    if ( ! empty( $posted_product_ids ) ) {
+      foreach ( $subscription->get_items() as $item_id => $item ) {
+        $subscription->remove_item( $item_id );
+      }
+
+      $posted_quantities = array_map( 'absint', (array) ( $_POST['igs_line_qty'] ?? [] ) );
+      $user              = new IGS_CS_User( $subscription->get_user_id() );
+      $price_list        = $user->igs_get_price_list();
+
+      foreach ( $posted_product_ids as $idx => $product_id ) {
+        if ( ! $product_id ) {
+          continue;
+        }
+
+        $product = wc_get_product( $product_id );
+        if ( ! $product ) {
+          continue;
+        }
+
+        $qty   = max( 1, $posted_quantities[ $idx ] ?? 1 );
+        $price = (float) $product->get_price();
+
+        if ( $price_list ) {
+          $custom = $product->get_meta( '_list_price_' . $price_list );
+          if ( $custom !== '' && $custom !== false ) {
+            $price = (float) wc_format_decimal( $custom );
+          }
+        }
+
+        $line_item = new WC_Order_Item_Product();
+        $line_item->set_product( $product );
+        $line_item->set_quantity( $qty );
+        $line_item->set_subtotal( $price * $qty );
+        $line_item->set_total( $price * $qty );
+        $subscription->add_item( $line_item );
+      }
+
+      $subscription->calculate_totals();
     }
 
     $subscription->update_meta_data( '_billing_invoice_company', $input_data['_billing_invoice_company'] );

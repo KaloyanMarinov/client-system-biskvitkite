@@ -49,7 +49,55 @@ class IGS_CS_Shipping_Integration {
    */
   public function update_delivery_price( $order_id, $order ) {
 
-    foreach ( $order->get_items( 'shipping' ) as $item_id => $item ) {
+    $shipping_items = $order->get_items( 'shipping' );
+
+    // If old shipping items were removed, recreate them from the parent
+    // subscription so the price-calculation methods have an item to work with.
+    // Deduplicate by method_id to prevent double shipping lines on subscriptions
+    // that accumulated duplicate items over time.
+    if ( empty( $shipping_items ) ) {
+      $subscriptions = wcs_get_subscriptions_for_order( $order, array( 'order_type' => 'renewal' ) );
+      $subscription  = reset( $subscriptions );
+
+      if ( $subscription ) {
+        $seen_methods = array();
+        foreach ( $subscription->get_items( 'shipping' ) as $sub_item ) {
+          $method_id = $sub_item->get_method_id();
+          if ( in_array( $method_id, $seen_methods, true ) ) {
+            continue; // skip duplicate method
+          }
+          $seen_methods[] = $method_id;
+
+          $new_item = new WC_Order_Item_Shipping();
+          $new_item->set_method_id( $method_id );
+          $new_item->set_method_title( $sub_item->get_method_title() );
+          $new_item->set_total( 0 );
+          $order->add_item( $new_item );
+        }
+        $order->save();
+        $shipping_items = $order->get_items( 'shipping' );
+      }
+    }
+
+    // Deduplicate items that may already be on the order (e.g. copied by WCS).
+    // Keep the first item per method_id and remove any extras before pricing.
+    $seen_methods = array();
+    $needs_save   = false;
+    foreach ( $shipping_items as $item_id => $item ) {
+      $method_id = $item->get_method_id();
+      if ( in_array( $method_id, $seen_methods, true ) ) {
+        $order->remove_item( $item_id );
+        unset( $shipping_items[ $item_id ] );
+        $needs_save = true;
+      } else {
+        $seen_methods[] = $method_id;
+      }
+    }
+    if ( $needs_save ) {
+      $order->save();
+    }
+
+    foreach ( $shipping_items as $item_id => $item ) {
       $method_id = $item->get_method_id();
 
       if ( 'speedy_shipping_method' === $method_id ) {

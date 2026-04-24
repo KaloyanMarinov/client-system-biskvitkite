@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Client System for Biskvitkite\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-25 15:02+0000\n"
-"PO-Revision-Date: 2026-04-24 01:12+0000\n"
+"PO-Revision-Date: 2026-04-24 01:10+0000\n"
 "Last-Translator: \n"
 "Language-Team: Български\n"
 "Language: bg_BG\n"
@@ -789,7 +789,7 @@ msgstr "Общо"
 
 #: templates/admin/part/export-orders-xls.php:187
 msgid "Total Quantity"
-msgstr "Общо количество"
+msgstr "Общо к-во"
 
 #: templates/admin/edit-subscription.php:399
 msgid "Town"

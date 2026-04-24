@@ -218,24 +218,54 @@ class IGS_CS_Admin_Export_Hooks extends IGS_CS_Loader {
 
     $params = wp_parse_args( $_POST, $defaults );
 
-    // Apply period filter when status is not wc-processing and a specific period is chosen.
-    $status = isset( $params['status'] ) ? $params['status'] : '';
-    $period = isset( $params['igs_order_period'] ) ? sanitize_text_field( $params['igs_order_period'] ) : 'all';
+    $status   = isset( $params['status'] )           ? $params['status']                                  : '';
+    $period   = isset( $params['igs_order_period'] ) ? sanitize_text_field( $params['igs_order_period'] ) : 'all';
+    $date_raw = isset( $params['igs_order_date'] )   ? sanitize_text_field( $params['igs_order_date'] )   : '';
 
-    if ( 'wc-processing' !== $status && 'all' !== $period ) {
+    if ( 'date' === $period ) {
+
+      // Single-date export: convert d.m.Y → Y-m-d, then filter by the right field.
+      $filter_date = '';
+      if ( $date_raw ) {
+        $dt = DateTime::createFromFormat( 'd.m.Y', $date_raw );
+        if ( $dt ) {
+          $filter_date = $dt->format( 'Y-m-d' );
+        }
+      }
+
+      if ( $filter_date ) {
+        if ( 'wc-cooking' === $status ) {
+          // wc-cooking: filter by preparation date meta.
+          $params['meta_query'] = array(
+            array(
+              'key'     => '_igs_preparation_date',
+              'value'   => $filter_date,
+              'compare' => '=',
+            ),
+          );
+        } else {
+          // All other statuses: filter by order creation date (full day).
+          $params['date_created'] = $filter_date . '...' . $filter_date . ' 23:59:59';
+        }
+      }
+
+    } elseif ( 'all' !== $period ) {
+
+      // Named period (this_week, this_month, etc.) — applies to all statuses.
       $date_range = self::get_period_date_range( $period );
       if ( $date_range ) {
         $params['date_created'] = $date_range;
       }
+
     }
 
-    // Remove our custom field before passing to wc_get_orders().
-    unset( $params['igs_order_period'] );
+    // Remove our custom fields before passing to wc_get_orders().
+    unset( $params['igs_order_period'], $params['igs_order_date'] );
 
     $params = apply_filters( 'igs_export_orders_params', $params );
-    $orders = wc_get_orders( $params );
+    $order_ids = wc_get_orders( $params );
 
-    if ( ! $orders ) {
+    if ( ! $order_ids ) {
       wp_redirect( add_query_arg( array(
         'page'         => IGS_CS()->admin()->menus()->get_export_slug(),
         'export_error' => 'no_results',
@@ -243,9 +273,28 @@ class IGS_CS_Admin_Export_Hooks extends IGS_CS_Loader {
       exit;
     }
 
+    // Group orders by date into separate sheets.
+    // wc-cooking → group by _igs_preparation_date; all others → group by date_created.
+    $grouped_orders = array();
+    foreach ( $order_ids as $order_id ) {
+      $order = wc_get_order( $order_id );
+      if ( ! $order ) continue;
+
+      if ( 'wc-cooking' === $status ) {
+        $raw      = $order->get_meta( '_igs_preparation_date' );
+        $sort_key = ( $raw && preg_match( '/^\d{4}-\d{2}-\d{2}$/', $raw ) ) ? $raw : '0000-00-00';
+      } else {
+        $sort_key = $order->get_date_created()->format( 'Y-m-d' );
+      }
+
+      $grouped_orders[ $sort_key ][] = $order;
+    }
+    ksort( $grouped_orders );
+
     igs_cs_get_template( 'admin/part/export-orders-xls', array(
-      'orders' => $orders,
-      'type'   => sanitize_text_field( $_POST['igs_order_type'] ),
+      'grouped_orders' => $grouped_orders,
+      'type'           => sanitize_text_field( $_POST['igs_order_type'] ),
+      'status'         => $status,
     ) );
 
     exit;

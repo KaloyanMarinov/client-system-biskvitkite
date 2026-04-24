@@ -74,7 +74,7 @@ class IGS_CS_Export {
     if ( ! $statuses = wc_get_order_statuses() )
       return;
 
-    $selected = 'wc-processing';
+    $selected = 'wc-cooking';
 
     igs_cs_get_template( 'admin/part/filter-select', array(
       'label'    => __('Status', 'igs-client-system'),
@@ -112,10 +112,8 @@ class IGS_CS_Export {
   }
 
   /**
-   * Render the filter orders type template.
-   */
-  /**
-   * Render the order period filter select.
+   * Render the filter orders period template.
+   * Always visible. Includes a "Date" option that reveals the date picker.
    */
   public function get_filter_order_period() {
 
@@ -126,6 +124,7 @@ class IGS_CS_Export {
       'this_year'  => __('This Year',    'igs-client-system'),
       'last_month' => __('Last Month',   'igs-client-system'),
       'last_year'  => __('Last Year',    'igs-client-system'),
+      'date'       => __('Date',         'igs-client-system'),
     );
 
     igs_cs_get_template( 'admin/part/filter-select', array(
@@ -133,8 +132,24 @@ class IGS_CS_Export {
       'name'     => 'igs_order_period',
       'options'  => $periods,
       'selected' => 'all',
-      'hide'     => true,
       'class'    => 'igs_export_order_period',
+    ) );
+
+  }
+
+  /**
+   * Render the single-date picker.
+   * Shown only when the period select is set to "Date".
+   * For wc-cooking status the PHP handler maps this to _igs_preparation_date;
+   * for all other statuses it maps to date_created.
+   */
+  public function get_filter_order_date() {
+
+    igs_cs_get_template( 'admin/part/filter-date-picker', array(
+      'label' => _x( 'Date', 'filter', 'igs-client-system' ),
+      'name'  => 'igs_order_date',
+      'hide'  => true,
+      'class' => 'igs_export_order_date',
     ) );
 
   }
@@ -145,12 +160,12 @@ class IGS_CS_Export {
   public function get_filter_order_type() {
 
     $options = array(
-      'short' => __('Short', 'igs-client-system'),
       'full'  => __('Full', 'igs-client-system'),
+      'short' => __('Short', 'igs-client-system'),
     );
 
     $options  = apply_filters( 'igs_cs_filter_order_types', $options, $this );
-    $selected = 'short';
+    $selected = 'full';
 
     igs_cs_get_template( 'admin/part/filter-select', array(
       'label'    => _x('Type Export', 'filter', 'igs-client-system'),

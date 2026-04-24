@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Client System for Biskvitkite\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-24 01:09+0000\n"
+"POT-Creation-Date: 2026-04-22 13:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -16,7 +16,7 @@ msgstr ""
 "X-Loco-Version: 2.8.3; wp-6.9.4; php-8.3.30\n"
 "X-Domain: igs-client-system"
 
-#: templates/admin/part/export-active-subscirptions-xls.php:58 templates/admin/part/export-subscirptions-xls.php:55 templates/admin/part/export-orders-xls.php:90 templates/admin/loop/list-subscription.php:39
+#: templates/admin/part/export-active-subscirptions-xls.php:58 templates/admin/part/export-subscirptions-xls.php:55 templates/admin/part/export-orders-xls.php:60 templates/admin/loop/list-subscription.php:39
 msgid "#"
 msgstr ""
 
@@ -26,7 +26,7 @@ msgid_plural "%d days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/admin/part/export-active-subscirptions-xls.php:83 templates/admin/part/export-subscirptions-xls.php:82 templates/admin/part/export-orders-xls.php:121
+#: templates/admin/part/export-active-subscirptions-xls.php:83 templates/admin/part/export-subscirptions-xls.php:82 templates/admin/part/export-orders-xls.php:84
 msgid "%d piece"
 msgid_plural "%d pieces"
 msgstr[0] ""
@@ -37,10 +37,6 @@ msgid "%d Result"
 msgid_plural "%d Results"
 msgstr[0] ""
 msgstr[1] ""
-
-#: templates/admin/edit-subscription.php:206
-msgid "+ Add product"
-msgstr ""
 
 #: admin/hooks/igs-admin-product-hooks.php:100
 msgid "A link to a price list."
@@ -58,11 +54,11 @@ msgstr ""
 msgid "Add new list"
 msgstr ""
 
-#: templates/admin/edit-subscription.php:234
+#: templates/admin/edit-subscription.php:189
 msgid "Additional information for the order, such as allergens, special customer requirements, and others."
 msgstr ""
 
-#: admin/igs-admin-order.php:93 admin/igs-admin-order.php:104 admin/igs-admin-order.php:168 templates/admin/edit-subscription.php:404 templates/admin/part/export-orders-xls.php:152
+#: admin/igs-admin-order.php:93 admin/igs-admin-order.php:104 admin/igs-admin-order.php:168 templates/admin/edit-subscription.php:316
 msgid "Address"
 msgstr ""
 
@@ -75,7 +71,7 @@ msgstr ""
 msgid "All"
 msgstr ""
 
-#: admin/components/igs-admin-export.php:121
+#: admin/components/igs-admin-export.php:123
 msgid "All period"
 msgstr ""
 
@@ -95,10 +91,6 @@ msgstr ""
 msgid "Biskvitkite.bg client management extension"
 msgstr ""
 
-#: templates/admin/part/export-orders-xls.php:151
-msgid "City"
-msgstr ""
-
 #: admin/components/igs-admin-users.php:162 admin/components/igs-admin-list-subscription.php:231 templates/admin/edit-subscription.php:75 templates/admin/part/filter-client.php:8
 msgid "Client"
 msgstr ""
@@ -115,11 +107,11 @@ msgstr ""
 msgid "Cloning is forbidden"
 msgstr ""
 
-#: templates/admin/edit-subscription.php:379
+#: templates/admin/edit-subscription.php:291
 msgid "Company"
 msgstr ""
 
-#: admin/components/igs-admin-product-data.php:61 templates/admin/part/export-active-subscirptions-xls.php:59 templates/admin/part/export-subscirptions-xls.php:56 templates/admin/part/export-orders-xls.php:93
+#: admin/components/igs-admin-product-data.php:61 templates/admin/part/export-active-subscirptions-xls.php:59 templates/admin/part/export-subscirptions-xls.php:56 templates/admin/part/export-orders-xls.php:62
 msgid "Customer"
 msgstr ""
 
@@ -131,7 +123,7 @@ msgstr ""
 msgid "Customer not found."
 msgstr ""
 
-#: templates/admin/edit-subscription.php:233
+#: templates/admin/edit-subscription.php:188
 msgid "Customer note"
 msgstr ""
 
@@ -143,7 +135,7 @@ msgstr ""
 msgid "Dashborad"
 msgstr ""
 
-#: admin/components/igs-admin-export.php:127 includes/core/igs-subscription.php:474 templates/admin/schedule-calendar.php:28 templates/admin/part/user-subscriptions-table.php:11 templates/admin/part/export-orders-xls.php:100 templates/admin/part/user-orders-table.php:11
+#: includes/core/igs-subscription.php:474 templates/admin/schedule-calendar.php:28 templates/admin/part/user-subscriptions-table.php:11 templates/admin/part/export-orders-xls.php:69 templates/admin/part/user-orders-table.php:11
 msgid "Date"
 msgstr ""
 
@@ -155,19 +147,11 @@ msgstr ""
 msgid "Delayed"
 msgstr ""
 
-#: templates/admin/edit-subscription.php:198
-msgid "Delete"
-msgstr ""
-
-#: templates/admin/edit-subscription.php:185
-msgid "deleted"
-msgstr ""
-
-#: templates/admin/part/export-active-subscirptions-xls.php:65 templates/admin/part/export-subscirptions-xls.php:62 templates/admin/part/export-orders-xls.php:103 templates/admin/loop/list-subscription.php:74
+#: templates/admin/part/export-active-subscirptions-xls.php:65 templates/admin/part/export-subscirptions-xls.php:62 templates/admin/part/export-orders-xls.php:71 templates/admin/loop/list-subscription.php:74
 msgid "Delivery"
 msgstr ""
 
-#: templates/admin/edit-subscription.php:281
+#: templates/admin/edit-subscription.php:193
 msgid "Delivery Method"
 msgstr ""
 
@@ -179,7 +163,7 @@ msgstr ""
 msgid "Deserialization of instances of this class is forbidden!"
 msgstr ""
 
-#: templates/admin/part/export-filter.php:22 templates/admin/part/export-filter.php:42
+#: templates/admin/part/export-filter.php:22 templates/admin/part/export-filter.php:41
 msgid "Download XLS"
 msgstr ""
 
@@ -187,12 +171,12 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: templates/admin/edit-subscription.php:209
+#: templates/admin/edit-subscription.php:164
 msgctxt "edit"
 msgid "Delivery"
 msgstr ""
 
-#: templates/admin/edit-subscription.php:327
+#: templates/admin/edit-subscription.php:239
 msgctxt "edit"
 msgid "Invoice"
 msgstr ""
@@ -202,7 +186,7 @@ msgctxt "edit"
 msgid "Orders"
 msgstr ""
 
-#: templates/admin/edit-subscription.php:414
+#: templates/admin/edit-subscription.php:326
 msgctxt "edit"
 msgid "Orders for the subscription"
 msgstr ""
@@ -226,7 +210,7 @@ msgstr ""
 msgid "Edit list"
 msgstr ""
 
-#: templates/admin/edit-user.php:79 templates/admin/edit-subscription.php:228
+#: templates/admin/edit-user.php:79 templates/admin/edit-subscription.php:183
 msgid "Email address"
 msgstr ""
 
@@ -254,27 +238,22 @@ msgstr ""
 msgid "Filter"
 msgstr ""
 
-#: admin/components/igs-admin-export.php:149
-msgctxt "filter"
-msgid "Date"
-msgstr ""
-
 #: admin/components/igs-admin-export.php:105 admin/components/igs-admin-list-subscription.php:111 templates/admin/part/filter-next-date.php:8
 msgctxt "filter"
 msgid "Next Date"
 msgstr ""
 
-#: admin/components/igs-admin-export.php:131
+#: admin/components/igs-admin-export.php:132
 msgctxt "filter"
 msgid "Period"
 msgstr ""
 
-#: admin/components/igs-admin-export.php:171
+#: admin/components/igs-admin-export.php:156
 msgctxt "filter"
 msgid "Type Export"
 msgstr ""
 
-#: templates/admin/edit-user.php:64 templates/admin/edit-subscription.php:213
+#: templates/admin/edit-user.php:64 templates/admin/edit-subscription.php:168
 msgid "First Name"
 msgstr ""
 
@@ -286,7 +265,7 @@ msgstr ""
 msgid "Found:"
 msgstr ""
 
-#: admin/components/igs-admin-export.php:163
+#: admin/components/igs-admin-export.php:148
 msgid "Full"
 msgstr ""
 
@@ -315,11 +294,7 @@ msgstr ""
 msgid "installed but not activated"
 msgstr ""
 
-#: templates/admin/part/export-orders-xls.php:108
-msgid "Invoice"
-msgstr ""
-
-#: templates/admin/edit-subscription.php:331
+#: templates/admin/edit-subscription.php:243
 msgid "Issuing an invoice to a company."
 msgstr ""
 
@@ -331,11 +306,11 @@ msgstr ""
 msgid "Last Date"
 msgstr ""
 
-#: admin/components/igs-admin-export.php:125
+#: admin/components/igs-admin-export.php:127
 msgid "Last Month"
 msgstr ""
 
-#: templates/admin/edit-user.php:69 templates/admin/edit-subscription.php:218
+#: templates/admin/edit-user.php:69 templates/admin/edit-subscription.php:173
 msgid "Last Name"
 msgstr ""
 
@@ -347,19 +322,15 @@ msgstr ""
 msgid "Last renew"
 msgstr ""
 
-#: admin/components/igs-admin-export.php:126
+#: admin/components/igs-admin-export.php:128
 msgid "Last Year"
 msgstr ""
 
-#: includes/core/igs-subscription.php:678
+#: includes/core/igs-subscription.php:611
 msgid "Manual system renewal"
 msgstr ""
 
-#: includes/core/igs-subscription.php:677
-msgid "Manual system renewal – awaiting bank transfer"
-msgstr ""
-
-#: templates/admin/edit-subscription.php:384 templates/admin/part/export-orders-xls.php:148
+#: templates/admin/edit-subscription.php:296
 msgid "Materially Responsible Person"
 msgstr ""
 
@@ -412,15 +383,11 @@ msgstr ""
 msgid "No customers found."
 msgstr ""
 
-#: templates/admin/part/export-orders-xls.php:58
-msgid "No date"
-msgstr ""
-
 #: templates/admin/part/export-active-subscirptions-xls.php:74
 msgid "No deliveries scheduled for this day."
 msgstr ""
 
-#: admin/components/igs-admin-export.php:185
+#: admin/components/igs-admin-export.php:170
 msgid "No found results"
 msgstr ""
 
@@ -440,7 +407,7 @@ msgstr ""
 msgid "No Subscriptions Found"
 msgstr ""
 
-#: templates/admin/edit-subscription.php:368
+#: templates/admin/edit-subscription.php:280
 msgid "No, do not issue an invoice"
 msgstr ""
 
@@ -448,7 +415,7 @@ msgstr ""
 msgid "not installed"
 msgstr ""
 
-#: templates/admin/part/export-active-subscirptions-xls.php:69 templates/admin/part/export-subscirptions-xls.php:66 templates/admin/part/export-orders-xls.php:107
+#: templates/admin/part/export-active-subscirptions-xls.php:69 templates/admin/part/export-subscirptions-xls.php:66 templates/admin/part/export-orders-xls.php:75
 msgid "Notes"
 msgstr ""
 
@@ -470,11 +437,11 @@ msgstr ""
 msgid "Order by"
 msgstr ""
 
-#: templates/admin/edit-subscription.php:421
+#: templates/admin/edit-subscription.php:333
 msgid "Order Notes"
 msgstr ""
 
-#: templates/admin/header.php:14 templates/admin/edit-user.php:57 templates/admin/part/export-active-subscirptions-xls.php:61 templates/admin/part/export-subscirptions-xls.php:58 templates/admin/part/export-orders-xls.php:96 templates/admin/part/export-filter.php:31 templates/admin/loop/list-subscription.php:64 templates/admin/loop/client.php:49
+#: templates/admin/header.php:14 templates/admin/edit-user.php:57 templates/admin/part/export-active-subscirptions-xls.php:61 templates/admin/part/export-subscirptions-xls.php:58 templates/admin/part/export-orders-xls.php:65 templates/admin/part/export-filter.php:31 templates/admin/loop/list-subscription.php:64 templates/admin/loop/client.php:49
 msgid "Orders"
 msgstr ""
 
@@ -490,15 +457,15 @@ msgstr ""
 msgid "Parent list:"
 msgstr ""
 
-#: templates/admin/edit-subscription.php:238 templates/admin/part/export-active-subscirptions-xls.php:67 templates/admin/part/export-subscirptions-xls.php:64 templates/admin/part/export-orders-xls.php:105
+#: templates/admin/part/export-active-subscirptions-xls.php:67 templates/admin/part/export-subscirptions-xls.php:64 templates/admin/part/export-orders-xls.php:73
 msgid "Payment Method"
 msgstr ""
 
-#: templates/admin/part/export-active-subscirptions-xls.php:60 templates/admin/part/export-subscirptions-xls.php:57 templates/admin/part/export-orders-xls.php:94
+#: templates/admin/part/export-active-subscirptions-xls.php:60 templates/admin/part/export-subscirptions-xls.php:57 templates/admin/part/export-orders-xls.php:63
 msgid "Phone Number"
 msgstr ""
 
-#: templates/admin/edit-user.php:74 templates/admin/edit-subscription.php:223
+#: templates/admin/edit-user.php:74 templates/admin/edit-subscription.php:178
 msgid "Phone number"
 msgstr ""
 
@@ -508,14 +475,6 @@ msgstr ""
 
 #: includes/core/igs-dependencies.php:257
 msgid "Please install and activate the required plugins, then reactivate this plugin."
-msgstr ""
-
-#: admin/hooks/igs-admin-order-hooks.php:95 admin/hooks/igs-admin-order-hooks.php:193 templates/admin/part/export-orders-xls.php:101
-msgid "Preparation Date"
-msgstr ""
-
-#: admin/hooks/igs-admin-order-hooks.php:130 admin/hooks/igs-admin-order-hooks.php:164
-msgid "Preparation date is required for orders with \"Cooking\" status."
 msgstr ""
 
 #: admin/components/igs-admin-product-data.php:95 admin/components/igs-admin-product-data.php:155
@@ -538,18 +497,6 @@ msgstr ""
 msgid "Prices List"
 msgstr ""
 
-#: templates/admin/edit-subscription.php:169
-msgid "Product"
-msgstr ""
-
-#: templates/admin/edit-subscription.php:164 templates/admin/part/export-orders-xls.php:186
-msgid "Products"
-msgstr ""
-
-#: templates/admin/edit-subscription.php:170
-msgid "Quantity"
-msgstr ""
-
 #: includes/core/igs-subscription.php:268
 msgid "Remaining"
 msgstr ""
@@ -570,10 +517,6 @@ msgstr ""
 msgid "requires the following plugins to be installed and activated:"
 msgstr ""
 
-#: templates/admin/part/filter.php:25 templates/admin/part/users-filter.php:22
-msgid "Reset"
-msgstr ""
-
 #: includes/core/igs-subscription.php:533
 msgid "Resubscribe Order"
 msgstr ""
@@ -590,7 +533,7 @@ msgstr ""
 msgid "Review"
 msgstr ""
 
-#: templates/admin/edit-user.php:104 templates/admin/edit-subscription.php:409
+#: templates/admin/edit-user.php:104 templates/admin/edit-subscription.php:321
 msgid "Save changes"
 msgstr ""
 
@@ -602,16 +545,8 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: templates/admin/edit-subscription.php:188
-msgid "Search product…"
-msgstr ""
-
-#: includes/core/igs-subscription.php:640
+#: includes/core/igs-subscription.php:593
 msgid "Security check failed."
-msgstr ""
-
-#: templates/admin/edit-subscription.php:188
-msgid "Select replacement product…"
 msgstr ""
 
 #: templates/admin/part/visibility-product-data.php:13
@@ -622,7 +557,7 @@ msgstr ""
 msgid "Select..."
 msgstr ""
 
-#: templates/admin/part/export-active-subscirptions-xls.php:66 templates/admin/part/export-subscirptions-xls.php:63 templates/admin/part/export-orders-xls.php:104
+#: templates/admin/part/export-active-subscirptions-xls.php:66 templates/admin/part/export-subscirptions-xls.php:63 templates/admin/part/export-orders-xls.php:72
 msgid "Shipping Address"
 msgstr ""
 
@@ -638,7 +573,7 @@ msgstr ""
 msgid "Shipping to office"
 msgstr ""
 
-#: admin/components/igs-admin-export.php:164
+#: admin/components/igs-admin-export.php:149
 msgid "Short"
 msgstr ""
 
@@ -658,7 +593,7 @@ msgstr ""
 msgid "Start date"
 msgstr ""
 
-#: admin/components/igs-admin-export.php:63 admin/components/igs-admin-export.php:80 includes/core/igs-subscription.php:476 templates/admin/part/export-active-subscirptions-xls.php:63 templates/admin/part/filter-status.php:8 templates/admin/part/export-subscirptions-xls.php:60 templates/admin/part/user-subscriptions-table.php:12 templates/admin/part/export-orders-xls.php:91 templates/admin/part/user-orders-table.php:13 templates/admin/loop/list-subscription.php:44
+#: admin/components/igs-admin-export.php:63 admin/components/igs-admin-export.php:80 includes/core/igs-subscription.php:476 templates/admin/part/export-active-subscirptions-xls.php:63 templates/admin/part/filter-status.php:8 templates/admin/part/export-subscirptions-xls.php:60 templates/admin/part/user-subscriptions-table.php:12 templates/admin/part/user-orders-table.php:13 templates/admin/loop/list-subscription.php:44
 msgid "Status"
 msgstr ""
 
@@ -678,7 +613,7 @@ msgstr ""
 msgid "Subscription data updated successfully."
 msgstr ""
 
-#: includes/core/igs-subscription.php:703
+#: includes/core/igs-subscription.php:634
 msgid "Subscription not found."
 msgstr ""
 
@@ -731,20 +666,12 @@ msgstr ""
 msgid "The Inovice UIC / Tax ID is a required field."
 msgstr ""
 
-#: includes/core/igs-subscription.php:685
+#: includes/core/igs-subscription.php:616
 msgid "The next payment date has been updated based on the manual renewal."
 msgstr ""
 
 #: admin/components/igs-admin-users.php:216 admin/components/igs-admin-list-subscription.php:278
 msgid "The provided email format is invalid."
-msgstr ""
-
-#: admin/components/igs-admin-list-subscription.php:284
-msgid "The subscription contains deleted products. Please select replacement products before saving."
-msgstr ""
-
-#: admin/components/igs-admin-list-subscription.php:285
-msgid "The subscription must contain at least one product."
 msgstr ""
 
 #: admin/components/igs-admin-users.php:217
@@ -755,15 +682,15 @@ msgstr ""
 msgid "This Month"
 msgstr ""
 
-#: admin/components/igs-admin-export.php:123
+#: admin/components/igs-admin-export.php:125
 msgid "This month"
 msgstr ""
 
-#: admin/components/igs-admin-export.php:96 admin/components/igs-admin-export.php:122 admin/components/igs-admin-list-subscription.php:196
+#: admin/components/igs-admin-export.php:96 admin/components/igs-admin-export.php:124 admin/components/igs-admin-list-subscription.php:196
 msgid "This week"
 msgstr ""
 
-#: admin/components/igs-admin-export.php:124
+#: admin/components/igs-admin-export.php:126
 msgid "This Year"
 msgstr ""
 
@@ -771,15 +698,11 @@ msgstr ""
 msgid "Today"
 msgstr ""
 
-#: includes/core/igs-subscription.php:477 templates/admin/part/export-active-subscirptions-xls.php:62 templates/admin/part/export-subscirptions-xls.php:59 templates/admin/part/user-subscriptions-table.php:13 templates/admin/part/export-orders-xls.php:98 templates/admin/part/user-orders-table.php:14
+#: includes/core/igs-subscription.php:477 templates/admin/part/export-active-subscirptions-xls.php:62 templates/admin/part/export-subscirptions-xls.php:59 templates/admin/part/user-subscriptions-table.php:13 templates/admin/part/export-orders-xls.php:67 templates/admin/part/user-orders-table.php:14
 msgid "Total"
 msgstr ""
 
-#: templates/admin/part/export-orders-xls.php:187
-msgid "Total Quantity"
-msgstr ""
-
-#: templates/admin/edit-subscription.php:399
+#: templates/admin/edit-subscription.php:311
 msgid "Town"
 msgstr ""
 
@@ -787,7 +710,7 @@ msgstr ""
 msgid "Type order"
 msgstr ""
 
-#: templates/admin/edit-subscription.php:389 templates/admin/part/export-orders-xls.php:149
+#: templates/admin/edit-subscription.php:301
 msgid "UIC / Tax ID"
 msgstr ""
 
@@ -799,7 +722,7 @@ msgstr ""
 msgid "Update list"
 msgstr ""
 
-#: templates/admin/edit-subscription.php:394 templates/admin/part/export-orders-xls.php:150
+#: templates/admin/edit-subscription.php:306
 msgid "VAT Number"
 msgstr ""
 
@@ -820,10 +743,10 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: templates/admin/edit-subscription.php:351
+#: templates/admin/edit-subscription.php:263
 msgid "Yes, issue an invoice"
 msgstr ""
 
-#: admin/igs-admin-menus.php:165 admin/igs-admin-menus.php:202 admin/igs-admin-menus.php:217 admin/igs-admin-menus.php:254 admin/hooks/igs-admin-export-hooks.php:64 admin/hooks/igs-admin-export-hooks.php:209 includes/core/igs-subscription.php:694 includes/core/igs-user.php:547
+#: admin/igs-admin-menus.php:165 admin/igs-admin-menus.php:202 admin/igs-admin-menus.php:217 admin/igs-admin-menus.php:254 admin/hooks/igs-admin-export-hooks.php:64 admin/hooks/igs-admin-export-hooks.php:209 includes/core/igs-subscription.php:625 includes/core/igs-user.php:547
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""

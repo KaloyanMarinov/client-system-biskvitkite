@@ -93,6 +93,8 @@ class IGS_CS_Admin_UI_Hooks extends IGS_CS_Loader {
       return;
     }
 
+    wp_enqueue_style( 'dashicons' );
+
     wp_enqueue_style(
       'igs-cs-styles',
       IGS_CS()->plugin_url() . '/resources/css/igs-styles.css',
@@ -134,6 +136,7 @@ class IGS_CS_Admin_UI_Hooks extends IGS_CS_Loader {
       wp_localize_script( 'wc-admin-meta-boxes', 'woocommerce_admin_meta_boxes', array(
         'add_order_note_nonce'    => wp_create_nonce( 'add-order-note' ),
         'delete_order_note_nonce' => wp_create_nonce( 'delete-order-note' ),
+        'search_products_nonce'   => wp_create_nonce( 'search-products' ),
         'ajax_url'                => admin_url( 'admin-ajax.php' ),
         'post_id'                 => absint( $_GET['id'] ),
       ) );
