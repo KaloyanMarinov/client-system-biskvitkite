@@ -9,6 +9,7 @@ class Script {
     this.toggleOrderExportPeriod();
     this.subscriptionProducts();
     this.requirePreparationDate();
+    this.prepaidToggle();
   }
 
   dataPicker() {
@@ -75,23 +76,23 @@ class Script {
 
   subscriptionProducts() {
     const itemsList = document.getElementById('igs-subscription-items');
-    if ( !itemsList ) return;
+    if (!itemsList) return;
 
-    const form  = itemsList.closest('form') as HTMLFormElement;
-    const jq    = (window as any).jQuery;
-    const i18n  = (window as any).igs_cs_i18n || {};
+    const form = itemsList.closest('form') as HTMLFormElement;
+    const jq = (window as any).jQuery;
+    const i18n = (window as any).igs_cs_i18n || {};
 
     const initProductSearch = (select: HTMLSelectElement) => {
-      if ( !jq ) return;
+      if (!jq) return;
       const metaBoxes = (window as any).woocommerce_admin_meta_boxes;
       jq(select).selectWoo({
         ajax: {
-          url:      (window as any).ajaxurl || metaBoxes?.ajax_url,
+          url: (window as any).ajaxurl || metaBoxes?.ajax_url,
           dataType: 'json',
-          delay:    250,
+          delay: 250,
           data: (params: any) => ({
-            term:     params.term,
-            action:   'igs_search_subscription_products',
+            term: params.term,
+            action: 'igs_search_subscription_products',
             security: metaBoxes?.search_products_nonce || '',
           }),
           processResults: (data: any) => ({
@@ -101,7 +102,7 @@ class Script {
         },
         minimumInputLength: 1,
         placeholder: select.getAttribute('data-placeholder') || '',
-        allowClear:  false,
+        allowClear: false,
       });
     };
 
@@ -111,19 +112,19 @@ class Script {
     // When a product select changes, sync the hidden pid input.
     // Must use jQuery delegation because selectWoo fires change via $.trigger(),
     // which does not reliably bubble to native addEventListener on the parent.
-    if ( jq ) {
-      jq(itemsList).on('change', '.igs-product-search', function() {
+    if (jq) {
+      jq(itemsList).on('change', '.igs-product-search', function () {
         const val = jq(this).val() as string;
-        jq(this).closest('.igs-item-row').find('.igs-pid').val( val || '0' );
+        jq(this).closest('.igs-item-row').find('.igs-pid').val(val || '0');
       });
     }
 
     // Remove row – prevent removing the last one.
     itemsList.addEventListener('click', (e: Event) => {
       const target = e.target as HTMLElement;
-      if ( !target.classList.contains('igs-remove-item') ) return;
-      if ( itemsList.querySelectorAll('.igs-item-row').length <= 1 ) {
-        alert( i18n.subscription_min_one_product );
+      if (!target.classList.contains('igs-remove-item')) return;
+      if (itemsList.querySelectorAll('.igs-item-row').length <= 1) {
+        alert(i18n.subscription_min_one_product);
         return;
       }
       target.closest('.igs-item-row')?.remove();
@@ -131,10 +132,10 @@ class Script {
 
     // Add new empty row.
     const addBtn = document.getElementById('igs-add-product-btn') as HTMLButtonElement;
-    if ( addBtn ) {
+    if (addBtn) {
       addBtn.addEventListener('click', () => {
         const tbody = itemsList.querySelector('tbody') || itemsList;
-        const row   = document.createElement('tr');
+        const row = document.createElement('tr');
         row.className = 'igs-item-row';
         row.innerHTML = `
           <td class="p-5">
@@ -151,22 +152,22 @@ class Script {
         `;
         tbody.appendChild(row);
         const newSelect = row.querySelector<HTMLSelectElement>('.igs-product-search');
-        if ( newSelect ) initProductSearch(newSelect);
+        if (newSelect) initProductSearch(newSelect);
       });
     }
 
     // Client-side validation before submit.
-    if ( form ) {
+    if (form) {
       form.addEventListener('submit', (e: Event) => {
         const zeroPids = itemsList.querySelectorAll<HTMLInputElement>('.igs-pid[value="0"]');
-        if ( zeroPids.length > 0 ) {
+        if (zeroPids.length > 0) {
           e.preventDefault();
-          alert( i18n.subscription_select_replacements );
+          alert(i18n.subscription_select_replacements);
           return;
         }
-        if ( itemsList.querySelectorAll('.igs-item-row').length === 0 ) {
+        if (itemsList.querySelectorAll('.igs-item-row').length === 0) {
           e.preventDefault();
-          alert( i18n.subscription_min_one_product );
+          alert(i18n.subscription_min_one_product);
         }
       });
     }
@@ -174,7 +175,7 @@ class Script {
 
   toggleOrderExportPeriod() {
     const selectPeriod = document.querySelector('.igs_export_order_period select') as HTMLSelectElement;
-    const datePicker   = document.querySelector('.igs_export_order_date') as HTMLElement;
+    const datePicker = document.querySelector('.igs_export_order_date') as HTMLElement;
 
     if (!selectPeriod || !datePicker) return;
 
@@ -188,16 +189,16 @@ class Script {
 
   requirePreparationDate() {
     const prepField = document.getElementById('igs_preparation_date') as HTMLInputElement;
-    if ( !prepField ) return; // not on WC order edit page
+    if (!prepField) return; // not on WC order edit page
 
     const statusSelect = document.getElementById('order_status') as HTMLSelectElement;
-    if ( !statusSelect ) return;
+    if (!statusSelect) return;
 
     const form = prepField.closest('form') as HTMLFormElement;
-    if ( !form ) return;
+    if (!form) return;
 
     const validate = (): boolean => {
-      if ( statusSelect.value === 'wc-cooking' && !prepField.value.trim() ) {
+      if (statusSelect.value === 'wc-cooking' && !prepField.value.trim()) {
         prepField.style.outline = '2px solid red';
         prepField.scrollIntoView({ behavior: 'smooth', block: 'center' });
         prepField.focus();
@@ -207,7 +208,7 @@ class Script {
     };
 
     form.addEventListener('submit', (e: Event) => {
-      if ( !validate() ) {
+      if (!validate()) {
         e.preventDefault();
         e.stopPropagation();
       }
@@ -220,10 +221,41 @@ class Script {
 
     // Also re-run on status change so the outline clears if status changes away from wc-cooking.
     statusSelect.addEventListener('change', () => {
-      if ( statusSelect.value !== 'wc-cooking' ) {
+      if (statusSelect.value !== 'wc-cooking') {
         prepField.style.outline = '';
       }
     });
+  }
+
+  prepaidToggle() {
+    const checkbox = document.getElementById('igs_prepaid') as HTMLInputElement;
+    if (!checkbox) return;
+
+    const wrap = document.getElementById('igs-prepaid-until-wrap') as HTMLElement;
+    const dateField = document.getElementById('igs_prepaid_until') as HTMLInputElement;
+    const form = checkbox.closest('form') as HTMLFormElement;
+
+    checkbox.addEventListener('change', () => {
+      wrap.style.display = checkbox.checked ? '' : 'none';
+    });
+
+    if (form) {
+      const cyclesField = document.getElementById('igs_prepaid_cycles') as HTMLInputElement;
+
+      form.addEventListener('submit', (e: Event) => {
+        const cyclesFilled = cyclesField && parseInt(cyclesField.value, 10) > 0;
+        if (checkbox.checked && !dateField.value.trim() && !cyclesFilled) {
+          e.preventDefault();
+          dateField.style.outline = '2px solid red';
+          dateField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          dateField.focus();
+        }
+      });
+
+      dateField.addEventListener('input', () => {
+        dateField.style.outline = '';
+      });
+    }
   }
 
 }

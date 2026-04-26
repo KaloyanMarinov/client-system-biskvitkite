@@ -81,6 +81,20 @@
     }
 }
 
+.#{$input-prefix}-checkbox {
+  @extend .d-f, .ai-c, .gx-8, .fw-b, .tt-u, .ps-r;
+
+    &::before {
+      content: '';
+      flex: 0 0 auto;
+      width: 20px;
+      height: 20px;
+      border-radius: 2px;
+      background-color: $white;
+      border: 5px solid $white;
+      box-shadow: 0 0 0 $input-border-width $input-border-color
+    }
+}
 
 .#{$input-prefix} {
 

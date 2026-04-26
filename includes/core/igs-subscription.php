@@ -663,13 +663,95 @@ class IGS_CS_Subscription extends WC_Subscription {
     foreach ( $renewal_order->get_items( 'shipping' ) as $item_id => $item ) {
       $renewal_order->remove_item( $item_id );
     }
+
+    // wcs_create_renewal_order() copies all subscription meta, including
+    // _igs_prepaid.  Reset it now; we will set it to '1' later only if the
+    // prepaid period is still active.
+    $renewal_order->delete_meta_data( '_igs_prepaid' );
     $renewal_order->save();
 
     // Update product line-item prices to current, respecting the customer's
     // assigned price list.
     self::update_renewal_product_prices( $renewal_order, $subscription );
 
+    // Determine whether the subscription is within its prepaid period.
+    // We resolve this before firing igs_renew_subscription so the shipping
+    // integration runs normally, then we clean up afterwards.
+    $prepaid_active = false;
+    if ( '1' === $subscription->get_meta( '_igs_prepaid' ) ) {
+      $until_raw = $subscription->get_meta( '_igs_prepaid_until' );
+      $until_dt  = $until_raw ? DateTime::createFromFormat( 'd.m.Y', $until_raw ) : false;
+      if ( $until_dt && ( (int) $until_dt->format('Ym') > (int) ( new DateTime() )->format('Ym') ) ) {
+        $prepaid_active = true;
+      }
+    }
+
+    // Let the shipping integration (Econt / Speedy) add and price shipping items.
     do_action( 'igs_renew_subscription', $renewal_order->get_id(), $renewal_order );
+
+    // Re-fetch so we see any items the action may have added/modified.
+    $renewal_order   = wc_get_order( $renewal_order->get_id() );
+    $prepaid_cycles  = (int) $subscription->get_meta( '_igs_prepaid_cycles' );
+
+    if ( $prepaid_cycles > 0 ) {
+
+      // Prepaid bulk order: multiply every line item and shipping by the number
+      // of cycles the customer is paying for upfront.
+      // Multiply product line items.
+      foreach ( $renewal_order->get_items() as $item ) {
+        $item->set_subtotal( $item->get_subtotal() * $prepaid_cycles );
+        $item->set_total( $item->get_total() * $prepaid_cycles );
+        $item->save();
+      }
+
+      // Calculate total shipping (after multiplication) then roll it into
+      // product line items proportionally, and zero out the shipping lines.
+      $total_shipping = 0;
+      foreach ( $renewal_order->get_items( 'shipping' ) as $item ) {
+        $total_shipping += (float) $item->get_total() * $prepaid_cycles;
+      }
+
+      if ( $total_shipping > 0 ) {
+        $fee = new WC_Order_Item_Fee();
+        $fee->set_name( __( 'Prepaid delivery', 'igs-client-system' ) );
+        $fee->set_total( $total_shipping );
+        $fee->set_tax_status( 'none' );
+        $renewal_order->add_item( $fee );
+        $fee->save();
+      }
+
+      foreach ( $renewal_order->get_items( 'shipping' ) as $item ) {
+        $item->set_total( 0 );
+        $item->save();
+      }
+
+      $renewal_order->update_meta_data( '_igs_prepaid', '1' );
+      $renewal_order->update_meta_data( '_igs_prepaid_cycles', $prepaid_cycles ); // kept for reference
+      $renewal_order->calculate_totals();
+      $renewal_order->save();
+
+      // Cycles are consumed — clear them from the subscription so future
+      // renewals fall into the normal zero-price prepaid path.
+      $subscription->update_meta_data( '_igs_prepaid_cycles', 0 );
+      $subscription->save();
+
+    } elseif ( $prepaid_active ) {
+
+      // Normal prepaid renewal within the paid period: zero all prices.
+      foreach ( $renewal_order->get_items() as $item ) {
+        $item->set_subtotal( 0 );
+        $item->set_total( 0 );
+        $item->save();
+      }
+      foreach ( $renewal_order->get_items( 'shipping' ) as $item ) {
+        $item->set_total( 0 );
+        $item->save();
+      }
+      $renewal_order->update_meta_data( '_igs_prepaid', '1' );
+      $renewal_order->calculate_totals();
+      $renewal_order->save();
+
+    }
 
     $is_bacs       = ( 'bacs' === $subscription->get_payment_method() );
     $renewal_status = $is_bacs ? 'on-hold'    : 'processing';
@@ -678,7 +760,30 @@ class IGS_CS_Subscription extends WC_Subscription {
       : __( 'Manual system renewal', 'igs-client-system' );
 
     $renewal_order->update_status( $renewal_status, $renewal_note );
+
+    // Let WCS calculate the next payment date using the subscription's own
+    // billing interval and period.  When the renewal day is fixed, grab the
+    // day-of-month from the *current* next_payment date and stamp it onto the
+    // WCS-calculated date so the day never drifts (e.g. renewal on 15.04 with
+    // a fixed day of 10 → WCS gives 15.05 → we correct it to 10.05).
     $next_payment_date = $subscription->calculate_date( 'next_payment' );
+
+    if ( '1' === $subscription->get_meta( '_igs_fixed_renewal_day' ) ) {
+      $current_next = $subscription->get_date( 'next_payment' ); // UTC MySQL datetime
+      $fixed_day    = (int) ( new DateTime( $current_next, new DateTimeZone( 'UTC' ) ) )->format( 'j' );
+      $calculated   = new DateTime( $next_payment_date, new DateTimeZone( 'UTC' ) );
+
+      // Clamp to the last day of the target month (e.g. day 31 in February → 28/29).
+      $days_in_month = (int) $calculated->format( 't' );
+      $calculated->setDate(
+        (int) $calculated->format( 'Y' ),
+        (int) $calculated->format( 'n' ),
+        min( $fixed_day, $days_in_month )
+      );
+
+      $next_payment_date = $calculated->format( 'Y-m-d H:i:s' );
+    }
+
     $subscription->update_dates( array(
       'next_payment' => $next_payment_date
     ) );
@@ -769,6 +874,24 @@ class IGS_CS_Subscription extends WC_Subscription {
       if ( empty ( $input_data['_billing_invoice_address'] ) ) $errors[] = 'invoice_address';
     }
 
+    $is_prepaid      = ! empty( $_POST['_igs_prepaid'] );
+    $prepaid_cycles  = $is_prepaid ? absint( $_POST['_igs_prepaid_cycles'] ?? 0 ) : 0;
+    $prepaid_until   = $is_prepaid ? sanitize_text_field( wp_unslash( $_POST['_igs_prepaid_until'] ?? '' ) ) : '';
+
+    // If cycles are provided, auto-calculate "paid until" from next_payment + cycles × billing period.
+    if ( $is_prepaid && $prepaid_cycles > 0 ) {
+      $next_raw        = $subscription->get_date( 'next_payment' ); // UTC MySQL datetime
+      $billing_period  = $subscription->get_billing_period();       // month, week, day, year
+      $billing_interval = (int) $subscription->get_billing_interval();
+      $until_dt_calc   = new DateTime( $next_raw, new DateTimeZone( 'UTC' ) );
+      $until_dt_calc->modify( '+' . ( $prepaid_cycles * $billing_interval ) . ' ' . $billing_period . 's' );
+      $prepaid_until   = $until_dt_calc->format( 'd.m.Y' );
+    }
+
+    if ( $is_prepaid && '' === trim( $prepaid_until ) ) {
+      $errors[] = 'prepaid_until';
+    }
+
     if ( ! empty( $errors ) ) {
       set_transient('igs_edit_subscription_data_' . $sub_id, $input_data, 300);
       wp_safe_redirect( add_query_arg( 'errors', implode( ',', $errors ), $base_url ) );
@@ -792,9 +915,11 @@ class IGS_CS_Subscription extends WC_Subscription {
     if ( isset( $_POST['shipping_method'] ) ) {
       $new_method_id = sanitize_text_field( $_POST['shipping_method'] );
 
-      $shipping_methods = $subscription->get_shipping_methods();
-
-      $shipping_item = ! empty( $shipping_methods ) ? reset( $shipping_methods ) : new WC_Order_Item_Shipping();
+      // Remove all existing shipping items first to avoid duplicates when the
+      // method changes (e.g. Speedy → Econt).
+      foreach ( $subscription->get_items( 'shipping' ) as $item_id => $item ) {
+        $subscription->remove_item( $item_id );
+      }
 
       $all_available_methods = array(
         'local_pickup'           => 'Local Pickup',
@@ -803,13 +928,10 @@ class IGS_CS_Subscription extends WC_Subscription {
       );
       $method_title = isset( $all_available_methods[ $new_method_id ] ) ? $all_available_methods[ $new_method_id ] : $new_method_id;
 
+      $shipping_item = new WC_Order_Item_Shipping();
       $shipping_item->set_method_id( $new_method_id );
       $shipping_item->set_method_title( $method_title );
-
-      if ( ! $shipping_item->get_id() ) {
-          $subscription->add_item( $shipping_item );
-      }
-
+      $subscription->add_item( $shipping_item );
       $shipping_item->save();
 
       $subscription->add_order_note( sprintf( 'Shipping method changed to: %s', $method_title ) );
@@ -864,9 +986,232 @@ class IGS_CS_Subscription extends WC_Subscription {
     $subscription->update_meta_data( '_billing_invoice_town', $input_data['_billing_invoice_town'] );
     $subscription->update_meta_data( '_billing_invoice_address', $input_data['_billing_invoice_address'] );
     $subscription->set_customer_note( $input_data['customer_note'] );
+
+    $subscription->update_meta_data( '_igs_prepaid', $is_prepaid ? '1' : '0' );
+    $subscription->update_meta_data( '_igs_prepaid_until', $prepaid_until );
+    $subscription->update_meta_data( '_igs_prepaid_cycles', $prepaid_cycles );
+    $subscription->update_meta_data( '_igs_fixed_renewal_day', ! empty( $_POST['_igs_fixed_renewal_day'] ) ? '1' : '0' );
+
     $subscription->save();
 
     wp_redirect( admin_url( 'admin.php?page='. IGS_CS()->admin()->menus()->get_subscriptions_slug() .'&action=edit&id=' . $sub_id . '&updated=true' ) );
+    exit;
+
+  }
+
+  /**
+   * Handle the "Create New Subscription" form submission.
+   *
+   * @since 1.0.0
+   * @return void
+   */
+  public static function igs_handle_create_subscription() {
+
+    if ( ! current_user_can( 'manage_options' ) ) {
+      wp_die( __( 'You do not have sufficient permissions to access this page.', 'igs-client-system' ) );
+    }
+
+    check_admin_referer( 'igs_create_subscription_action', 'igs_create_subscription_nonce' );
+
+    $new_sub_page = admin_url( 'admin.php?page=' . IGS_CS()->admin()->menus()->get_new_subscription_slug() );
+
+    // ── Sanitise input ────────────────────────────────────────────────────────
+    $first_name      = sanitize_text_field( $_POST['_billing_first_name'] ?? '' );
+    $last_name       = sanitize_text_field( $_POST['_billing_last_name']  ?? '' );
+    $phone           = sanitize_text_field( $_POST['_billing_phone']      ?? '' );
+    $email           = sanitize_email( $_POST['_billing_email']           ?? '' );
+    $customer_note   = sanitize_text_field( $_POST['customer_note']       ?? '' );
+
+    $billing_interval = absint( $_POST['_billing_interval'] ?? 1 );
+    $billing_period   = sanitize_text_field( $_POST['_billing_period'] ?? 'month' );
+    $start_date_raw   = sanitize_text_field( $_POST['start_timestamp_utc']        ?? '' );
+    $next_date_raw    = sanitize_text_field( $_POST['next_payment_timestamp_utc'] ?? '' );
+
+    $payment_method  = sanitize_text_field( $_POST['payment_method']   ?? '' );
+    $shipping_method = sanitize_text_field( $_POST['shipping_method']  ?? '' );
+
+    $is_invoice        = ! empty( $_POST['_billing_is_invoice'] ) ? '1' : '';
+    $invoice_company   = sanitize_text_field( $_POST['_billing_invoice_company']  ?? '' );
+    $invoice_mol       = sanitize_text_field( $_POST['_billing_invoice_mol']       ?? '' );
+    $invoice_eik       = sanitize_text_field( $_POST['_billing_invoice_eik']       ?? '' );
+    $invoice_vatnum    = sanitize_text_field( $_POST['_billing_invoice_vatnum']    ?? '' );
+    $invoice_town      = sanitize_text_field( $_POST['_billing_invoice_town']      ?? '' );
+    $invoice_address   = sanitize_text_field( $_POST['_billing_invoice_address']  ?? '' );
+
+    $posted_product_ids = array_map( 'absint', (array) ( $_POST['igs_line_product_id'] ?? [] ) );
+    $posted_quantities  = array_map( 'absint', (array) ( $_POST['igs_line_qty']        ?? [] ) );
+
+    // ── Validation ────────────────────────────────────────────────────────────
+    $errors = array();
+
+    if ( empty( $first_name ) ) $errors[] = 'first_name';
+    if ( empty( $last_name  ) ) $errors[] = 'last_name';
+    if ( empty( $phone      ) ) $errors[] = 'phone_number';
+
+    if ( empty( $email ) ) {
+      $errors[] = 'email_required';
+    } elseif ( ! is_email( $email ) ) {
+      $errors[] = 'email_invalid';
+    }
+
+    if ( empty( $start_date_raw ) ) {
+      $errors[] = 'start_date';
+    }
+    if ( empty( $next_date_raw ) ) {
+      $errors[] = 'next_date';
+    }
+
+    if ( empty( array_filter( $posted_product_ids ) ) ) {
+      $errors[] = 'no_products';
+    }
+
+    if ( $is_invoice ) {
+      if ( empty( $invoice_company ) ) $errors[] = 'invoice_company';
+      if ( empty( $invoice_mol     ) ) $errors[] = 'invoice_mol';
+      if ( empty( $invoice_eik     ) ) $errors[] = 'invoice_eik';
+      if ( empty( $invoice_town    ) ) $errors[] = 'invoice_town';
+      if ( empty( $invoice_address ) ) $errors[] = 'invoice_address';
+    }
+
+    if ( ! empty( $errors ) ) {
+      wp_safe_redirect( add_query_arg( 'errors', implode( ',', $errors ), $new_sub_page ) );
+      exit;
+    }
+
+    // ── Resolve or create the WP user ─────────────────────────────────────────
+    $user_id       = null;
+    $existing_user = get_user_by( 'email', $email );
+
+    if ( $existing_user ) {
+      $user_id = $existing_user->ID;
+
+      // Check whether this user already has a subscription.
+      $existing_subs = wcs_get_subscriptions( array(
+        'customer_id' => $user_id,
+        'subscription_status' => 'any',
+      ) );
+
+      if ( ! empty( $existing_subs ) ) {
+        $first_sub = reset( $existing_subs );
+        wp_safe_redirect( add_query_arg( array(
+          'notice' => 'existing_subscription',
+          'sub_id' => $first_sub->get_id(),
+        ), $new_sub_page ) );
+        exit;
+      }
+    } else {
+      // Create a new WP user; wc_create_new_customer() sends a welcome e-mail.
+      $username = wc_create_new_customer_username( $email );
+      $user_id  = wc_create_new_customer( $email, $username, '', array(
+        'first_name' => $first_name,
+        'last_name'  => $last_name,
+      ) );
+
+      if ( is_wp_error( $user_id ) ) {
+        wp_die( esc_html( $user_id->get_error_message() ) );
+      }
+    }
+
+    // ── Convert dates ─────────────────────────────────────────────────────────
+    $start_dt = DateTime::createFromFormat( 'd.m.Y', $start_date_raw );
+    $next_dt  = DateTime::createFromFormat( 'd.m.Y', $next_date_raw );
+
+    $start_utc = $start_dt ? $start_dt->format( 'Y-m-d 00:00:00' ) : '';
+    $next_utc  = $next_dt  ? $next_dt->format(  'Y-m-d 06:00:00' ) : '';
+
+    // ── Create the subscription ───────────────────────────────────────────────
+    $subscription = wcs_create_subscription( array(
+      'customer_id'      => $user_id,
+      'status'           => 'active',
+      'billing_period'   => $billing_period,
+      'billing_interval' => $billing_interval,
+      'start_date'       => $start_utc,
+    ) );
+
+    if ( is_wp_error( $subscription ) ) {
+      wp_die( esc_html( $subscription->get_error_message() ) );
+    }
+
+    // ── Dates ─────────────────────────────────────────────────────────────────
+    if ( $next_utc ) {
+      $subscription->update_dates( array( 'next_payment' => $next_utc ) );
+    }
+
+    // ── Billing / shipping address ────────────────────────────────────────────
+    $subscription->set_billing_first_name( $first_name );
+    $subscription->set_billing_last_name(  $last_name );
+    $subscription->set_billing_phone(      $phone );
+    $subscription->set_billing_email(      $email );
+    $subscription->set_customer_note(      $customer_note );
+
+    // ── Payment method ────────────────────────────────────────────────────────
+    if ( $payment_method ) {
+      $gateways = WC()->payment_gateways()->payment_gateways();
+      $subscription->set_payment_method( $payment_method );
+      if ( isset( $gateways[ $payment_method ] ) ) {
+        $subscription->set_payment_method_title( $gateways[ $payment_method ]->get_title() );
+      }
+    }
+
+    // ── Shipping method ───────────────────────────────────────────────────────
+    if ( $shipping_method ) {
+      $all_available_methods = array(
+        'local_pickup'           => 'Local Pickup',
+        'speedy_shipping_method' => 'Speedy',
+        'econt_shipping_method'  => 'Econt Express',
+      );
+      $method_title = $all_available_methods[ $shipping_method ] ?? $shipping_method;
+
+      $shipping_item = new WC_Order_Item_Shipping();
+      $shipping_item->set_method_id( $shipping_method );
+      $shipping_item->set_method_title( $method_title );
+      $subscription->add_item( $shipping_item );
+      $shipping_item->save();
+    }
+
+    // ── Products ──────────────────────────────────────────────────────────────
+    $user      = new IGS_CS_User( $user_id );
+    $price_list = $user->igs_get_price_list();
+
+    foreach ( $posted_product_ids as $idx => $product_id ) {
+      if ( ! $product_id ) continue;
+
+      $product = wc_get_product( $product_id );
+      if ( ! $product ) continue;
+
+      $qty   = max( 1, $posted_quantities[ $idx ] ?? 1 );
+      $price = (float) $product->get_price();
+
+      if ( $price_list ) {
+        $custom = $product->get_meta( '_list_price_' . $price_list );
+        if ( $custom !== '' && $custom !== false ) {
+          $price = (float) wc_format_decimal( $custom );
+        }
+      }
+
+      $line_item = new WC_Order_Item_Product();
+      $line_item->set_product( $product );
+      $line_item->set_quantity( $qty );
+      $line_item->set_subtotal( $price * $qty );
+      $line_item->set_total( $price * $qty );
+      $subscription->add_item( $line_item );
+    }
+
+    $subscription->calculate_totals();
+
+    // ── Invoice meta ──────────────────────────────────────────────────────────
+    $subscription->update_meta_data( '_billing_is_invoice',       $is_invoice );
+    $subscription->update_meta_data( '_billing_invoice_company',  $invoice_company );
+    $subscription->update_meta_data( '_billing_invoice_mol',      $invoice_mol );
+    $subscription->update_meta_data( '_billing_invoice_eik',      $invoice_eik );
+    $subscription->update_meta_data( '_billing_invoice_vatnum',   $invoice_vatnum );
+    $subscription->update_meta_data( '_billing_invoice_town',     $invoice_town );
+    $subscription->update_meta_data( '_billing_invoice_address',  $invoice_address );
+
+    $subscription->save();
+
+    // ── Redirect to edit page ─────────────────────────────────────────────────
+    wp_redirect( admin_url( 'admin.php?page=' . IGS_CS()->admin()->menus()->get_subscriptions_slug() . '&action=edit&id=' . $subscription->get_id() . '&created=true' ) );
     exit;
 
   }

@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Client System for Biskvitkite\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-25 15:02+0000\n"
-"PO-Revision-Date: 2026-04-26 05:16+0000\n"
+"PO-Revision-Date: 2026-04-24 15:04+0000\n"
 "Last-Translator: \n"
 "Language-Team: Български\n"
 "Language: bg_BG\n"
@@ -37,19 +37,15 @@ msgid_plural "%d Results"
 msgstr[0] "%d резултат"
 msgstr[1] "%d резултата"
 
-#: admin/hooks/igs-admin-order-hooks.php:354
+#: admin/hooks/igs-admin-order-hooks.php:346
 msgid "%d uncollected order"
 msgid_plural "%d uncollected orders"
 msgstr[0] "%d Невзета"
 msgstr[1] "%d Невзети"
 
-#: templates/admin/edit-subscription.php:218 templates/admin/new-subscription.php:139
+#: templates/admin/edit-subscription.php:218
 msgid "+ Add product"
 msgstr "+ Добави продукт"
-
-#: templates/admin/subscriptions-list.php:20
-msgid "+ New Subscription"
-msgstr "+ Нов абонамент"
 
 #: admin/hooks/igs-admin-product-hooks.php:100
 msgid "A link to a price list."
@@ -68,17 +64,13 @@ msgstr "Активен абонамент"
 msgid "Add new list"
 msgstr "Добави"
 
-#: templates/admin/edit-subscription.php:246 templates/admin/new-subscription.php:168
+#: templates/admin/edit-subscription.php:246
 msgid "Additional information for the order, such as allergens, special customer requirements, and others."
 msgstr "Допълнителна информация към поръчка, като алергени, специални изисквания от клиента и други."
 
-#: admin/igs-admin-order.php:93 admin/igs-admin-order.php:104 admin/igs-admin-order.php:168 templates/admin/edit-subscription.php:475 templates/admin/new-subscription.php:323 templates/admin/part/export-orders-xls.php:162
+#: admin/igs-admin-order.php:93 admin/igs-admin-order.php:104 admin/igs-admin-order.php:168 templates/admin/edit-subscription.php:445 templates/admin/part/export-orders-xls.php:152
 msgid "Address"
 msgstr "Адрес"
-
-#: templates/admin/new-subscription.php:59
-msgid "Address is required."
-msgstr "Адресът е задължително поле"
 
 #: admin/hooks/igs-admin-product-hooks.php:89
 msgctxt "Admin menu name"
@@ -105,21 +97,13 @@ msgstr "Сигурни ли сте, че искате да създадете п
 msgid "Ascending"
 msgstr "Възходящ ред"
 
-#: templates/admin/new-subscription.php:54
-msgid "At least one product is required."
-msgstr "Изисква се поне един продукт."
-
 #. Description of the plugin
 msgid "Biskvitkite.bg client management extension"
 msgstr "Biskvitkite.bg разширение за управление на клиенти"
 
-#: templates/admin/part/export-xls.php:48 templates/admin/part/export-orders-xls.php:161
+#: templates/admin/part/export-xls.php:48 templates/admin/part/export-orders-xls.php:151
 msgid "City"
 msgstr "Град"
-
-#: templates/admin/new-subscription.php:58
-msgid "City is required."
-msgstr "Град е задължително поле"
 
 #: admin/components/igs-admin-users.php:162 admin/components/igs-admin-list-subscription.php:231 templates/admin/edit-subscription.php:75 templates/admin/part/filter-client.php:8
 msgid "Client"
@@ -137,17 +121,9 @@ msgstr "Клиентска система за Бисквитките"
 msgid "Cloning is forbidden"
 msgstr "Клонирането е забранено"
 
-#: templates/admin/edit-subscription.php:450 templates/admin/new-subscription.php:298
+#: templates/admin/edit-subscription.php:420
 msgid "Company"
 msgstr "Име на фирма"
-
-#: templates/admin/new-subscription.php:55
-msgid "Company name is required."
-msgstr "Име на фирмата е задължително поле"
-
-#: templates/admin/new-subscription.php:329
-msgid "Create Subscription"
-msgstr "Създай абонамент"
 
 #: admin/components/igs-admin-product-data.php:61 templates/admin/part/export-active-subscirptions-xls.php:59 templates/admin/part/export-xls.php:47 templates/admin/part/export-subscirptions-xls.php:56 templates/admin/part/export-orders-xls.php:93
 msgid "Customer"
@@ -161,11 +137,11 @@ msgstr "Данните на клиента на обновени успешно"
 msgid "Customer not found."
 msgstr "Няма намерен клиент"
 
-#: templates/admin/edit-subscription.php:245 templates/admin/new-subscription.php:167
+#: templates/admin/edit-subscription.php:245
 msgid "Customer note"
 msgstr "Клиентска бележка"
 
-#: admin/igs-admin-menus.php:155 admin/igs-admin-menus.php:156 admin/igs-admin-menus.php:400 templates/admin/header.php:22
+#: admin/igs-admin-menus.php:138 admin/igs-admin-menus.php:139 admin/igs-admin-menus.php:351 templates/admin/header.php:19
 #| msgid "Clients"
 msgid "Customers"
 msgstr "Клиенти"
@@ -182,7 +158,7 @@ msgstr "Дата"
 msgid "Date registered"
 msgstr "Дата на регистрация"
 
-#: templates/admin/edit-subscription.php:345
+#: templates/admin/edit-subscription.php:315
 msgid "DD.MM.YYYY"
 msgstr "ДД.ММ.ГГГГ"
 
@@ -190,7 +166,7 @@ msgstr "ДД.ММ.ГГГГ"
 msgid "Delayed"
 msgstr "Просрочени"
 
-#: templates/admin/edit-subscription.php:210 templates/admin/new-subscription.php:132
+#: templates/admin/edit-subscription.php:210
 msgid "Delete"
 msgstr "Изтрий"
 
@@ -198,11 +174,11 @@ msgstr "Изтрий"
 msgid "deleted"
 msgstr "изтрит"
 
-#: templates/admin/part/export-active-subscirptions-xls.php:65 templates/admin/part/export-xls.php:46 templates/admin/part/export-subscirptions-xls.php:62 templates/admin/part/export-orders-xls.php:103 templates/admin/loop/list-subscription.php:83
+#: templates/admin/part/export-active-subscirptions-xls.php:65 templates/admin/part/export-xls.php:46 templates/admin/part/export-subscirptions-xls.php:62 templates/admin/part/export-orders-xls.php:103 templates/admin/loop/list-subscription.php:74
 msgid "Delivery"
 msgstr "Доставка"
 
-#: templates/admin/edit-subscription.php:352 templates/admin/new-subscription.php:212
+#: templates/admin/edit-subscription.php:322
 msgid "Delivery Method"
 msgstr "Метод за доставка"
 
@@ -218,20 +194,16 @@ msgstr "Десериализацията на екземпляри от този
 msgid "Download XLS"
 msgstr "Изтегли XLS"
 
-#: templates/admin/edit-subscription.php:330
-msgid "e.g. 6"
-msgstr "напр. 12"
-
 #: includes/core/igs-user.php:445
 msgid "Edit"
 msgstr "Редактирай"
 
-#: templates/admin/edit-subscription.php:221 templates/admin/new-subscription.php:142
+#: templates/admin/edit-subscription.php:221
 msgctxt "edit"
 msgid "Delivery"
 msgstr "Данни за доставка"
 
-#: templates/admin/edit-subscription.php:398 templates/admin/new-subscription.php:258
+#: templates/admin/edit-subscription.php:368
 msgctxt "edit"
 msgid "Invoice"
 msgstr "Фактуриране"
@@ -241,12 +213,12 @@ msgctxt "edit"
 msgid "Orders"
 msgstr "Поръчки"
 
-#: templates/admin/edit-subscription.php:485
+#: templates/admin/edit-subscription.php:455
 msgctxt "edit"
 msgid "Orders for the subscription"
 msgstr "Поръчки към абонамента"
 
-#: templates/admin/edit-subscription.php:149 templates/admin/new-subscription.php:83
+#: templates/admin/edit-subscription.php:149
 msgctxt "edit"
 msgid "Payment"
 msgstr "Периодичност"
@@ -265,21 +237,13 @@ msgstr "Абонаменти"
 msgid "Edit list"
 msgstr "Редактирай"
 
-#: templates/admin/edit-user.php:79 templates/admin/edit-subscription.php:240 templates/admin/new-subscription.php:162
+#: templates/admin/edit-user.php:79 templates/admin/edit-subscription.php:240
 msgid "Email address"
 msgstr "Имейл адрес"
 
-#: admin/components/igs-admin-users.php:215 admin/components/igs-admin-list-subscription.php:284
+#: admin/components/igs-admin-users.php:215 admin/components/igs-admin-list-subscription.php:277
 msgid "Email address is a required field."
 msgstr "Имейл адресът е задължително поле"
-
-#: templates/admin/new-subscription.php:51
-msgid "Email address is not valid."
-msgstr "Имейл адресът е невалиден"
-
-#: templates/admin/new-subscription.php:50
-msgid "Email address is required."
-msgstr "Имейл адрес е задължително поле"
 
 #: templates/admin/edit-subscription.php:143
 msgid "End date"
@@ -293,17 +257,9 @@ msgstr "Въведи клиент"
 msgid "Enter Number"
 msgstr "Въведи номер"
 
-#: templates/admin/edit-subscription.php:310 templates/admin/loop/list-subscription.php:104
-msgid "Expired"
-msgstr "Изтекъл"
-
-#: admin/igs-admin-menus.php:164 admin/igs-admin-menus.php:165 admin/igs-admin-menus.php:407 templates/admin/header.php:23
+#: admin/igs-admin-menus.php:147 admin/igs-admin-menus.php:148 admin/igs-admin-menus.php:358 templates/admin/header.php:20
 msgid "Export"
 msgstr "Експортиране"
-
-#: templates/admin/part/export-orders-xls.php:98
-msgid "Fees"
-msgstr "Такси"
 
 #: templates/admin/part/filter.php:24 templates/admin/part/users-filter.php:21
 msgid "Filter"
@@ -324,27 +280,23 @@ msgctxt "filter"
 msgid "Period"
 msgstr "Период"
 
-#: admin/components/igs-admin-export.php:172
+#: admin/components/igs-admin-export.php:171
 msgctxt "filter"
 msgid "Type Export"
 msgstr "Вид експорт"
 
-#: templates/admin/edit-user.php:64 templates/admin/edit-subscription.php:225 templates/admin/new-subscription.php:147
+#: templates/admin/edit-user.php:64 templates/admin/edit-subscription.php:225
 msgid "First Name"
 msgstr "Име"
 
-#: admin/components/igs-admin-users.php:212 admin/components/igs-admin-list-subscription.php:281
+#: admin/components/igs-admin-users.php:212 admin/components/igs-admin-list-subscription.php:274
 #| msgid "Enter ID/Firs Name/Last Name/E-mail/Phone"
 msgid "First Name is a required field."
 msgstr "Име е задължително поле"
 
-#: templates/admin/new-subscription.php:47
-msgid "First name is required."
-msgstr "Име задължително поле"
-
-#: templates/admin/edit-subscription.php:138 templates/admin/loop/list-subscription.php:54
+#: templates/admin/edit-subscription.php:138
 msgid "Fixed renewal day"
-msgstr "Фиксиран ден подновяване"
+msgstr ""
 
 #: templates/admin/part/found-results.php:9
 msgid "Found:"
@@ -368,10 +320,6 @@ msgstr ""
 msgid "ID"
 msgstr "ИД"
 
-#: templates/admin/edit-subscription.php:333
-msgid "If entered, the \"Paid until\" date will be calculated automatically from the next payment date."
-msgstr "Ако е въведен X подновявания дата на следващото подновяване ще се изчисли автоматично"
-
 #. Author of the plugin
 msgid "iGaming Solutions LTD"
 msgstr ""
@@ -388,11 +336,11 @@ msgstr "инсталиран, но не активиран"
 msgid "Invoice"
 msgstr "Фактура"
 
-#: templates/admin/edit-subscription.php:402 templates/admin/new-subscription.php:263
+#: templates/admin/edit-subscription.php:372
 msgid "Issuing an invoice to a company."
 msgstr "Издаване на фактура на клиента"
 
-#: templates/admin/loop/list-subscription.php:63
+#: templates/admin/loop/list-subscription.php:54
 msgid "Last"
 msgstr "Последно"
 
@@ -405,16 +353,12 @@ msgstr "Дата на промяна"
 msgid "Last Month"
 msgstr "Миналият месец"
 
-#: templates/admin/edit-user.php:69 templates/admin/edit-subscription.php:230 templates/admin/new-subscription.php:152
+#: templates/admin/edit-user.php:69 templates/admin/edit-subscription.php:230
 msgid "Last Name"
 msgstr "Фамилия"
 
-#: admin/components/igs-admin-users.php:213 admin/components/igs-admin-list-subscription.php:282
+#: admin/components/igs-admin-users.php:213 admin/components/igs-admin-list-subscription.php:275
 msgid "Last Name is a required field."
-msgstr "Фамилия е задължително поле"
-
-#: templates/admin/new-subscription.php:48
-msgid "Last name is required."
 msgstr "Фамилия е задължително поле"
 
 #: templates/admin/edit-subscription.php:64
@@ -426,23 +370,19 @@ msgstr "Последно подновен на"
 msgid "Last Year"
 msgstr "Миналата година"
 
-#: includes/core/igs-subscription.php:760
+#: includes/core/igs-subscription.php:712
 msgid "Manual system renewal"
 msgstr "Ръчна система за подновяване"
 
-#: includes/core/igs-subscription.php:759
+#: includes/core/igs-subscription.php:711
 msgid "Manual system renewal – awaiting bank transfer"
 msgstr "Ръчно подновяване на абонамент – в очакване на банков превод"
 
-#: templates/admin/edit-subscription.php:455 templates/admin/new-subscription.php:303 templates/admin/part/export-orders-xls.php:158
+#: templates/admin/edit-subscription.php:425 templates/admin/part/export-orders-xls.php:148
 msgid "Materially Responsible Person"
 msgstr "МОЛ"
 
-#: templates/admin/new-subscription.php:56
-msgid "Materially responsible person is required."
-msgstr "МОЛ е задължително поле"
-
-#: admin/igs-admin-menus.php:99 admin/igs-admin-menus.php:100 admin/igs-admin-menus.php:372
+#: admin/igs-admin-menus.php:91 admin/igs-admin-menus.php:92 admin/igs-admin-menus.php:323
 msgctxt "menu"
 msgid "Client Software"
 msgstr "Клиентски софтуер"
@@ -451,7 +391,7 @@ msgstr "Клиентски софтуер"
 msgid "New list name"
 msgstr "Име на нова листа"
 
-#: admin/igs-admin-menus.php:128 admin/igs-admin-menus.php:129 includes/core/igs-subscription.php:530 templates/admin/header.php:14 templates/admin/new-subscription.php:68
+#: includes/core/igs-subscription.php:530
 msgid "New Subscription"
 msgstr "Нов абонамент"
 
@@ -475,19 +415,15 @@ msgstr "Дата на подновяване"
 msgid "Next Month"
 msgstr "Следващия месец"
 
-#: templates/admin/edit-subscription.php:126 templates/admin/new-subscription.php:78
+#: templates/admin/edit-subscription.php:126
 msgid "Next payment"
 msgstr "Подновяване на"
-
-#: templates/admin/new-subscription.php:53
-msgid "Next payment date is required."
-msgstr "Дата на подновяване е задължително поле"
 
 #: admin/components/igs-admin-export.php:97 admin/components/igs-admin-list-subscription.php:197
 msgid "Next week"
 msgstr "Следващата седмица"
 
-#: includes/core/igs-user.php:347 templates/admin/loop/list-subscription.php:58 templates/admin/loop/list-subscription.php:107
+#: includes/core/igs-user.php:347
 msgid "No"
 msgstr "Не"
 
@@ -504,7 +440,7 @@ msgstr "Няма дата"
 msgid "No deliveries scheduled for this day."
 msgstr "Няма планирани доставки за този ден."
 
-#: admin/components/igs-admin-export.php:186
+#: admin/components/igs-admin-export.php:185
 msgid "No found results"
 msgstr "Няма намерени резултати"
 
@@ -520,12 +456,12 @@ msgstr "Няма абонаменти за подновяване"
 msgid "No subscription"
 msgstr "Без абонамент"
 
-#: templates/admin/subscriptions-list.php:37
+#: templates/admin/subscriptions-list.php:33
 #| msgid "Not Fount Subscriptions"
 msgid "No Subscriptions Found"
 msgstr "Няма намерени абонаменти"
 
-#: templates/admin/edit-subscription.php:439 templates/admin/new-subscription.php:289
+#: templates/admin/edit-subscription.php:409
 msgid "No, do not issue an invoice"
 msgstr "Не, не издавай фактура"
 
@@ -547,17 +483,9 @@ msgstr[1] "%d месеца"
 msgid "One-time purchase"
 msgstr "Еднократна поръчка"
 
-#: admin/components/igs-admin-export.php:165
-msgid "Only invoice"
-msgstr "Фактури"
-
-#: templates/admin/edit-subscription.php:334
-msgid "Or enter the date manually"
-msgstr "Или въведете датата ръчно"
-
 #: templates/admin/part/export-xls.php:49
 msgid "Order"
-msgstr "Поръчка"
+msgstr ""
 
 #: includes/core/igs-subscription.php:473 templates/admin/part/user-orders-table.php:10
 msgid "Order #"
@@ -567,11 +495,11 @@ msgstr "Поръчка №"
 msgid "Order by"
 msgstr "Подреди по"
 
-#: templates/admin/edit-subscription.php:492
+#: templates/admin/edit-subscription.php:462
 msgid "Order Notes"
 msgstr "Бележки към поръчката"
 
-#: templates/admin/header.php:17 templates/admin/edit-user.php:57 templates/admin/part/export-active-subscirptions-xls.php:61 templates/admin/part/export-subscirptions-xls.php:58 templates/admin/part/export-orders-xls.php:96 templates/admin/part/export-filter.php:31 templates/admin/loop/list-subscription.php:73 templates/admin/loop/client.php:49
+#: templates/admin/header.php:14 templates/admin/edit-user.php:57 templates/admin/part/export-active-subscirptions-xls.php:61 templates/admin/part/export-subscirptions-xls.php:58 templates/admin/part/export-orders-xls.php:96 templates/admin/part/export-filter.php:31 templates/admin/loop/list-subscription.php:64 templates/admin/loop/client.php:49
 msgid "Orders"
 msgstr "Поръчки"
 
@@ -579,9 +507,9 @@ msgstr "Поръчки"
 msgid "Overdue by"
 msgstr "Просрочено с"
 
-#: templates/admin/edit-subscription.php:336
+#: templates/admin/edit-subscription.php:308
 msgid "Paid until"
-msgstr "Предплатен до"
+msgstr ""
 
 #: admin/hooks/igs-admin-product-hooks.php:92
 msgid "Parent list"
@@ -591,11 +519,11 @@ msgstr "Родител"
 msgid "Parent list:"
 msgstr "Родител"
 
-#: templates/admin/part/export-xls.php:51 templates/admin/loop/list-subscription.php:88
+#: templates/admin/part/export-xls.php:51
 msgid "Payment"
-msgstr "Плащане"
+msgstr ""
 
-#: templates/admin/edit-subscription.php:250 templates/admin/new-subscription.php:172 templates/admin/part/export-active-subscirptions-xls.php:67 templates/admin/part/export-subscirptions-xls.php:64 templates/admin/part/export-orders-xls.php:105
+#: templates/admin/edit-subscription.php:250 templates/admin/part/export-active-subscirptions-xls.php:67 templates/admin/part/export-subscirptions-xls.php:64 templates/admin/part/export-orders-xls.php:105
 msgid "Payment Method"
 msgstr "Метод на плащане"
 
@@ -603,21 +531,17 @@ msgstr "Метод на плащане"
 msgid "Phone Number"
 msgstr "Телефон"
 
-#: templates/admin/edit-user.php:74 templates/admin/edit-subscription.php:235 templates/admin/new-subscription.php:157
+#: templates/admin/edit-user.php:74 templates/admin/edit-subscription.php:235
 msgid "Phone number"
 msgstr "Телефон"
 
-#: admin/components/igs-admin-users.php:214 admin/components/igs-admin-list-subscription.php:283
+#: admin/components/igs-admin-users.php:214 admin/components/igs-admin-list-subscription.php:276
 msgid "Phone number is a required field."
-msgstr "Телефон е задължително поле"
-
-#: templates/admin/new-subscription.php:49
-msgid "Phone number is required."
 msgstr "Телефон е задължително поле"
 
 #: admin/hooks/igs-admin-ui-hooks.php:117
 msgid "Please enter a preparation date for orders with \"Cooking\" status."
-msgstr "Моля, въведете дата за подготовка за поръчки със статус „Кухня“"
+msgstr ""
 
 #: includes/core/igs-dependencies.php:257
 msgid "Please install and activate the required plugins, then reactivate this plugin."
@@ -625,27 +549,19 @@ msgstr "Моля, инсталирайте и активирайте необх�
 
 #: admin/hooks/igs-admin-ui-hooks.php:115
 msgid "Please select replacement products for all deleted items before saving."
-msgstr "Моля, изберете заместващи продукти за всички изтрити артикули, преди да запазите."
+msgstr ""
 
-#: admin/hooks/igs-admin-order-hooks.php:207 admin/hooks/igs-admin-order-hooks.php:416 templates/admin/edit-subscription.php:308 templates/admin/loop/list-subscription.php:99
+#: admin/hooks/igs-admin-order-hooks.php:199 admin/hooks/igs-admin-order-hooks.php:408 templates/admin/edit-subscription.php:305
 msgid "Prepaid"
-msgstr "Предплатен"
+msgstr ""
 
-#: includes/core/igs-subscription.php:716
-msgid "Prepaid delivery"
-msgstr "Предплатена доставка"
-
-#: admin/hooks/igs-admin-order-hooks.php:99 admin/hooks/igs-admin-order-hooks.php:205 templates/admin/part/export-orders-xls.php:101
+#: admin/hooks/igs-admin-order-hooks.php:99 admin/hooks/igs-admin-order-hooks.php:197 templates/admin/part/export-orders-xls.php:101
 msgid "Preparation Date"
 msgstr "Дата на проготване"
 
-#: admin/hooks/igs-admin-order-hooks.php:142 admin/hooks/igs-admin-order-hooks.php:176
+#: admin/hooks/igs-admin-order-hooks.php:134 admin/hooks/igs-admin-order-hooks.php:168
 msgid "Preparation date is required for orders with \"Cooking\" status."
 msgstr "Не е избрана дата на приготвяне на тази поръчка. Полето е задължително за поръчка със статус \"Кухня\""
-
-#: templates/admin/edit-subscription.php:322
-msgid "Prepay for X renewals"
-msgstr "Предплащане за X подновявания"
 
 #: admin/components/igs-admin-product-data.php:95 admin/components/igs-admin-product-data.php:155
 msgid "price"
@@ -667,21 +583,17 @@ msgstr "Ценова листа връзка"
 msgid "Prices List"
 msgstr "Ценови листи"
 
-#: templates/admin/edit-subscription.php:181 templates/admin/new-subscription.php:115
+#: templates/admin/edit-subscription.php:181
 msgid "Product"
 msgstr "Продукт"
 
-#: templates/admin/edit-subscription.php:176 templates/admin/new-subscription.php:110 templates/admin/part/export-orders-xls.php:196
+#: templates/admin/edit-subscription.php:176 templates/admin/part/export-orders-xls.php:186
 msgid "Products"
 msgstr "Продукти"
 
-#: templates/admin/part/export-orders-xls.php:97
-msgid "Products Total"
-msgstr "Цена на продуктите"
-
-#: templates/admin/edit-subscription.php:182 templates/admin/new-subscription.php:116
+#: templates/admin/edit-subscription.php:182
 msgid "Quantity"
-msgstr "Количество"
+msgstr "Количестов"
 
 #: includes/core/igs-subscription.php:268
 msgid "Remaining"
@@ -724,11 +636,11 @@ msgstr "Брой резултати"
 msgid "Review"
 msgstr "Преглед"
 
-#: templates/admin/edit-user.php:104 templates/admin/edit-subscription.php:480
+#: templates/admin/edit-user.php:104 templates/admin/edit-subscription.php:450
 msgid "Save changes"
 msgstr "Запази промените"
 
-#: admin/igs-admin-menus.php:146 admin/igs-admin-menus.php:147 admin/igs-admin-menus.php:393 templates/admin/header.php:20
+#: admin/igs-admin-menus.php:129 admin/igs-admin-menus.php:130 admin/igs-admin-menus.php:344 templates/admin/header.php:17
 #| msgid "Search Customer"
 msgid "Schedule"
 msgstr "График"
@@ -738,7 +650,7 @@ msgstr "График"
 msgid "Search"
 msgstr "Търсене"
 
-#: admin/hooks/igs-admin-ui-hooks.php:116 templates/admin/edit-subscription.php:200 templates/admin/new-subscription.php:125
+#: admin/hooks/igs-admin-ui-hooks.php:116 templates/admin/edit-subscription.php:200
 msgid "Search product…"
 msgstr "Намери продукт..."
 
@@ -790,19 +702,15 @@ msgstr "Обикновен"
 msgid "Start Date"
 msgstr "Дата на абонамент"
 
-#: templates/admin/edit-subscription.php:121 templates/admin/new-subscription.php:73
+#: templates/admin/edit-subscription.php:121
 msgid "Start date"
 msgstr "Дата на абонамент"
-
-#: templates/admin/new-subscription.php:52
-msgid "Start date is required."
-msgstr "Дата на абонамент е задължително  поле"
 
 #: admin/components/igs-admin-export.php:63 admin/components/igs-admin-export.php:80 includes/core/igs-subscription.php:476 templates/admin/part/export-active-subscirptions-xls.php:63 templates/admin/part/filter-status.php:8 templates/admin/part/export-xls.php:50 templates/admin/part/export-subscirptions-xls.php:60 templates/admin/part/user-subscriptions-table.php:12 templates/admin/part/export-orders-xls.php:91 templates/admin/part/user-orders-table.php:13 templates/admin/loop/list-subscription.php:44
 msgid "Status"
 msgstr "Статус"
 
-#: templates/admin/edit-subscription.php:66 templates/admin/part/export-active-subscirptions-xls.php:68 templates/admin/part/export-subscirptions-xls.php:65 templates/admin/loop/list-subscription.php:68
+#: templates/admin/edit-subscription.php:66 templates/admin/part/export-active-subscirptions-xls.php:68 templates/admin/part/export-subscirptions-xls.php:65 templates/admin/loop/list-subscription.php:59
 msgid "Subscriber from"
 msgstr "Абониран от"
 
@@ -814,15 +722,11 @@ msgstr "Абонамент"
 msgid "Subscription #"
 msgstr "Абонамент №"
 
-#: admin/components/igs-admin-list-subscription.php:273
-msgid "Subscription created successfully."
-msgstr "Абонаментът е създаден успешно."
-
 #: admin/components/igs-admin-list-subscription.php:266
 msgid "Subscription data updated successfully."
 msgstr "Данните на абонамента са актуализирани успешно"
 
-#: includes/core/igs-subscription.php:808
+#: includes/core/igs-subscription.php:760
 msgid "Subscription not found."
 msgstr "Абонаментът не открит"
 
@@ -834,7 +738,7 @@ msgstr "Номер на абонамент"
 msgid "Subscription status"
 msgstr "Статус"
 
-#: admin/igs-admin-menus.php:119 admin/igs-admin-menus.php:120 admin/igs-admin-menus.php:379 templates/admin/header.php:11 templates/admin/part/export-filter.php:13
+#: admin/igs-admin-menus.php:111 admin/igs-admin-menus.php:112 admin/igs-admin-menus.php:330 templates/admin/header.php:11 templates/admin/part/export-filter.php:13
 msgid "Subscriptions"
 msgstr "Абонаменти"
 
@@ -855,51 +759,41 @@ msgstr "Клиента няма направени поръчки"
 msgid "The customer has no subscriptions placed."
 msgstr "Клиента няма направени абонаменти"
 
-#: admin/hooks/igs-admin-order-hooks.php:116
-msgid "The customer has prepaid this order. When creating a waybill, select Sender as the payer if you want the shipping cost to be covered by you."
-msgstr "Клиентът е предплатил тази поръчка. Когато създавате товарителница трябва да изберете платец да бъде изпращача, ако желаете доставката да е за ваша сметка."
-
-#: admin/components/igs-admin-list-subscription.php:290
+#: admin/components/igs-admin-list-subscription.php:283
 msgid "The Inovice Address is a required field."
 msgstr "Адресът за фактура е задължително поле"
 
-#: admin/components/igs-admin-list-subscription.php:286
+#: admin/components/igs-admin-list-subscription.php:279
 msgid "The Inovice Company name is a required field."
 msgstr "Фирма е задължително поле"
 
-#: admin/components/igs-admin-list-subscription.php:287
+#: admin/components/igs-admin-list-subscription.php:280
 msgid "The Inovice Materially Responsible Person is a required field."
 msgstr "МОЛ е задължително поле"
 
-#: admin/components/igs-admin-list-subscription.php:289
+#: admin/components/igs-admin-list-subscription.php:282
 msgid "The Inovice Town is a required field."
 msgstr "Град е задължително поле"
 
-#: admin/components/igs-admin-list-subscription.php:288
+#: admin/components/igs-admin-list-subscription.php:281
 msgid "The Inovice UIC / Tax ID is a required field."
 msgstr "ЕИК е задължително поле"
 
-#: includes/core/igs-subscription.php:790
+#: includes/core/igs-subscription.php:742
 msgid "The next payment date has been updated based on the manual renewal."
 msgstr "Датата на следващо подновяне е обновена спрямо ръчното подновяване."
 
-#: admin/components/igs-admin-users.php:216 admin/components/igs-admin-list-subscription.php:285
+#: admin/components/igs-admin-users.php:216 admin/components/igs-admin-list-subscription.php:278
 msgid "The provided email format is invalid."
 msgstr "Форматът на имейла е невалиден"
 
-#: admin/components/igs-admin-list-subscription.php:291
+#: admin/components/igs-admin-list-subscription.php:284
 msgid "The subscription contains deleted products. Please select replacement products before saving."
 msgstr "Абонаментът съдържа изтрити продукти. Изберете заместващи продукти преди да запазите."
 
-#: admin/hooks/igs-admin-ui-hooks.php:114 admin/components/igs-admin-list-subscription.php:292
+#: admin/hooks/igs-admin-ui-hooks.php:114 admin/components/igs-admin-list-subscription.php:285
 msgid "The subscription must contain at least one product."
 msgstr "Абонаментът трябва да съдържа поне един продукт."
-
-#. %s: subscription ID link
-#: templates/admin/new-subscription.php:29
-#, php-format
-msgid "This email address already has an active subscription. Subscription #%s."
-msgstr "Вече има създаден абонамент за този имейл с номер %s"
 
 #: admin/components/igs-admin-users.php:217
 msgid "This email is already registered to another client."
@@ -912,10 +806,6 @@ msgstr "Този месец"
 #: admin/components/igs-admin-export.php:123
 msgid "This month"
 msgstr "Този месец"
-
-#: admin/hooks/igs-admin-order-hooks.php:114
-msgid "This order is prepaid"
-msgstr "Тази поръчка е предплатена."
 
 #: admin/components/igs-admin-export.php:96 admin/components/igs-admin-export.php:122 admin/components/igs-admin-list-subscription.php:196
 msgid "This week"
@@ -930,16 +820,16 @@ msgstr "Тази година"
 msgid "Today"
 msgstr "Днес"
 
-#: includes/core/igs-subscription.php:477 templates/admin/part/export-active-subscirptions-xls.php:62 templates/admin/part/export-xls.php:52 templates/admin/part/export-subscirptions-xls.php:59 templates/admin/part/user-subscriptions-table.php:13 templates/admin/part/export-orders-xls.php:99 templates/admin/part/user-orders-table.php:14
+#: includes/core/igs-subscription.php:477 templates/admin/part/export-active-subscirptions-xls.php:62 templates/admin/part/export-xls.php:52 templates/admin/part/export-subscirptions-xls.php:59 templates/admin/part/user-subscriptions-table.php:13 templates/admin/part/export-orders-xls.php:98 templates/admin/part/user-orders-table.php:14
 #| msgid "Type"
 msgid "Total"
 msgstr "Общо"
 
-#: templates/admin/part/export-orders-xls.php:197
+#: templates/admin/part/export-orders-xls.php:187
 msgid "Total Quantity"
 msgstr "Общо количество"
 
-#: templates/admin/edit-subscription.php:470 templates/admin/new-subscription.php:318
+#: templates/admin/edit-subscription.php:440
 msgid "Town"
 msgstr "Град"
 
@@ -947,28 +837,19 @@ msgstr "Град"
 msgid "Type order"
 msgstr "Вид поръчка"
 
-#: templates/admin/edit-subscription.php:460 templates/admin/new-subscription.php:308 templates/admin/part/export-orders-xls.php:159
+#: templates/admin/edit-subscription.php:430 templates/admin/part/export-orders-xls.php:149
 msgid "UIC / Tax ID"
 msgstr "ЕИК"
 
-#: templates/admin/new-subscription.php:57
-msgid "UIC / Tax ID is required."
-msgstr "ЕИК е задължително поле"
-
-#: admin/hooks/igs-admin-order-hooks.php:206 templates/admin/edit-subscription.php:70 templates/admin/loop/list-subscription.php:78 templates/admin/loop/client.php:54
+#: admin/hooks/igs-admin-order-hooks.php:198 templates/admin/edit-subscription.php:70 templates/admin/loop/list-subscription.php:69 templates/admin/loop/client.php:54
 msgid "Uncollected Orders"
 msgstr "Невзети поръчки"
-
-#: templates/admin/loop/list-subscription.php:102
-#, php-format
-msgid "Until %s"
-msgstr "До %s"
 
 #: admin/hooks/igs-admin-product-hooks.php:95
 msgid "Update list"
 msgstr "Актуализирай"
 
-#: templates/admin/edit-subscription.php:465 templates/admin/new-subscription.php:313 templates/admin/part/export-orders-xls.php:160
+#: templates/admin/edit-subscription.php:435 templates/admin/part/export-orders-xls.php:150
 msgid "VAT Number"
 msgstr "ДДС Номер"
 
@@ -985,14 +866,14 @@ msgstr "Видимост"
 msgid "Visibility Level"
 msgstr "Ниво на видимост"
 
-#: includes/core/igs-user.php:345 templates/admin/loop/list-subscription.php:56
+#: includes/core/igs-user.php:345
 msgid "Yes"
 msgstr "Да"
 
-#: templates/admin/edit-subscription.php:422 templates/admin/new-subscription.php:279
+#: templates/admin/edit-subscription.php:392
 msgid "Yes, issue an invoice"
 msgstr "Да, издай фактура"
 
-#: admin/igs-admin-menus.php:182 admin/igs-admin-menus.php:219 admin/igs-admin-menus.php:241 admin/igs-admin-menus.php:256 admin/igs-admin-menus.php:293 admin/hooks/igs-admin-export-hooks.php:64 admin/hooks/igs-admin-export-hooks.php:209 includes/core/igs-subscription.php:799 includes/core/igs-subscription.php:1011 includes/core/igs-user.php:547
+#: admin/igs-admin-menus.php:165 admin/igs-admin-menus.php:202 admin/igs-admin-menus.php:217 admin/igs-admin-menus.php:254 admin/hooks/igs-admin-export-hooks.php:64 admin/hooks/igs-admin-export-hooks.php:209 includes/core/igs-subscription.php:751 includes/core/igs-user.php:547
 msgid "You do not have sufficient permissions to access this page."
 msgstr "Нямате права да редактирате тази страница"

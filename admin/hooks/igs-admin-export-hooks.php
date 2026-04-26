@@ -211,16 +211,23 @@ class IGS_CS_Admin_Export_Hooks extends IGS_CS_Loader {
 
     check_admin_referer( 'igs_export_orders_action', 'igs_export_orders_nonce' );
 
-    $defaults = array(
-      'limit'  => -1,
-      'return' => 'ids',
+    $status     = isset( $_POST['status'] )           ? sanitize_text_field( $_POST['status'] )           : '';
+    $period     = isset( $_POST['igs_order_period'] ) ? sanitize_text_field( $_POST['igs_order_period'] ) : 'all';
+    $date_raw   = isset( $_POST['igs_order_date'] )   ? sanitize_text_field( $_POST['igs_order_date'] )   : '';
+    $order_type = isset( $_POST['igs_order_type'] )   ? sanitize_text_field( $_POST['igs_order_type'] )   : 'full';
+
+    // Build params explicitly — never pass raw $_POST to wc_get_orders() as
+    // stray fields (action, _wpnonce, etc.) can corrupt the query.
+    $params = array(
+      'limit'   => -1,
+      'return'  => 'ids',
+      'orderby' => 'date',
+      'order'   => 'ASC',
     );
 
-    $params = wp_parse_args( $_POST, $defaults );
-
-    $status   = isset( $params['status'] )           ? $params['status']                                  : '';
-    $period   = isset( $params['igs_order_period'] ) ? sanitize_text_field( $params['igs_order_period'] ) : 'all';
-    $date_raw = isset( $params['igs_order_date'] )   ? sanitize_text_field( $params['igs_order_date'] )   : '';
+    if ( $status ) {
+      $params['status'] = $status;
+    }
 
     if ( 'date' === $period ) {
 
@@ -259,8 +266,21 @@ class IGS_CS_Admin_Export_Hooks extends IGS_CS_Loader {
 
     }
 
-    // Remove our custom fields before passing to wc_get_orders().
-    unset( $params['igs_order_period'], $params['igs_order_date'] );
+    // Handle the "Only invoice" type: filter by _billing_is_invoice meta and
+    // use 'full' layout in the template (invoices always need all columns).
+    if ( 'invoice' === $order_type ) {
+      $invoice_clause = array(
+        'key'     => '_billing_is_invoice',
+        'value'   => '1',
+        'compare' => '=',
+      );
+
+      if ( isset( $params['meta_query'] ) ) {
+        $params['meta_query'][] = $invoice_clause;
+      } else {
+        $params['meta_query'] = array( $invoice_clause );
+      }
+    }
 
     $params = apply_filters( 'igs_export_orders_params', $params );
     $order_ids = wc_get_orders( $params );
@@ -293,7 +313,7 @@ class IGS_CS_Admin_Export_Hooks extends IGS_CS_Loader {
 
     igs_cs_get_template( 'admin/part/export-orders-xls', array(
       'grouped_orders' => $grouped_orders,
-      'type'           => sanitize_text_field( $_POST['igs_order_type'] ),
+      'type'           => 'invoice' === $order_type ? 'full' : $order_type,
       'status'         => $status,
     ) );
 

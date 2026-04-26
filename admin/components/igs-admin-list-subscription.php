@@ -268,6 +268,13 @@ class IGS_CS_List_Subscription {
       );
     }
 
+    if ( isset( $_GET['created'] ) ) {
+      wp_admin_notice(
+        __('Subscription created successfully.', 'igs-client-system'),
+        array( 'type' => 'success', 'dismissible' => true )
+      );
+    }
+
     if ( isset( $_GET['errors'] ) ) {
       $error_codes = explode( ',', $_GET['errors'] );
       $map = array(

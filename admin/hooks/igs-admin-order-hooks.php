@@ -66,11 +66,13 @@ class IGS_CS_Admin_Order_Hooks extends IGS_CS_Loader {
     $this->add_filter( 'manage_edit-shop_order_columns',        $this, 'add_preparation_date_column',      20, 1 );
     $this->add_action( 'manage_shop_order_posts_custom_column', $this, 'render_preparation_date_column',   10, 2 );
     $this->add_action( 'manage_shop_order_posts_custom_column', $this, 'render_returned_orders_column',    10, 2 );
+    $this->add_action( 'manage_shop_order_posts_custom_column', $this, 'render_prepaid_column',            10, 2 );
 
     // Orders list column – HPOS.
     $this->add_filter( 'woocommerce_shop_order_list_table_columns',       $this, 'add_preparation_date_column',         20, 1 );
     $this->add_action( 'woocommerce_shop_order_list_table_custom_column', $this, 'render_preparation_date_column_hpos', 10, 2 );
     $this->add_action( 'woocommerce_shop_order_list_table_custom_column', $this, 'render_returned_orders_column_hpos',  10, 2 );
+    $this->add_action( 'woocommerce_shop_order_list_table_custom_column', $this, 'render_prepaid_column_hpos',          10, 2 );
 
     // AJAX: search subscription products (used in subscription edit UI).
     $this->add_action( 'wp_ajax_igs_search_subscription_products', $this, 'ajax_search_subscription_products' );
@@ -94,7 +96,7 @@ class IGS_CS_Admin_Order_Hooks extends IGS_CS_Loader {
 
     ?>
     <p class="form-field form-field-wide">
-      <label for="igs_preparation_date"><?php _e( 'Preparation Date', 'igs-client-system' ); ?></label>
+      <label for="igs_preparation_date"><?php _e( 'Preparation Date', 'igs-client-system' ); ?>:</label>
       <input
         type="text"
         id="igs_preparation_date"
@@ -107,6 +109,14 @@ class IGS_CS_Admin_Order_Hooks extends IGS_CS_Loader {
         pattern="\d{4}-\d{2}-\d{2}"
       >
     </p>
+    <?php if ( '1' === $order->get_meta( '_igs_prepaid' ) ) : ?>
+      <div class="form-field form-field-wide">
+        <h2 class="woocommerce-order-data__heading" style="color: red; text-transform: uppercase;"><?php _e( 'This order is prepaid', 'igs-client-system' ); ?></h2>
+        <p class="form-field form-field-wide order_number">
+          <?php _e( 'The customer has prepaid this order. When creating a waybill, select Sender as the payer if you want the shipping cost to be covered by you.', 'igs-client-system' ); ?>
+        </p>
+      </div>
+    <?php endif; ?>
     <?php
 
   }
@@ -194,6 +204,7 @@ class IGS_CS_Admin_Order_Hooks extends IGS_CS_Loader {
       if ( 'order_date' === $key ) {
         $new['igs_preparation_date'] = __( 'Preparation Date', 'igs-client-system' );
         $new['igs_returned_orders']  = __( 'Uncollected Orders', 'igs-client-system' );
+        $new['igs_prepaid']          = __( 'Prepaid', 'igs-client-system' );
       }
     }
 
@@ -342,6 +353,67 @@ class IGS_CS_Admin_Order_Hooks extends IGS_CS_Loader {
         '<span style="color:red;font-weight:bold;" title="%s">%d</span>',
         esc_attr( sprintf( _n( '%d uncollected order', '%d uncollected orders', $count, 'igs-client-system' ), $count ) ),
         (int) $count
+      );
+    } else {
+      echo '&mdash;';
+    }
+
+  }
+
+  /**
+   * Render the prepaid cell – classic (CPT) orders list.
+   *
+   * @since 1.0.0
+   * @param string $column
+   * @param int    $post_id
+   * @return void
+   */
+  public function render_prepaid_column( $column, $post_id ) {
+
+    if ( 'igs_prepaid' !== $column ) {
+      return;
+    }
+
+    $this->output_prepaid( wc_get_order( $post_id ) );
+
+  }
+
+  /**
+   * Render the prepaid cell – HPOS orders list.
+   *
+   * @since 1.0.0
+   * @param string   $column
+   * @param WC_Order $order
+   * @return void
+   */
+  public function render_prepaid_column_hpos( $column, $order ) {
+
+    if ( 'igs_prepaid' !== $column ) {
+      return;
+    }
+
+    $this->output_prepaid( $order );
+
+  }
+
+  /**
+   * Echo a visual indicator for whether the order was created as prepaid.
+   *
+   * @since 1.0.0
+   * @param WC_Order|false $order
+   * @return void
+   */
+  private function output_prepaid( $order ) {
+
+    if ( ! $order ) {
+      echo '&mdash;';
+      return;
+    }
+
+    if ( '1' === $order->get_meta( '_igs_prepaid' ) ) {
+      printf(
+        '<span style="color:green;font-weight:bold;" title="%s">&#10003;</span>',
+        esc_attr( __( 'Prepaid', 'igs-client-system' ) )
       );
     } else {
       echo '&mdash;';

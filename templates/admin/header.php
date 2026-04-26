@@ -11,6 +11,9 @@
       <a href="<?php echo admin_url( 'admin.php?page=' . IGS_CS()->admin()->menus()->get_subscriptions_slug() ); ?>"><?php _e('Subscriptions', 'igs-client-system'); ?></a>
     </li>
     <li>
+      <a href="<?php echo admin_url( 'admin.php?page=' . IGS_CS()->admin()->menus()->get_new_subscription_slug() ); ?>"><?php _e('New Subscription', 'igs-client-system'); ?></a>
+    </li>
+    <li>
       <a href="<?php echo admin_url( 'admin.php?page=wc-orders' ); ?>"><?php _e('Orders', 'igs-client-system'); ?></a>
     </li>
     <li>

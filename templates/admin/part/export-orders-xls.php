@@ -72,9 +72,9 @@ foreach ( $grouped_orders as $date_key => $orders ) {
     echo '<Column ss:Width="150"/>' . "\n"; // Phone
   }
   echo '<Column ss:Width="300"/>' . "\n";   // Orders
-  if ( 'full' === $type ) {
-    echo '<Column ss:Width="110"/>' . "\n"; // Total
-  }
+  echo '<Column ss:Width="180"/>' . "\n";   // Products total
+  echo '<Column ss:Width="250"/>' . "\n";   // Fees
+  echo '<Column ss:Width="110"/>' . "\n";   // Total
   echo '<Column ss:Width="110"/>' . "\n";   // Date
   echo '<Column ss:Width="150"/>' . "\n";   // Preparation date
   if ( 'full' === $type ) {
@@ -94,9 +94,9 @@ foreach ( $grouped_orders as $date_key => $orders ) {
     echo '<Cell><Data ss:Type="String">' . __( 'Phone Number', 'igs-client-system' ) . '</Data></Cell>' . "\n";
   }
   echo '<Cell><Data ss:Type="String">' . __( 'Orders', 'igs-client-system' ) . '</Data></Cell>' . "\n";
-  if ( 'full' === $type ) {
-    echo '<Cell><Data ss:Type="String">' . __( 'Total', 'igs-client-system' ) . '</Data></Cell>' . "\n";
-  }
+  echo '<Cell><Data ss:Type="String">' . __( 'Products Total', 'igs-client-system' ) . '</Data></Cell>' . "\n";
+  echo '<Cell><Data ss:Type="String">' . __( 'Fees', 'igs-client-system' ) . '</Data></Cell>' . "\n";
+  echo '<Cell><Data ss:Type="String">' . __( 'Total', 'igs-client-system' ) . '</Data></Cell>' . "\n";
   echo '<Cell><Data ss:Type="String">' . __( 'Date', 'igs-client-system' ) . '</Data></Cell>' . "\n";
   echo '<Cell><Data ss:Type="String">' . __( 'Preparation Date', 'igs-client-system' ) . '</Data></Cell>' . "\n";
   if ( 'full' === $type ) {
@@ -136,6 +136,16 @@ foreach ( $grouped_orders as $date_key => $orders ) {
       }
     }
 
+    // Fees (excluding shipping).
+    $fee_lines  = array();
+    $fees_total = 0.0;
+    foreach ( $order->get_items( 'fee' ) as $fee_item ) {
+      $fee_amount  = (float) $fee_item->get_total();
+      $fee_lines[] = $fee_item->get_name() . ': ' . number_format( $fee_amount, 2 ) . ' €';
+      $fees_total += $fee_amount;
+    }
+    $grand_total = (float) $order->get_subtotal() + $fees_total;
+
     // Order status label.
     $order_status_key   = 'wc-' . $order->get_status();
     $order_status_label = $all_statuses[ $order_status_key ] ?? $order->get_status();
@@ -151,7 +161,7 @@ foreach ( $grouped_orders as $date_key => $orders ) {
         $order->get_meta( '_billing_invoice_town' )   ? __( 'City', 'igs-client-system' )                          . ': ' . $order->get_meta( '_billing_invoice_town' )    : '',
         $order->get_meta( '_billing_invoice_address' ) ? __( 'Address', 'igs-client-system' )                      . ': ' . $order->get_meta( '_billing_invoice_address' ) : '',
       ) );
-      $invoice_data = implode( "\n", $invoice_parts );
+      $invoice_data = implode( "&#10;", $invoice_parts );
     }
 
     echo '<Row ss:StyleID="sBody">' . "\n";
@@ -162,9 +172,9 @@ foreach ( $grouped_orders as $date_key => $orders ) {
       echo '<Cell><Data ss:Type="String">' . esc_xml( $order->get_billing_phone() ) . '</Data></Cell>' . "\n";
     }
     echo '<Cell><Data ss:Type="String">' . esc_xml( implode( "&#10;", $products ) ) . '</Data></Cell>' . "\n";
-    if ( 'full' === $type ) {
-      echo '<Cell ss:StyleID="sCurrency"><Data ss:Type="Number">' . $order->get_subtotal() . '</Data></Cell>' . "\n";
-    }
+    echo '<Cell ss:StyleID="sCurrency"><Data ss:Type="Number">' . $order->get_subtotal() . '</Data></Cell>' . "\n";
+    echo '<Cell><Data ss:Type="String">' . esc_xml( implode( "\n", $fee_lines ) ) . '</Data></Cell>' . "\n";
+    echo '<Cell ss:StyleID="sCurrency"><Data ss:Type="Number">' . $grand_total . '</Data></Cell>' . "\n";
     echo '<Cell><Data ss:Type="String">' . esc_xml( $order->get_date_created()->format( $data_format ) ) . '</Data></Cell>' . "\n";
     echo '<Cell><Data ss:Type="String">' . esc_xml( $prep_display ) . '</Data></Cell>' . "\n";
     if ( 'full' === $type ) {

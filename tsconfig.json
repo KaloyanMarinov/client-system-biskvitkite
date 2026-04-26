@@ -7,7 +7,6 @@
     "sourceMap": true,
     "declaration": false,
     "esModuleInterop": true,
-    "downlevelIteration": true,
     "isolatedModules": false,
   },
   "awesomeTypescriptLoaderOptions": {

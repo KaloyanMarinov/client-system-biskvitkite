@@ -51,6 +51,15 @@
     </div>
 
     <div class="d-f ai-c g-5 fs-14">
+      <p class="f-a"><?php _e('Fixed renewal day', 'igs-client-system'); ?>:</p>
+      <?php if ( '1' === $subscription->get_meta( '_igs_fixed_renewal_day' ) ) : ?>
+        <p class="f-1 ta-r fw-sb"><?php _e('Yes', 'igs-client-system'); ?></p>
+      <?php else: ?>
+        <p class="f-1 ta-r fw-sb"><?php _e('No', 'igs-client-system'); ?></p>
+      <?php endif; ?>
+    </div>
+
+    <div class="d-f ai-c g-5 fs-14">
       <p class="f-a"><?php _e('Last', 'igs-client-system'); ?>:</p>
       <p class="f-1 ta-r fw-sb"><?php echo $subscription->igs_get_last_order_date(); ?></p>
     </div>
@@ -73,6 +82,30 @@
     <div class="d-f ai-c g-5 fs-14">
       <p class="f-a"><?php _e('Delivery', 'igs-client-system'); ?>:</p>
       <p class="f-1 ta-r fw-sb"><?php echo $subscription->get_shipping_method(); ?></p>
+    </div>
+
+    <div class="d-f ai-c g-5 fs-14">
+      <p class="f-a"><?php _e('Payment', 'igs-client-system'); ?>:</p>
+      <p class="f-1 ta-r fw-sb"><?php echo $subscription->get_payment_method_title(); ?></p>
+    </div>
+
+    <?php
+      $is_prepaid    = '1' === $subscription->get_meta( '_igs_prepaid' );
+      $prepaid_until = $subscription->get_meta( '_igs_prepaid_until' );
+      $until_dt      = $prepaid_until ? DateTime::createFromFormat( 'd.m.Y', $prepaid_until ) : false;
+      $prepaid_valid = $until_dt && ( (int) $until_dt->format('Ym') > (int) ( new DateTime() )->format('Ym') );
+    ?>
+    <div class="d-f ai-c g-5 fs-14">
+      <p class="f-a"><?php _e('Prepaid', 'igs-client-system'); ?>:</p>
+      <?php if ( $is_prepaid ) : ?>
+        <?php if ( $prepaid_valid ) : ?>
+          <p class="f-1 ta-r fw-sb" style="color:green;"><?php echo esc_html( sprintf( __( 'Until %s', 'igs-client-system' ), $prepaid_until ) ); ?></p>
+        <?php else : ?>
+          <p class="f-1 ta-r fw-sb" style="color:red;"><?php _e( 'Expired', 'igs-client-system' ); ?></p>
+        <?php endif; ?>
+      <?php else: ?>
+        <p class="f-1 ta-r fw-sb"><?php _e('No', 'igs-client-system'); ?></p>
+      <?php endif; ?>
     </div>
 
     <div class="d-f ai-c gx-5 mt-a">

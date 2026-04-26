@@ -67,6 +67,7 @@ class IGS_CS_Admin_Form_Hooks extends IGS_CS_Loader {
 
     // Form submissions
     $this->add_action( 'admin_post_igs_save_subscription_data', 'IGS_CS_Subscription', 'igs_handle_save_subscription', 10 );
+    $this->add_action( 'admin_post_igs_create_subscription',    'IGS_CS_Subscription', 'igs_handle_create_subscription', 10 );
     $this->add_action( 'admin_post_igs_save_user_data',         'IGS_CS_User',         'igs_handle_save_user',         10 );
 
   }

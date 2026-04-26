@@ -55,6 +55,14 @@ class IGS_CS_Admin_Menus {
    */
   public $export_slug = 'igs-export';
 
+  /**
+   * Menu page slug for new subscription.
+   *
+   * @since 1.0.0
+   * @var string
+   */
+  public $new_subscription_slug = 'igs-new-subscription';
+
 	/**
 	 * Main IGS_CS_Admin_Menus Instance.
 	 *
@@ -113,6 +121,15 @@ class IGS_CS_Admin_Menus {
       'manage_options',
       $this->get_subscriptions_slug(),
       array($this, 'igs_cs_subscription_page')
+    );
+
+    add_submenu_page(
+      'igs-client-software',
+      __('New Subscription', 'igs-client-system'),
+      __('New Subscription', 'igs-client-system'),
+      'manage_options',
+      $this->get_new_subscription_slug(),
+      array($this, 'igs_cs_new_subscription_page')
     );
 
     // add_submenu_page(
@@ -188,6 +205,28 @@ class IGS_CS_Admin_Menus {
         'subscription_page' => $this
       ) );
     }
+
+  }
+
+  /**
+   * Render New Subscription page.
+   *
+   * @since 1.0.0
+   */
+  public function igs_cs_new_subscription_page() {
+
+    if ( ! current_user_can('manage_options') ) {
+      wp_die(__('You do not have sufficient permissions to access this page.', 'igs-client-system'));
+    }
+
+    $notice = isset( $_GET['notice'] ) ? sanitize_text_field( $_GET['notice'] ) : '';
+    $sub_warning_id = isset( $_GET['sub_id'] ) ? absint( $_GET['sub_id'] ) : 0;
+
+    igs_cs_get_template( 'admin/new-subscription', array(
+      'subscription_page' => $this,
+      'notice'            => $notice,
+      'sub_warning_id'    => $sub_warning_id,
+    ) );
 
   }
 
@@ -297,6 +336,16 @@ class IGS_CS_Admin_Menus {
    */
   public function get_export_slug() {
     return $this->export_slug;
+  }
+
+  /**
+   * Get new subscription menu slug.
+   *
+   * @since 1.0.0
+   * @return string Menu slug.
+   */
+  public function get_new_subscription_slug() {
+    return $this->new_subscription_slug;
   }
 
   /**

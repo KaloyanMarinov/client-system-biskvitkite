@@ -125,6 +125,18 @@
           <div class="flc-u-md-3">
             <p class="fw-b mb-10"><?php _e('Next payment', 'igs-client-system') ?>:</p>
             <input type="text" name="next_payment_timestamp_utc" class="field js-datepicker" value="<?php echo $subscription->igs_get_next_date( 'd.m.Y' ); ?>">
+            <?php $is_fixed_day = '1' === $subscription->get_meta( '_igs_fixed_renewal_day' ); ?>
+            <label class="d-f ai-c g-10 cur-p mt-10">
+              <input
+                type="checkbox"
+                name="_igs_fixed_renewal_day"
+                id="igs_fixed_renewal_day"
+                value="1"
+                class="field"
+                <?php checked( $is_fixed_day ); ?>
+              >
+              <label for="igs_fixed_renewal_day" class="field-checkbox ps-r"><?php _e( 'Fixed renewal day', 'igs-client-system' ); ?></label>
+            </label>
           </div>
 
           <div class="flc-u-md-3">
@@ -275,6 +287,65 @@
                 </li>
               <?php endforeach; ?>
             </ul>
+          </div>
+
+          <div class="flc-12">
+            <?php
+              $is_prepaid    = '1' === $subscription->get_meta( '_igs_prepaid' );
+              $prepaid_until = $subscription->get_meta( '_igs_prepaid_until' );
+              $until_dt_chk  = $prepaid_until ? DateTime::createFromFormat( 'd.m.Y', $prepaid_until ) : false;
+              $prepaid_expired = $until_dt_chk && ( (int) $until_dt_chk->format('Ym') <= (int) ( new DateTime() )->format('Ym') );
+            ?>
+              <input
+                type="checkbox"
+                name="_igs_prepaid"
+                id="igs_prepaid"
+                value="1"
+                class="field"
+                <?php checked( $is_prepaid ); ?>
+              >
+              <label for="igs_prepaid" class="field-checkbox ps-r">
+                <?php _e( 'Prepaid', 'igs-client-system' ); ?>
+                <?php if ( $is_prepaid && $prepaid_expired ) : ?>
+                  <span style="color:red;margin-left:6px;"><?php _e( 'Expired', 'igs-client-system' ); ?></span>
+                <?php endif; ?>
+              </label>
+
+            <div id="igs-prepaid-until-wrap" class="mt-15"<?php echo $is_prepaid ? '' : ' style="display:none"'; ?>>
+              <?php
+                $until_dt_edit = $prepaid_until ? DateTime::createFromFormat( 'd.m.Y', $prepaid_until ) : false;
+                $show_cycles   = ! $until_dt_edit || ( (int) $until_dt_edit->format('Ym') <= (int) ( new DateTime() )->format('Ym') );
+                $saved_cycles  = (int) $subscription->get_meta( '_igs_prepaid_cycles' );
+              ?>
+
+              <?php if ( $show_cycles ) : ?>
+              <p class="fw-b mb-10"><?php _e( 'Prepay for X renewals', 'igs-client-system' ); ?></p>
+              <input
+                type="number"
+                id="igs_prepaid_cycles"
+                name="_igs_prepaid_cycles"
+                class="field"
+                value="<?php echo esc_attr( $saved_cycles ?: '' ); ?>"
+                min="1"
+                placeholder="<?php esc_attr_e( 'e.g. 6', 'igs-client-system' ); ?>"
+                autocomplete="off"
+              >
+              <p class="description mt-5"><?php _e( 'If entered, the "Paid until" date will be calculated automatically from the next payment date.', 'igs-client-system' ); ?></p>
+              <p class="fw-b mb-10 mt-15"><?php _e( 'Or enter the date manually', 'igs-client-system' ); ?></p>
+              <?php else : ?>
+              <p class="fw-b mb-10"><?php _e( 'Paid until', 'igs-client-system' ); ?> *</p>
+              <?php endif; ?>
+
+              <input
+                type="text"
+                id="igs_prepaid_until"
+                name="_igs_prepaid_until"
+                class="field js-datepicker"
+                value="<?php echo esc_attr( $prepaid_until ); ?>"
+                placeholder="<?php esc_attr_e('DD.MM.YYYY', 'igs-client-system'); ?>"
+                autocomplete="off"
+              >
+            </div>
           </div>
 
           <div class="flc-12">

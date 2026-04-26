@@ -16,6 +16,10 @@
     do_action('igs_cs_before_content');
   ?>
 
+  <div class="d-f ai-c jc-sb mb-20">
+    <a href="<?php echo esc_url( admin_url( 'admin.php?page=' . IGS_CS()->admin()->menus()->get_new_subscription_slug() ) ); ?>" class="button button-primary"><?php _e( '+ New Subscription', 'igs-client-system' ); ?></a>
+  </div>
+
   <?php $module->get_filter( $subscription_page ); ?>
 
   <?php if ( $module->get_query()->have_posts() ) { ?>

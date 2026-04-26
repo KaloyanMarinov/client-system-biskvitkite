@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Client System for Biskvitkite\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-25 15:02+0000\n"
-"PO-Revision-Date: 2026-04-26 05:16+0000\n"
+"PO-Revision-Date: 2026-04-26 05:14+0000\n"
 "Last-Translator: \n"
 "Language-Team: Български\n"
 "Language: bg_BG\n"
@@ -899,7 +899,7 @@ msgstr "Абонаментът трябва да съдържа поне еди�
 #: templates/admin/new-subscription.php:29
 #, php-format
 msgid "This email address already has an active subscription. Subscription #%s."
-msgstr "Вече има създаден абонамент за този имейл с номер %s"
+msgstr "С имейл адрес вече има абонамент с номер %s"
 
 #: admin/components/igs-admin-users.php:217
 msgid "This email is already registered to another client."

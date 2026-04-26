@@ -160,8 +160,9 @@ class IGS_CS_Export {
   public function get_filter_order_type() {
 
     $options = array(
-      'full'  => __('Full', 'igs-client-system'),
-      'short' => __('Short', 'igs-client-system'),
+      'full'    => __('Full',         'igs-client-system'),
+      'short'   => __('Short',        'igs-client-system'),
+      'invoice' => __('Only invoice', 'igs-client-system'),
     );
 
     $options  = apply_filters( 'igs_cs_filter_order_types', $options, $this );

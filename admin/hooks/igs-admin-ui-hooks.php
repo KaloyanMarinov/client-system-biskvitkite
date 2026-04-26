@@ -73,6 +73,9 @@ class IGS_CS_Admin_UI_Hooks extends IGS_CS_Loader {
     $this->add_action( 'in_admin_header',        $this, 'render_header_template', 10 );
     $this->add_action( 'igs_cs_before_content',  $this, 'render_page_title', 10 );
 
+    // Dashboard widget
+    $this->add_action( 'wp_dashboard_setup', $this, 'register_dashboard_widget' );
+
     $this->add_filter( 'user_contactmethods',                   $this, 'clear_contact_methods',   11, 1 );
     $this->add_filter( 'woocommerce_customer_search_customers', $this, 'filter_search_customers', 10, 2 );
   }
@@ -123,7 +126,12 @@ class IGS_CS_Admin_UI_Hooks extends IGS_CS_Loader {
       'igs-subscriptions' === $_GET['page']
     );
 
-    if ( $is_subscription_edit ) {
+    $is_new_subscription = (
+      isset( $_GET['page'] ) &&
+      'igs-new-subscription' === $_GET['page']
+    );
+
+    if ( $is_subscription_edit || $is_new_subscription ) {
 
       wp_enqueue_script(
         'wc-admin-order-meta-boxes',
@@ -145,7 +153,7 @@ class IGS_CS_Admin_UI_Hooks extends IGS_CS_Loader {
         'delete_order_note_nonce' => wp_create_nonce( 'delete-order-note' ),
         'search_products_nonce'   => wp_create_nonce( 'search-products' ),
         'ajax_url'                => admin_url( 'admin-ajax.php' ),
-        'post_id'                 => absint( $_GET['id'] ),
+        'post_id'                 => isset( $_GET['id'] ) ? absint( $_GET['id'] ) : 0,
       ) );
     }
 
@@ -250,6 +258,111 @@ class IGS_CS_Admin_UI_Hooks extends IGS_CS_Loader {
     }
 
     return $args;
+
+  }
+
+  /**
+   * Register the IGS Client System dashboard widget.
+   *
+   * @since 1.0.0
+   * @return void
+   */
+  public function register_dashboard_widget() {
+
+    if ( ! current_user_can( 'manage_options' ) ) {
+      return;
+    }
+
+    wp_add_dashboard_widget(
+      'igs_cs_dashboard_widget',
+      __( 'Client System', 'igs-client-system' ),
+      array( $this, 'render_dashboard_widget' )
+    );
+
+  }
+
+  /**
+   * Render the IGS Client System dashboard widget content.
+   *
+   * @since 1.0.0
+   * @return void
+   */
+  public function render_dashboard_widget() {
+
+    $menus = IGS_CS()->admin()->menus();
+
+    $links = array(
+      array(
+        'url'   => admin_url( 'admin.php?page=' . $menus->get_subscriptions_slug() ),
+        'label' => __( 'Subscriptions', 'igs-client-system' ),
+      ),
+      array(
+        'url'   => admin_url( 'admin.php?page=' . $menus->get_new_subscription_slug() ),
+        'label' => __( 'New Subscription', 'igs-client-system' ),
+      ),
+      array(
+        'url'   => admin_url( 'admin.php?page=' . $menus->get_schedule_slug() ),
+        'label' => __( 'Schedule', 'igs-client-system' ),
+      ),
+      array(
+        'url'   => admin_url( 'admin.php?page=' . $menus->get_customer_slug() ),
+        'label' => __( 'Customers', 'igs-client-system' ),
+      ),
+      array(
+        'url'   => admin_url( 'admin.php?page=' . $menus->get_export_slug() ),
+        'label' => __( 'Export', 'igs-client-system' ),
+      ),
+      array(
+        'url'   => admin_url( 'admin.php?page=wc-orders' ),
+        'label' => __( 'Orders', 'woocommerce' ),
+      ),
+    );
+
+    // ── Quick links ───────────────────────────────────────────────────────────
+    echo '<ul style="display:flex;flex-wrap:wrap;gap:6px 10px;margin:0 0 16px;">';
+    foreach ( $links as $link ) {
+      printf(
+        '<li><a href="%s" style="font-weight:600;">%s</a></li>',
+        esc_url( $link['url'] ),
+        esc_html( $link['label'] )
+      );
+    }
+    echo '</ul>';
+
+    // ── Upcoming renewals ─────────────────────────────────────────────────────
+    echo '<p style="font-weight:700;margin:0 0 8px;">' . esc_html__( 'Upcoming renewals', 'igs-client-system' ) . '</p>';
+
+    $upcoming = wcs_get_subscriptions( array(
+      'subscriptions_per_page' => 5,
+      'subscription_status'    => 'active',
+      'orderby'                => 'meta_value',
+      'order'                  => 'ASC',
+      'meta_key'               => '_schedule_next_payment',
+    ) );
+
+    if ( empty( $upcoming ) ) {
+      echo '<p style="color:#888;">' . esc_html__( 'No upcoming renewals.', 'igs-client-system' ) . '</p>';
+    } else {
+      echo '<ul style="margin:0;">';
+      foreach ( $upcoming as $sub ) {
+        $next = $sub->get_date( 'next_payment' );
+        $next_display = $next
+          ? ( new DateTime( $next, new DateTimeZone( 'UTC' ) ) )->format( 'd.m.Y' )
+          : '—';
+
+        printf(
+          '<li style="padding:4px 0;border-bottom:1px solid #f0f0f0;">'
+            . '<a href="%1$s" style="font-weight:600;">#%2$d %3$s</a>'
+            . ' <span style="color:#888;font-size:12px;">— %4$s</span>'
+            . '</li>',
+          esc_url( admin_url( 'admin.php?page=' . $menus->get_subscriptions_slug() . '&action=edit&id=' . $sub->get_id() ) ),
+          $sub->get_id(),
+          esc_html( $sub->get_formatted_billing_full_name() ),
+          esc_html( $next_display )
+        );
+      }
+      echo '</ul>';
+    }
 
   }
 
