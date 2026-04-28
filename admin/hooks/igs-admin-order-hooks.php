@@ -448,39 +448,42 @@ class IGS_CS_Admin_Order_Hooks extends IGS_CS_Loader {
 
     $results = array();
 
-    // --- Simple subscriptions ---
-    $sub_ids = wc_get_products( array(
-      's'      => $term,
-      'type'   => 'subscription',
-      'status' => 'publish',
-      'limit'  => 20,
-      'return' => 'ids',
-    ) );
+    $simple_types = array( 'simple', 'subscription' );
 
-    foreach ( $sub_ids as $id ) {
-      $product = wc_get_product( $id );
-      if ( $product ) {
-        $results[ $id ] = wp_strip_all_tags( $product->get_formatted_name() );
+    foreach ( $simple_types as $type ) {
+      $ids = wc_get_products( array(
+        's'      => $term,
+        'type'   => $type,
+        'status' => 'publish',
+        'limit'  => 20,
+        'return' => 'ids',
+      ) );
+      foreach ( $ids as $id ) {
+        $product = wc_get_product( $id );
+        if ( $product ) {
+          $results[ $id ] = wp_strip_all_tags( $product->get_formatted_name() );
+        }
       }
     }
 
-    // --- Variable subscriptions: search parent, include all variations ---
-    $var_ids = wc_get_products( array(
-      's'      => $term,
-      'type'   => 'variable-subscription',
-      'status' => 'publish',
-      'limit'  => 10,
-      'return' => 'ids',
-    ) );
+    $variable_types = array( 'variable', 'variable-subscription' );
 
-    foreach ( $var_ids as $parent_id ) {
-      $parent = wc_get_product( $parent_id );
-      if ( ! $parent ) continue;
-
-      foreach ( $parent->get_children() as $variation_id ) {
-        $variation = wc_get_product( $variation_id );
-        if ( $variation && $variation->exists() ) {
-          $results[ $variation_id ] = wp_strip_all_tags( $variation->get_formatted_name() );
+    foreach ( $variable_types as $type ) {
+      $var_ids = wc_get_products( array(
+        's'      => $term,
+        'type'   => $type,
+        'status' => 'publish',
+        'limit'  => 10,
+        'return' => 'ids',
+      ) );
+      foreach ( $var_ids as $parent_id ) {
+        $parent = wc_get_product( $parent_id );
+        if ( ! $parent ) continue;
+        foreach ( $parent->get_children() as $variation_id ) {
+          $variation = wc_get_product( $variation_id );
+          if ( $variation && $variation->exists() ) {
+            $results[ $variation_id ] = wp_strip_all_tags( $variation->get_formatted_name() );
+          }
         }
       }
     }
