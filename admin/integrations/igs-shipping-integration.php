@@ -132,7 +132,7 @@ class IGS_CS_Shipping_Integration {
     $loading_data['action']            = 'speedy_handle_ajax';
     $loading_data['action2']           = 'calculation';
 
-    $url    = get_bloginfo( 'wpurl' ) . '/wp-admin/admin-ajax.php';
+    $url    = get_bloginfo( 'wpurl' ) . '/igs-ajax.php';
     $result = wp_remote_post( $url, array( 'body' => $loading_data ) );
 
     if ( is_wp_error( $result ) ) {
