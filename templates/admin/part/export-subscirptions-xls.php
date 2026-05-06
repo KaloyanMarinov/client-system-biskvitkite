@@ -24,6 +24,13 @@ echo '  <Styles>
       <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
     </Borders>
   </Style>
+  <Style ss:ID="sSummaryHeader">
+    <Font ss:Bold="1" ss:Size="12" ss:FontName="Arial"/>
+    <Alignment ss:Vertical="Center"/>
+    <Borders>
+      <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+    </Borders>
+  </Style>
   <Style ss:ID="sBody">
     <Font ss:Size="12" ss:FontName="Arial"/>
     <Alignment ss:Vertical="Top" ss:WrapText="1"/>
@@ -66,12 +73,14 @@ echo '<Cell><Data ss:Type="String">' . __('Subscriber from', 'igs-client-system'
 echo '<Cell><Data ss:Type="String">' . __('Notes', 'igs-client-system') . '</Data></Cell>' . "\n";
 echo '</Row>' . "\n";
 
+$product_totals = array();
+
 while( $igs_query->have_posts( ) ) : $igs_query->the_post();
   global $subscription;
 
   /** @var \IGS_CS_Subscription $subscription */
   if ( ! is_a( $subscription, IGS_CS_Subscription::class ) ) {
-    return;
+    continue;
   }
 
   $status           = wp_strip_all_tags( $subscription->igs_get_status_name() );
@@ -79,7 +88,14 @@ while( $igs_query->have_posts( ) ) : $igs_query->the_post();
   $shipping_address = IGS_CS()->admin()->order()->get_shipping_address( $subscription ) ?: [];
 
   foreach ( $subscription->get_items() as $item_id => $item ) {
-    $products[] = $item->get_name() . ' - ' . wp_sprintf( _n( '%d piece' , '%d pieces', $item->get_quantity(), 'igs-client-system') , $item->get_quantity() );
+    $name       = $item->get_name();
+    $qty        = $item->get_quantity();
+    $products[] = $name . ' - ' . wp_sprintf( _n( '%d piece', '%d pieces', $qty, 'igs-client-system' ), $qty );
+
+    if ( ! isset( $product_totals[ $name ] ) ) {
+      $product_totals[ $name ] = 0;
+    }
+    $product_totals[ $name ] += $qty;
   }
 
   echo '<Row ss:StyleID="sBody">' . "\n";
@@ -98,6 +114,26 @@ while( $igs_query->have_posts( ) ) : $igs_query->the_post();
   echo '</Row>' . "\n";
 endwhile;
 wp_reset_query();
+
+// ── Product summary ──────────────────────────────────────────────────────────
+if ( ! empty( $product_totals ) ) {
+
+  echo '<Row><Cell><Data ss:Type="String"></Data></Cell></Row>' . "\n";
+
+  echo '<Row ss:StyleID="sSummaryHeader">' . "\n";
+  echo '<Cell ss:MergeAcross="2"><Data ss:Type="String">' . __( 'Products', 'igs-client-system' ) . '</Data></Cell>' . "\n";
+  echo '<Cell><Data ss:Type="String">' . __( 'Total Quantity', 'igs-client-system' ) . '</Data></Cell>' . "\n";
+  echo '</Row>' . "\n";
+
+  arsort( $product_totals );
+
+  foreach ( $product_totals as $name => $qty ) {
+    echo '<Row ss:StyleID="sBody">' . "\n";
+    echo '<Cell ss:MergeAcross="2"><Data ss:Type="String">' . esc_xml( $name ) . '</Data></Cell>' . "\n";
+    echo '<Cell><Data ss:Type="Number">' . (int) $qty . '</Data></Cell>' . "\n";
+    echo '</Row>' . "\n";
+  }
+}
 
 echo '</Table>' . "\n";
 echo '</Worksheet>' . "\n";
