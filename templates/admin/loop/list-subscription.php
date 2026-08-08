@@ -12,7 +12,7 @@
   }
 
   $customer        = $subscription->igs_set_customer();
-  $returned_orders = $customer->igs_order_returned_count();
+  $returned_orders = $customer ? $customer->igs_order_returned_count() : 0;
 
 ?>
 

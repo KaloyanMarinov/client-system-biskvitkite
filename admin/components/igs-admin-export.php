@@ -155,6 +155,26 @@ class IGS_CS_Export {
   }
 
   /**
+   * Render the sort-by selector for the orders export.
+   */
+  public function get_filter_order_sort() {
+
+    $options = array(
+      'date'     => __( 'Order Date', 'igs-client-system' ),
+      'customer' => __( 'Customer',   'igs-client-system' ),
+      'shipping' => __( 'Delivery',   'igs-client-system' ),
+    );
+
+    igs_cs_get_template( 'admin/part/filter-select', array(
+      'label'    => _x( 'Sort by', 'filter', 'igs-client-system' ),
+      'name'     => 'igs_order_sort',
+      'options'  => $options,
+      'selected' => 'date',
+    ) );
+
+  }
+
+  /**
    * Render the filter orders type template.
    */
   public function get_filter_order_type() {

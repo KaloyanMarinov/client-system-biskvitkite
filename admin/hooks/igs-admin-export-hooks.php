@@ -215,6 +215,8 @@ class IGS_CS_Admin_Export_Hooks extends IGS_CS_Loader {
     $period     = isset( $_POST['igs_order_period'] ) ? sanitize_text_field( $_POST['igs_order_period'] ) : 'all';
     $date_raw   = isset( $_POST['igs_order_date'] )   ? sanitize_text_field( $_POST['igs_order_date'] )   : '';
     $order_type = isset( $_POST['igs_order_type'] )   ? sanitize_text_field( $_POST['igs_order_type'] )   : 'full';
+    $sort_by    = isset( $_POST['igs_order_sort'] )   ? sanitize_text_field( $_POST['igs_order_sort'] )   : 'date';
+    $sort_by    = in_array( $sort_by, array( 'date', 'customer', 'shipping' ), true ) ? $sort_by : 'date';
 
     // Build params explicitly — never pass raw $_POST to wc_get_orders() as
     // stray fields (action, _wpnonce, etc.) can corrupt the query.
@@ -293,28 +295,68 @@ class IGS_CS_Admin_Export_Hooks extends IGS_CS_Loader {
       exit;
     }
 
-    // Group orders by date into separate sheets.
-    // wc-cooking → group by _igs_preparation_date; all others → group by date_created.
-    $grouped_orders = array();
+    // Load all order objects.
+    $orders = array();
     foreach ( $order_ids as $order_id ) {
       $order = wc_get_order( $order_id );
-      if ( ! $order ) continue;
+      if ( $order ) {
+        $orders[] = $order;
+      }
+    }
 
-      if ( 'wc-cooking' === $status ) {
-        $raw      = $order->get_meta( '_igs_preparation_date' );
-        $sort_key = ( $raw && preg_match( '/^\d{4}-\d{2}-\d{2}$/', $raw ) ) ? $raw : '0000-00-00';
-      } else {
-        $sort_key = $order->get_date_created()->format( 'Y-m-d' );
+    // Apply sort and grouping based on the chosen sort_by option.
+    $grouped_orders = array();
+
+    if ( 'shipping' === $sort_by ) {
+      // Sort by shipping method (all orders in one sheet).
+      // Secondary sort: date ascending within each method.
+      usort( $orders, function( $a, $b ) {
+        $cmp = strcmp(
+          $a->get_shipping_method() ?: '',
+          $b->get_shipping_method() ?: ''
+        );
+        if ( 0 !== $cmp ) {
+          return $cmp;
+        }
+        $date_a = $a->get_date_created() ? $a->get_date_created()->getTimestamp() : 0;
+        $date_b = $b->get_date_created() ? $b->get_date_created()->getTimestamp() : 0;
+        return $date_a - $date_b;
+      } );
+
+      $grouped_orders['all'] = $orders;
+
+    } else {
+      // Sort by customer name or date, then group by date into separate sheets.
+      if ( 'customer' === $sort_by ) {
+        usort( $orders, function( $a, $b ) {
+          return strcmp(
+            $a->get_formatted_billing_full_name(),
+            $b->get_formatted_billing_full_name()
+          );
+        } );
       }
 
-      $grouped_orders[ $sort_key ][] = $order;
+      foreach ( $orders as $order ) {
+        if ( 'wc-cooking' === $status ) {
+          $raw      = $order->get_meta( '_igs_preparation_date' );
+          $sort_key = ( $raw && preg_match( '/^\d{4}-\d{2}-\d{2}$/', $raw ) ) ? $raw : '0000-00-00';
+        } else {
+          $sort_key = $order->get_date_created()->format( 'Y-m-d' );
+        }
+        $grouped_orders[ $sort_key ][] = $order;
+      }
+
+      // Keep date-keyed sheets in chronological order.
+      if ( 'date' === $sort_by ) {
+        ksort( $grouped_orders );
+      }
     }
-    ksort( $grouped_orders );
 
     igs_cs_get_template( 'admin/part/export-orders-xls', array(
       'grouped_orders' => $grouped_orders,
       'type'           => 'invoice' === $order_type ? 'full' : $order_type,
       'status'         => $status,
+      'sort_by'        => $sort_by,
     ) );
 
     exit;

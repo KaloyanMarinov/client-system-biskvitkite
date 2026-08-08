@@ -89,9 +89,21 @@ foreach ($grouped_data as $date => $subscriptions) {
       $shipping_address = IGS_CS()->admin()->order()->get_shipping_address( $sub ) ?: [];
 
       foreach ( $sub->get_items() as $item_id => $item ) {
-        $name       = $item->get_name();
-        $qty        = $item->get_quantity();
-        $products[] = $name . ' - ' . wp_sprintf( _n( '%d piece', '%d pieces', $qty, 'igs-client-system' ), $qty );
+        $product     = $item->get_product();
+        $export_name = '';
+        if ( $product ) {
+          $export_name = get_post_meta( $product->get_id(), '_igs_export_name', true );
+          if ( ! $export_name && $product->get_parent_id() ) {
+            $parent_export_name = get_post_meta( $product->get_parent_id(), '_igs_export_name', true );
+            if ( $parent_export_name ) {
+              $attrs       = wc_get_formatted_variation( $product, true, false );
+              $export_name = $parent_export_name . ( $attrs ? ' - ' . $attrs : '' );
+            }
+          }
+        }
+        $name        = $export_name ?: $item->get_name();
+        $qty         = $item->get_quantity();
+        $products[]  = $name . ' - ' . wp_sprintf( _n( '%d piece', '%d pieces', $qty, 'igs-client-system' ), $qty );
 
         if ( ! isset( $product_totals[ $name ] ) ) {
           $product_totals[ $name ] = 0;

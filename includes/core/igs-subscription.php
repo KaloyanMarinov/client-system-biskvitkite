@@ -761,17 +761,22 @@ class IGS_CS_Subscription extends WC_Subscription {
 
     $renewal_order->update_status( $renewal_status, $renewal_note );
 
-    // Let WCS calculate the next payment date using the subscription's own
-    // billing interval and period.  When the renewal day is fixed, grab the
-    // day-of-month from the *current* next_payment date and stamp it onto the
-    // WCS-calculated date so the day never drifts (e.g. renewal on 15.04 with
-    // a fixed day of 10 → WCS gives 15.05 → we correct it to 10.05).
-    $next_payment_date = $subscription->calculate_date( 'next_payment' );
-
     if ( '1' === $subscription->get_meta( '_igs_fixed_renewal_day' ) ) {
+      // For fixed-renewal-day subscriptions, always advance from the previous
+      // next_payment date (not from today).  calculate_date() uses the current
+      // moment as the base, which causes a double-skip when a renewal is
+      // processed after the scheduled date (e.g. scheduled 29.05, renewed on
+      // 03.06 → calculate_date gives 03.07 → day-stamp gives 29.07 instead of
+      // 29.06).  Advancing directly from the stored next_payment date avoids
+      // this regardless of when the renewal is actually triggered.
       $current_next = $subscription->get_date( 'next_payment' ); // UTC MySQL datetime
       $fixed_day    = (int) ( new DateTime( $current_next, new DateTimeZone( 'UTC' ) ) )->format( 'j' );
-      $calculated   = new DateTime( $next_payment_date, new DateTimeZone( 'UTC' ) );
+
+      $interval = (int) $subscription->get_billing_interval();
+      $period   = $subscription->get_billing_period(); // 'month', 'week', 'day', 'year'
+
+      $calculated = new DateTime( $current_next, new DateTimeZone( 'UTC' ) );
+      $calculated->modify( '+' . $interval . ' ' . $period );
 
       // Clamp to the last day of the target month (e.g. day 31 in February → 28/29).
       $days_in_month = (int) $calculated->format( 't' );
@@ -782,6 +787,8 @@ class IGS_CS_Subscription extends WC_Subscription {
       );
 
       $next_payment_date = $calculated->format( 'Y-m-d H:i:s' );
+    } else {
+      $next_payment_date = $subscription->calculate_date( 'next_payment' );
     }
 
     $subscription->update_dates( array(
@@ -896,6 +903,14 @@ class IGS_CS_Subscription extends WC_Subscription {
       set_transient('igs_edit_subscription_data_' . $sub_id, $input_data, 300);
       wp_safe_redirect( add_query_arg( 'errors', implode( ',', $errors ), $base_url ) );
       exit;
+    }
+
+    // If status is not cancelled/pending-cancel, clear any stale _schedule_cancelled
+    // date so WCS validation doesn't reject the save (e.g. after a subscription that
+    // expired and was manually reactivated still has an old cancellation date in DB).
+    $new_status = sanitize_text_field( wp_unslash( $_POST['order_status'] ?? '' ) );
+    if ( ! in_array( $new_status, array( 'cancelled', 'pending-cancel' ), true ) ) {
+      $_POST['cancelled_timestamp_utc'] = 0;
     }
 
     WCS_Meta_Box_Subscription_Data::save( $sub_id, get_post( $sub_id ) );

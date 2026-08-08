@@ -36,6 +36,7 @@
       $module->get_filter_order_period();
       $module->get_filter_order_date();
       $module->get_filter_order_type();
+      $module->get_filter_order_sort();
     ?>
 
     <div class="flc-3 as-fe">

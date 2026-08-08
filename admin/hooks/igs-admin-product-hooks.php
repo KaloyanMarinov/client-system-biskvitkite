@@ -59,6 +59,10 @@ class IGS_CS_Admin_Product_Hooks extends IGS_CS_Loader {
     $this->add_action( 'woocommerce_process_product_meta',    'IGS_CS_Admin_Product_Data', 'save_product_visibility_roles',    10, 1 );
     $this->add_action( 'woocommerce_process_product_meta',    'IGS_CS_Admin_Product_Data', 'save_product_prices_list_pricing', 10, 1 );
 
+    // Export name field in Advanced tab
+    $this->add_action( 'woocommerce_product_options_advanced', 'IGS_CS_Admin_Product_Data', 'render_export_name_field', 10 );
+    $this->add_action( 'woocommerce_process_product_meta',     'IGS_CS_Admin_Product_Data', 'save_export_name_field',   10, 1 );
+
     // Variation pricing
     $this->add_action( 'woocommerce_variation_options_pricing', 'IGS_CS_Admin_Product_Data', 'variation_product_prices_list_pricing', 10, 3 );
     $this->add_action( 'woocommerce_save_product_variation',    'IGS_CS_Admin_Product_Data', 'save_variations_prices_list_pricing',   10, 2 );

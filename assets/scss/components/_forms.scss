@@ -222,3 +222,19 @@
 #speedy_edit_recipient_address form {
   @extend .d-f, .f-w, .jc-sb, .gy-10, .of-h;
 }
+
+.igs-main #speedy_edit_recipient_address .speedy-field .select2-container .select2-selection--single {
+  padding: 0 0 0 15px !important;
+  height: auto !important;
+}
+
+.igs-main #speedy_edit_recipient_address .speedy-field .select2-container .select2-selection__arrow {
+  height: auto !important;
+}
+
+
+.igs-main #speedy_edit_recipient_address .speedy-field input[type="text"],
+.igs-main #speedy_edit_recipient_address .speedy-field select {
+  padding: $input-padding-y $input-padding-x;
+  height: $input-height;
+}

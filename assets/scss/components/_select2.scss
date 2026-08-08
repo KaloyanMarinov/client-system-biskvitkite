@@ -12,7 +12,8 @@
       border: $input-border-width $input-border-style $input-border-color;
 
         .select2-selection__clear {
-          @extend .d-n;
+          order: 1;
+          @extend .ml-a;
         }
 
         .select2-selection__rendered {

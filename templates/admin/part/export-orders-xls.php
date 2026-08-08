@@ -1,8 +1,9 @@
 <?php
 
-// $grouped_orders : array of 'Y-m-d' => WC_Order[]  (sorted ascending)
+// $grouped_orders : array of group_key => WC_Order[]
 // $type           : 'full' | 'short'
 // $status         : WC status string, e.g. 'wc-cooking'
+// $sort_by        : 'date' | 'customer' | 'shipping'
 
 $status_slug = $status ? str_replace( 'wc-', '', $status ) : 'all';
 $filename    = 'export-orders-' . $type . '-' . $status_slug . '-' . date( 'd-m-Y_H-i-s' ) . '.xls';
@@ -53,8 +54,10 @@ echo '<Styles>
 
 foreach ( $grouped_orders as $date_key => $orders ) {
 
-  // Sheet name: d.m.Y or fallback.
-  if ( '0000-00-00' === $date_key ) {
+  // Sheet name.
+  if ( 'all' === $date_key ) {
+    $sheet_name = __( 'Orders', 'igs-client-system' );
+  } elseif ( '0000-00-00' === $date_key ) {
     $sheet_name = __( 'No date', 'igs-client-system' );
   } else {
     $dt         = DateTime::createFromFormat( 'Y-m-d', $date_key );
@@ -79,6 +82,7 @@ foreach ( $grouped_orders as $date_key => $orders ) {
   echo '<Column ss:Width="150"/>' . "\n";   // Preparation date
   if ( 'full' === $type ) {
     echo '<Column ss:Width="120"/>' . "\n"; // Delivery
+    echo '<Column ss:Width="120"/>' . "\n"; // City
     echo '<Column ss:Width="300"/>' . "\n"; // Shipping address
     echo '<Column ss:Width="140"/>' . "\n"; // Payment method
   }
@@ -101,6 +105,7 @@ foreach ( $grouped_orders as $date_key => $orders ) {
   echo '<Cell><Data ss:Type="String">' . __( 'Preparation Date', 'igs-client-system' ) . '</Data></Cell>' . "\n";
   if ( 'full' === $type ) {
     echo '<Cell><Data ss:Type="String">' . __( 'Delivery', 'igs-client-system' ) . '</Data></Cell>' . "\n";
+    echo '<Cell><Data ss:Type="String">' . __( 'City', 'igs-client-system' ) . '</Data></Cell>' . "\n";
     echo '<Cell><Data ss:Type="String">' . __( 'Shipping Address', 'igs-client-system' ) . '</Data></Cell>' . "\n";
     echo '<Cell><Data ss:Type="String">' . __( 'Payment Method', 'igs-client-system' ) . '</Data></Cell>' . "\n";
   }
@@ -116,7 +121,19 @@ foreach ( $grouped_orders as $date_key => $orders ) {
     $shipping_address = IGS_CS()->admin()->order()->get_shipping_address( $order ) ?: array();
 
     foreach ( $order->get_items() as $item_id => $item ) {
-      $name       = $item->get_name();
+      $product     = $item->get_product();
+      $export_name = '';
+      if ( $product ) {
+        $export_name = get_post_meta( $product->get_id(), '_igs_export_name', true );
+        if ( ! $export_name && $product->get_parent_id() ) {
+          $parent_export_name = get_post_meta( $product->get_parent_id(), '_igs_export_name', true );
+          if ( $parent_export_name ) {
+            $attrs       = wc_get_formatted_variation( $product, true, false );
+            $export_name = $parent_export_name . ( $attrs ? ' - ' . $attrs : '' );
+          }
+        }
+      }
+      $name       = $export_name ?: $item->get_name();
       $qty        = $item->get_quantity();
       $products[] = $name . ' - ' . wp_sprintf( _n( '%d piece', '%d pieces', $qty, 'igs-client-system' ), $qty );
 
@@ -178,7 +195,9 @@ foreach ( $grouped_orders as $date_key => $orders ) {
     echo '<Cell><Data ss:Type="String">' . esc_xml( $order->get_date_created()->format( $data_format ) ) . '</Data></Cell>' . "\n";
     echo '<Cell><Data ss:Type="String">' . esc_xml( $prep_display ) . '</Data></Cell>' . "\n";
     if ( 'full' === $type ) {
+      $city = $order->get_shipping_city() ?: $order->get_billing_city();
       echo '<Cell><Data ss:Type="String">' . esc_xml( $order->get_shipping_method() ) . '</Data></Cell>' . "\n";
+      echo '<Cell><Data ss:Type="String">' . esc_xml( $city ) . '</Data></Cell>' . "\n";
       echo '<Cell><Data ss:Type="String">' . esc_xml( implode( "&#10;", $shipping_address ) ) . '</Data></Cell>' . "\n";
       echo '<Cell><Data ss:Type="String">' . esc_xml( $order->get_payment_method_title() ) . '</Data></Cell>' . "\n";
     }

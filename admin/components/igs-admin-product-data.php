@@ -162,6 +162,26 @@ class IGS_CS_Admin_Product_Data {
 
   }
 
+  public static function render_export_name_field() {
+    global $post;
+    woocommerce_wp_text_input( array(
+      'id'          => '_igs_export_name',
+      'label'       => __( 'Export Name', 'igs-client-system' ),
+      'description' => __( 'If filled, this name will be used in XLS exports instead of the product name.', 'igs-client-system' ),
+      'desc_tip'    => true,
+      'value'       => get_post_meta( $post->ID, '_igs_export_name', true ),
+    ) );
+  }
+
+  public static function save_export_name_field( $post_id ) {
+    $value = isset( $_POST['_igs_export_name'] ) ? sanitize_text_field( $_POST['_igs_export_name'] ) : '';
+    if ( $value ) {
+      update_post_meta( $post_id, '_igs_export_name', $value );
+    } else {
+      delete_post_meta( $post_id, '_igs_export_name' );
+    }
+  }
+
   public static function save_variations_prices_list_pricing($variation_id, $i) {
 
     if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {

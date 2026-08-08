@@ -142,7 +142,7 @@
           <div class="flc-u-md-3">
             <p class="fw-b mb-10"><?php _e('End date', 'igs-client-system') ?>:</p>
 
-            <input type="text" name="end_timestamp_utc" class="field js-datepicker" value="<?php echo $subscription->igs_get_end_date( 'U' ) ?: ''; ?>">
+            <input type="text" name="end_timestamp_utc" class="field js-datepicker" value="<?php echo $subscription->igs_get_end_date( 'd.m.Y' ) ?: ''; ?>">
           </div>
 
           <div class="flc-u-sm-6">
